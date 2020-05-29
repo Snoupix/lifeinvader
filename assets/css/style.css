@@ -1,0 +1,239 @@
+*{
+  box-sizing: border-box;
+  padding: 0px;
+  margin: 0px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+:root {
+  --mainpink: #FBF2F2;
+  --borderCol: #EBC2C2;
+  --descBg: #F7E5E5;
+}
+
+body{
+  font-size: calc(1vw + 1vh + .5vmin);
+  background-color: var(--mainpink)!important;
+}
+
+nav{
+  position: relative;
+  min-height: 56px;
+  width: auto;
+  background-image: linear-gradient(to bottom, #c60101, #aa0101);
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.1), 0 1px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-dark{
+  background-image: linear-gradient(to bottom, #444444, #222222)!important;
+  background-repeat: repeat-x!important;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25)!important;
+}
+
+.btn-dark:focus{
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
+#search{
+  margin-top: 3px;
+  position: absolute;
+  font-size: 20px;
+}
+
+#searchMod{
+  z-index: 10;
+  position: absolute;
+  margin-top: 0px;
+  left: 0px;
+  width: 100%;
+  margin: auto;
+}
+
+/* #x svg{
+  font-size: 20px;
+  z-index: 11;
+  margin-top: 30px;
+  margin-right: 40px;
+}
+
+#x svg:hover{
+  transform: translateY(-0.03em) translateX(0.03em);
+  animation: 2s ease-in;
+} */
+
+#searchBar{
+  position: absolute;
+  display: flex;
+  margin-left: 32%;
+  margin-top: 34%;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+/* #go{
+  position: absolute;
+  display: flex;
+  margin-left: 71%;
+  margin-top: 34%;
+  border: none;
+  background: none;
+  opacity: 0;
+  font-size: 24px;
+  transition: opacity 3s ease-in-out;
+}
+
+#go:link,
+#go:active,
+#go:hover,
+#go:visited,
+#go:focus{
+  text-decoration: none;
+  color: #000;
+} */
+
+.toastError{
+  opacity: 1;
+  transition: opacity 3s ease-out;
+}
+
+.fadeOut{
+  opacity: 0!important;
+}
+
+.fadeIn{
+  opacity: 1!important;
+}
+
+.closedSearch{
+  display: none;
+}
+
+nav h1{
+  margin: 0px;
+}
+
+#logo{
+  color: #fff;
+  height: 28px;
+  width: 152px;
+  float: left;
+  margin: 9px 0 0 0;
+  background-image: url('/assets/img/logo-small.png');
+  background-repeat: no-repeat;
+  background-position: 0 0;
+}
+
+#signinButton{
+  margin-top: 0.5vw;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+#signinButton a{
+  max-height: 38px!important;
+}
+
+@media only screen and (max-width: 770px){
+  #signinButton{
+    margin-top: 2vw;
+  }
+}
+
+@media only screen and (max-width: 900px){
+  #signinButton{
+    margin-top: 1.7vw;
+  }
+}
+
+@media only screen and (max-width: 1000px){
+  #signinButton{
+    margin-top: 0.7vw;
+  }
+}
+
+@media only screen and (max-width: 1200px){
+  #signinButton{
+    margin-top: 1vw;
+  }
+}
+
+@media only screen and (min-width: 1400px){
+  #signinButton a{
+    height: 30px;
+    line-height: 20px;
+    font-size: 12px;
+  }
+}
+
+.btn-sm{
+  padding: 0.10rem -0.5rem!important;
+}
+
+.profilePic{
+  padding: 0px!important;
+  overflow: hidden;
+  height: 172px;
+  width: 100%;
+}
+
+.borderPic{
+  padding: 3px!important;
+  margin: 20px 0 0 20px;
+  height: 172px;
+  width: 172px;
+  border: 1px solid var(--borderCol);
+  background-color: #fff;
+  z-index: 2;
+}
+
+header{
+  min-height: 220px;
+  border: 1px solid var(--borderCol);
+  background-color: #fff;
+}
+
+.name h1{
+  margin-top: 20px;
+  color: #A30002;
+  font-size: 36px;
+  line-height: 40px;
+  font-weight: bold;
+}
+
+.description{
+  background-color: var(--descBg);
+  padding-right: 0px!important;
+}
+
+.banner{
+  margin-right: -37px!important;
+  margin-left: -207px!important;
+}
+
+.banner p{
+  padding-left: 195px;
+  font-size: 14px;
+  margin-bottom: 0px;
+}
+
+.stalkers{
+  margin-right: 8px;
+  padding-top: 10px;
+  color: #aaa;
+  font-size: 14px;
+}
+
+.stalk{
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-image: linear-gradient(to bottom, #ee5f5b, #bd362f);
+  font-size: 13px;
+  border-radius: 4px;
+  padding: 3px 9px;
+  margin-top: 16px;
+  border: 1px solid #bbbbbb;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+}

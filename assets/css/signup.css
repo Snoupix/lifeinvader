@@ -1,0 +1,32 @@
+.mrgIndex {
+  margin-top: 50px;
+}
+.marginLogin {
+  margin-top: 70px;
+}
+.orcolor {
+  color: grey;
+}
+input[type="text"], input[type="password"] {
+  outline: none;
+  padding: 5px;
+  width: 320px;
+  display: block;
+  border-radius: 3px;
+  border: 1px solid rgb(190, 189, 189);
+  margin: 20px auto;
+}
+input[type="submit"] {
+  padding: 10px;
+  color: white;
+  background: #0098cb;
+  width: 320px;
+  margin: 20px auto;
+  border: 0;
+  border-radius: 3px;
+  cursor: pointer;
+  display: block;
+}
+input[type="submit"]:hover {
+  background-color: #00b8eb
+}
