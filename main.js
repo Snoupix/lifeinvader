@@ -52,3 +52,5 @@ if($('.toastError').length == 1){
     }, 5000)
   },2000)
 }
+
+$('#stalkForm').attr('action', document.URL);

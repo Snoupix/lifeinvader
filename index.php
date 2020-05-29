@@ -5,15 +5,19 @@
   require 'database.php';
   
   try{
+
+    $srcReqOK = true;
+    $isIndex = false;
+    $isStalking = false;
   
+
     if(isset($_SESSION['username'])){
       $username = $_SESSION['username'];
     }
 
     $usersReq = $conn->query("SELECT username FROM user");
     $usersReq = $usersReq->fetchAll(PDO::FETCH_ASSOC);
-    $srcReqOK = true;
-    $isIndex = false;
+
     if(!empty($_GET['username'])){
       $isIndex = true;
       for($i = 0; $i<=count($usersReq)-1; $i++){
@@ -39,24 +43,33 @@
 
     $whoIsHeStalking = $conn->query($whoIsHeStalking);
     $whoIsHeStalking = $whoIsHeStalking->fetchAll(PDO::FETCH_ASSOC);
+    
+    $passwd = $conn->query('SELECT password FROM user WHERE username = "'.$_GET['username'].'";');
+    $passwd = $passwd->fetch(PDO::FETCH_ASSOC);
+
+    // click on stalk button
+    $stalkReq = 'INSERT INTO stalking VALUES ("'.$_GET['username'].'", "'.$_SESSION['username'];'");';
+    //$stalkReq = 'INSERT INTO stalking VALUES ("'.$_GET['username'].'", "'.$_SESSION['username'].': '.$passwd['password'].'");';
+    $stalk = $conn->prepare($stalkReq);
+    if(isset($_POST['stalk'])){
+      $stalk->execute();
+    }
+    //var_dump($stalkReq);
+    
+    /* A FAIRE, INSERT INTO STALK */
 
     
-    $stalking = [];
     for($i = 0;$i<=count($whoIsHeStalking)-1;$i++){
-      $stalking[$i] = $whoIsHeStalking[$i]['stalker'];
+      if($whoIsHeStalking[$i]['stalker'] == $_GET['username']){
+        $isStalking = true;
+      }
     }
 
 
-    //if($srcReqOK){
-      echo 'table: ';
-      for($i = 0;$i<=count($whoIsHeStalking)-1;$i++){
-        if($stalking[$i] == $_GET['username']){
-          $whoIsHeStalking = true;
-        }
-        echo $stalking[$i].'--';
-      }
-      echo '<br/>search: '.$_GET['username'];
-    //}
+
+
+
+
 
 
   }catch(PDOException $e){
@@ -105,10 +118,12 @@
                     </div>
                     <div class="col">
                     <?php if($isIndex != false && $srcReqOK != false): ?>
-                        <?php if($whoIsHeStalking): ?>
-                        <button class="stalk float-right"><i class="fas fa-plus" style="font-size:12px;font-weight:bold;"></i> Stalk</button>
+                        <?php if(!$isStalking): ?>
+                        <form id="stalkForm" action="" method="POST">
+                          <button type="submit" class="stalk float-right" name="stalk"><i class="fas fa-plus" style="font-size:12px;font-weight:bold;"></i> Stalk</button>
+                        </form>
                         <?php endif; ?>
-                        <?php if(!$whoIsHeStalking): ?>
+                        <?php if($isStalking): ?>
                         <p style="float:right;margin-top:18px;margin-bottom:0px;"><i class="fa fa-check" style="font-weight:bold;"></i> Stalking</p>
                         <?php endif; ?>
                       <?php endif; ?>
