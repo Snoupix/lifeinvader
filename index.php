@@ -34,33 +34,44 @@
 
     // SQL Querys
 
-    $stalkers = 'SELECT COUNT(*) as stalkers FROM stalking WHERE usernameFK = "'.$username.'";';
-    $whoIsHeStalking = 'SELECT stalker FROM stalking WHERE usernameFK = "'.$_SESSION['username'].'";'; // Renvoie les personnes que username stalk
 
+    $avatarReq = 'SELECT avatar FROM user WHERE username ="'.$username.'";';
+    $stalkers = 'SELECT COUNT(*) as stalkers FROM stalking WHERE usernameFK = "'.$username.'";';
+    $whoIsHeStalking = 'SELECT stalked FROM stalking WHERE usernameFK = "'.$_SESSION['username'].'";'; // Renvoie les personnes que username stalk
+    $typeReq = 'SELECT type FROM user WHERE username = "'.$username.'";';
+    $descReq = 'SELECT description FROM user WHERE username = "'.$username.'";';
+
+
+    $avatar = $conn->prepare($avatarReq);
+    $avatar->execute();
+    $icon = $avatar->fetch(PDO::FETCH_ASSOC); // = Array ( [avatar] => path )
 
     $stalkers = $conn->query($stalkers);
     $stalkers = $stalkers->fetch(PDO::FETCH_ASSOC);
 
     $whoIsHeStalking = $conn->query($whoIsHeStalking);
     $whoIsHeStalking = $whoIsHeStalking->fetchAll(PDO::FETCH_ASSOC);
-    
-    $passwd = $conn->query('SELECT password FROM user WHERE username = "'.$_GET['username'].'";');
-    $passwd = $passwd->fetch(PDO::FETCH_ASSOC);
+
+    $typeAcc = $conn->query($typeReq);
+    $type = $typeAcc->fetch(PDO::FETCH_ASSOC);
+
+    $descAcc = $conn->query($descReq);
+    $description = $descAcc->fetch(PDO::FETCH_ASSOC);
+
+  
 
     // click on stalk button
-    $stalkReq = 'INSERT INTO stalking VALUES ("'.$_GET['username'].'", "'.$_SESSION['username'];'");';
-    //$stalkReq = 'INSERT INTO stalking VALUES ("'.$_GET['username'].'", "'.$_SESSION['username'].': '.$passwd['password'].'");';
+    $stalkReq = 'INSERT INTO stalking VALUES (:username, :userSrc)';
     $stalk = $conn->prepare($stalkReq);
+    $stalk->bindParam(':userSrc', $_GET['username']);
+    $stalk->bindParam(':username', $_SESSION['username']);
     if(isset($_POST['stalk'])){
       $stalk->execute();
+      header("Refresh:0");
     }
-    //var_dump($stalkReq);
-    
-    /* A FAIRE, INSERT INTO STALK */
-
     
     for($i = 0;$i<=count($whoIsHeStalking)-1;$i++){
-      if($whoIsHeStalking[$i]['stalker'] == $_GET['username']){
+      if($whoIsHeStalking[$i]['stalked'] == $_GET['username']){
         $isStalking = true;
       }
     }
@@ -96,12 +107,6 @@
     <div class="container">
       <div class="row">
         <div class="col">
-          <?php
-            $req = 'SELECT avatar FROM user WHERE username ="'.$username.'";';
-            $avatar = $conn->prepare($req);
-            $avatar->execute();
-            $icon = $avatar->fetch(PDO::FETCH_ASSOC); // = Array ( [avatar] => path )
-          ?>
           <header>
             <div class="container">
               <div class="row">
@@ -127,14 +132,33 @@
                         <p style="float:right;margin-top:18px;margin-bottom:0px;"><i class="fa fa-check" style="font-weight:bold;"></i> Stalking</p>
                         <?php endif; ?>
                       <?php endif; ?>
+                      <?php 
+                        if(empty($_GET['username'])){
+                          echo '<form method="POST" action="index.php">';
+                          echo '<button type="submit" class="btn-sm btn-dark float-right" style="margin-top:10%;">EDIT</button>';
+                          echo '</form>';
+                        }
+                      ?>
                     </div>
                   </div>
                   <div class="row banner">
                     <div class="col description">
                       <div class="row">
                         <div class="col-6">
-                          <p>Type of account</p>
-                          <p>Description</p>
+                          <p><?php 
+                            if($type['type'] == NULL){
+                              echo "Type of account";
+                            }else{
+                              echo $type['type'];
+                            }
+                          ?></p>
+                          <p><?php 
+                            if($description['description'] == NULL){
+                              echo "Description";
+                            }else{
+                              echo $description['description'];
+                            }
+                          ?></p>
                         </div>
                         <div class="col-6">
                           <span class="float-right stalkers"><?php echo $stalkers['stalkers']; ?> Stalkers</span>
