@@ -219,6 +219,10 @@ header{
   margin-bottom: 0px;
 }
 
+.banner input{
+  margin-left: 195px;
+}
+
 .stalkers{
   margin-right: 8px;
   padding-top: 10px;

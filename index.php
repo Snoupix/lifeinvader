@@ -36,10 +36,12 @@
 
 
     $avatarReq = 'SELECT avatar FROM user WHERE username ="'.$username.'";';
-    $stalkers = 'SELECT COUNT(*) as stalkers FROM stalking WHERE usernameFK = "'.$username.'";';
+    $stalkers = 'SELECT COUNT(*) as stalkers FROM stalking WHERE stalked = "'.$username.'";';
     $whoIsHeStalking = 'SELECT stalked FROM stalking WHERE usernameFK = "'.$_SESSION['username'].'";'; // Renvoie les personnes que username stalk
     $typeReq = 'SELECT type FROM user WHERE username = "'.$username.'";';
     $descReq = 'SELECT description FROM user WHERE username = "'.$username.'";';
+    $setType = 'UPDATE user SET type = :type WHERE username = "'.$_SESSION['username'].'";';
+    $setDesc = 'UPDATE user SET description = :desc WHERE username = "'.$_SESSION['username'].'";';
 
 
     $avatar = $conn->prepare($avatarReq);
@@ -76,6 +78,19 @@
       }
     }
 
+
+    // add description and/or type of account
+    if(isset($_POST['editDone'])){
+      $setType = $conn->prepare($setType);
+      $setType->bindParam(':type', $_POST['typeEdit']);
+      $setType->execute();
+      $setDesc = $conn->prepare($setDesc);
+      $setDesc->bindParam(':desc', $_POST['descEdit']);
+      $setDesc->execute();
+    }
+    if(isset($_POST['unset'])){
+      unset($_POST['editDone']);
+    }
 
 
 
@@ -124,18 +139,23 @@
                     <div class="col">
                     <?php if($isIndex != false && $srcReqOK != false): ?>
                         <?php if(!$isStalking): ?>
-                        <form id="stalkForm" action="" method="POST">
-                          <button type="submit" class="stalk float-right" name="stalk"><i class="fas fa-plus" style="font-size:12px;font-weight:bold;"></i> Stalk</button>
-                        </form>
+                          <form id="stalkForm" action="" method="POST">
+                            <button type="submit" class="stalk float-right" name="stalk"><i class="fas fa-plus" style="font-size:12px;font-weight:bold;"></i> Stalk</button>
+                          </form>
                         <?php endif; ?>
                         <?php if($isStalking): ?>
-                        <p style="float:right;margin-top:18px;margin-bottom:0px;"><i class="fa fa-check" style="font-weight:bold;"></i> Stalking</p>
+                          <form id="stalkForm" action="" method="POST">
+                            <button id="unstalkButton" type="submit" class="stalk float-right" name="unstalk">
+                              <!-- <i class="fas fa-plus" style="font-size:12px;font-weight:bold;"></i> unstalk-->
+                              <p id="pstalk" style="float:right;margin-top:0px;margin-bottom:0px!important;"><i class="fa fa-check" style="font-weight:bold;"></i> Stalking</p>
+                            </button>
+                          </form>
                         <?php endif; ?>
                       <?php endif; ?>
                       <?php 
                         if(empty($_GET['username'])){
                           echo '<form method="POST" action="index.php">';
-                          echo '<button type="submit" class="btn-sm btn-dark float-right" style="margin-top:10%;">EDIT</button>';
+                          echo '<button name="edit" type="submit" class="btn-sm btn-dark float-right" style="margin-top:10%;">EDIT</button>';
                           echo '</form>';
                         }
                       ?>
@@ -144,23 +164,31 @@
                   <div class="row banner">
                     <div class="col description">
                       <div class="row">
-                        <div class="col-6">
-                          <p><?php 
-                            if($type['type'] == NULL){
-                              echo "Type of account";
-                            }else{
-                              echo $type['type'];
-                            }
-                          ?></p>
-                          <p><?php 
-                            if($description['description'] == NULL){
-                              echo "Description";
-                            }else{
-                              echo $description['description'];
-                            }
-                          ?></p>
+                        <div class="col-8">
+                          <?php if(isset($_POST['edit'])): ?>
+                            <form method="POST" id="descForm">
+                              <input name="typeEdit" type="text" placeholder="Type of account" />
+                              <input name="descEdit" type="text" placeholder="Description" />
+                              <input class="btn-sm btn-dark" name="editDone" type="submit" />
+                              <input class="btn-sm btn-dark" name="unset" value="Cancel" type="submit" />
+                            </form>
+                          <?php endif; ?>
+                          <?php if(!isset($_POST['edit'])): ?>
+                              <?php if($type['type'] == NULL): ?>
+                                <p>Type of account</p>
+                              <?php endif; ?>
+                              <?php if($type['type'] != NULL): ?>
+                                <p><?php echo $type['type']; ?></p>
+                              <?php endif; ?>
+                              <?php if($description['description'] == NULL): ?>
+                                <p>Description</p>
+                              <?php endif; ?>
+                              <?php if($description['description'] != NULL): ?>
+                                <p><?php echo $description['description']; ?></p>
+                            <?php endif; ?>
+                          <?php endif; ?>
                         </div>
-                        <div class="col-6">
+                        <div class="col-4">
                           <span class="float-right stalkers"><?php echo $stalkers['stalkers']; ?> Stalkers</span>
                         </div>
                       </div>
