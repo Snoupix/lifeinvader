@@ -3,6 +3,7 @@
 <?php 
   session_start();
   require 'database.php';
+  date_default_timezone_set('Europe/Paris');
   
   try{
 
@@ -42,6 +43,7 @@
     $descReq = 'SELECT description FROM user WHERE username = "'.$username.'";';
     $setType = 'UPDATE user SET type = :type WHERE username = "'.$_SESSION['username'].'";';
     $setDesc = 'UPDATE user SET description = :desc WHERE username = "'.$_SESSION['username'].'";';
+    $postReq = 'SELECT * FROM post WHERE usernameFK = "'.$username.'";';
 
 
     $avatar = $conn->prepare($avatarReq);
@@ -59,6 +61,9 @@
 
     $descAcc = $conn->query($descReq);
     $description = $descAcc->fetch(PDO::FETCH_ASSOC);
+
+    $postReq = $conn->query($postReq);
+    $postRes = $postReq->fetchAll(PDO::FETCH_ASSOC);
 
   
 
@@ -119,9 +124,24 @@
   <?php require('header.php'); ?>
   <?php if(!empty($_SESSION['username'])): ?>
   <!-- SI L'UTILISATEUR EST CONNECTÉ -->
-    <div class="container">
-      <div class="row">
-        <div class="col">
+  <div class="container">
+    <div class="row">
+      <?php if(!$srcReqOK): ?>
+          <!-- TOAST ERROR -->
+          <div class="col-12">
+            <div aria-live="polite" aria-atomic="true" class="toastError d-flex justify-content-center align-items-center" style="min-height: 200px;">
+              <div style="opacity:1;" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="10000">
+                <div class="toast-header">
+                  <strong class="mr-auto">Error</strong>
+                </div>
+                <div class="toast-body"> 
+                  Woops, this username doesn't exists, sorry! 
+                </div>
+              </div>
+            </div>
+          </div>
+        <?php endif; ?>
+      <div class="col">
           <header>
             <div class="container">
               <div class="row">
@@ -139,12 +159,12 @@
                     <div class="col">
                     <?php if($isIndex != false && $srcReqOK != false): ?>
                         <?php if(!$isStalking): ?>
-                          <form id="stalkForm" action="" method="POST">
+                          <form id="stalkForm" method="POST">
                             <button type="submit" class="stalk float-right" name="stalk"><i class="fas fa-plus" style="font-size:12px;font-weight:bold;"></i> Stalk</button>
                           </form>
                         <?php endif; ?>
                         <?php if($isStalking): ?>
-                          <form id="stalkForm" action="" method="POST">
+                          <form id="stalkForm" method="POST">
                             <button id="unstalkButton" type="submit" class="stalk float-right" name="unstalk">
                               <!-- <i class="fas fa-plus" style="font-size:12px;font-weight:bold;"></i> unstalk-->
                               <p id="pstalk" style="float:right;margin-top:0px;margin-bottom:0px!important;"><i class="fa fa-check" style="font-weight:bold;"></i> Stalking</p>
@@ -155,7 +175,7 @@
                       <?php 
                         if(empty($_GET['username'])){
                           echo '<form method="POST" action="index.php">';
-                          echo '<button name="edit" type="submit" class="btn-sm btn-dark float-right" style="margin-top:10%;">EDIT</button>';
+                          echo '<button name="edit" type="submit" class="btn-sm btn-dark float-right" style="margin-top:7%;">EDIT</button>';
                           echo '</form>';
                         }
                       ?>
@@ -199,32 +219,99 @@
             </div>
           </header>
 
-          <?php if(!$srcReqOK): ?>
-            <!-- TOAST ERROR -->
-            <div aria-live="polite" aria-atomic="true" class="toastError d-flex justify-content-center align-items-center" style="min-height: 200px;">
-              <div style="opacity:1;" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="10000">
-                <div class="toast-header">
-                  <strong class="mr-auto">Error</strong>
-                </div>
-                <div class="toast-body"> 
-                  Woops, this username doesn't exists, sorry! 
-                </div>
-              </div>
-            </div>
-          <?php endif; ?>
-
-
 
         </div>
       </div>
+      <div class="row">
+        <div class="col-3 about">
+          <p style="font-weight:bold;color:#666;line-height:1.15;">About</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+        </div>
+        <div class="col-9 wall">
+          <?php
+            # Boucle qui charge tout les posts
+            $picPath = "./assets/usersAvatar/";
+ 
+          /*Array
+            (
+                [0] => Array
+                    (
+                        [usernameFK] => Bob-Lee
+                        [message] => Some fool on the street is sweatin my Chakra. He about to learn the Chakra Attack. I move in and out like some kind of Navy Seal. But I ain’t stealing your ship. I ain’t a Somali pirate. I am Dr. Ray De Angelo Harris, and I am a tug boat captain, about to push your big dumb heavy ass into port so you can get firmly grounded. You dig this nautical trip? We tying knots in here. That’s deep right there.
+                        [image] => 
+                        [likes] => 0
+                        [date] => Mon 08 Jun 07:06
+                    )
+            
+            ) */
+            
+            foreach($postRes as $key){
+              if($key['image']){ // Post avec image
+                mkdir($picPath.'/');
+                # J'EN éTAIT AUX CRéATIONS D'IMAGES FOLDER PAR UTILISATEUR
+
+
+
+                echo '<div class="post">';
+                  echo '<div class="postBanner">';
+                    echo '<img src="'.$icon['avatar'].'" alt="profile pic" width="13%"/>';
+                    echo '<a href="#">'.$username.'</a>';
+                    //date('D d M H:m')
+                    echo '<span>Posted on '.$key['date'].'</span>';
+                    echo '<hr/>';
+                  echo '</div>';
+                  echo '<div class="postImage">';
+                  echo '<img src="'.$key['image'].'" alt="post pic" width="50%"/>';
+                  echo '</div>';
+                  echo '<div class="postContent">';
+                    echo '<p>'.$key['message'].'</p>';
+                  echo '</div>';
+                  echo '<div class="postFooter">';
+                    echo '<hr/>';
+                    echo '<form class="formLike" method="POST">';
+                    echo '<button type="submit" style="border:none;background:none;"><i class="fas fa-heart"></i></button><span> Likes '.$key['likes'].'</span>';
+                    echo '</form>';
+                  echo '</div>';
+                echo '</div>';
+              }else{ // Post sans image
+                echo '<div class="post">';
+                  echo '<div class="postBanner">';
+                    echo '<img src="'.$icon['avatar'].'" alt="profile pic" width="13%"/>';
+                    echo '<a href="#">'.$username.'</a>';
+                    //date('D d M H:m')
+                    echo '<span>Posted on '.$key['date'].'</span>';
+                    echo '<hr/>';
+                  echo '</div>';
+                  echo '<div class="postContent">';
+                    echo '<p>'.$key['message'].'</p>';
+                  echo '</div>';
+                  echo '<div class="postFooter">';
+                    echo '<hr/>';
+                    echo '<form class="formLike" method="POST">';
+                    echo '<button type="submit" style="border:none;background:none;"><i class="fas fa-heart"></i></button><span> Likes '.$key['likes'].'</span>';
+                    echo '</form>';
+                  echo '</div>';
+                echo '</div>';
+              }
+            }
+          ?>
+        </div>
+      </div>
+      <hr/>
+      <footer><p>© Butterfly Corp · Atlantiss 2020</p></footer>
     </div>
+
     <?php endif; ?>
     <?php if(empty($_SESSION['username'])): ?>
     <!-- SI L'UTILISATEUR N'EST PAS CONNECTÉ -->
       <div class="container">
         <div class="row">
           <div class="col">
-            <p style='text-align:center; margin: auto;'>Accueil non-connecté</p>
+            <p style='text-align:center; margin: auto;'>Non-connecté</p>
+            <?php require('dashboard.php'); ?>
           </div>
         </div>
       </div>

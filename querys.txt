@@ -1,15 +1,3 @@
-dans l'index : compte perso
-ajouter barre de recherche pour les comptes =>
-page de résultats de la recherche =>
-clic sur un compte =>
-retour sur l'index avec le compte utilisateur cliqué
+Faire une page fil d'actu
 
-faire en sorte que l'index (si c'est possible),
-soit la page des comptes :
-
-si clic sur profile après recherche, 
-page index avec le compte sélectionné.
-
-sinon si clic sur Lifeinvader, page compte perso
-
-sinon page perso
+Pour les photos : mettre une div display none en php et manipuler le reste en JS

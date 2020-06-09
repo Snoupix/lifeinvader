@@ -49,12 +49,13 @@ if($('.toastError').length == 1){
     $('.toastError').addClass('fadeOut')
     setTimeout(()=>{
       $('.toastError').remove()
-    }, 5000)
+    }, 4000)
   },2000)
 }
 
 $('#stalkForm').attr('action', document.URL);
 $('#descForm').attr('action', document.URL);
+$('.formLike').attr('action', document.URL);
 
 
 $('#unstalkButton').hover(()=>{
