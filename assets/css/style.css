@@ -246,10 +246,15 @@ footer p{
   margin-top: 16px;
 }
 
-.about p{
+.about p,
+.about textarea{
   margin-bottom: 0px;
   padding-left: 8%;
   font-size: 14px;
+}
+
+.divImage{
+  margin-top: 10%;
 }
 
 .post{
@@ -300,4 +305,67 @@ footer p{
 
 .postFooter svg{
   color: #aaa;
+}
+
+.raise{
+  font-weight: bold;
+  background: none;
+  border: 2px solid;
+  line-height: 1;
+  margin: 1em;
+  padding: 1em 2em;
+  color: #F7E5E5;
+  border-color: #F7E5E5;
+  transition: 0.25s;
+  border-radius: .2rem;
+}
+
+.raise:hover,
+.raise:focus {
+  border-color: #ffcdaa;
+  color: #ffcdaa;
+  box-shadow: 0 0.5em 0.5em -0.4em #AC0101;
+  outline: none;
+}
+
+#postOpen{
+  position: relative;
+}
+
+#postSmth{
+  margin: auto;
+}
+
+#postpost{
+  margin: 1em;
+}
+
+#postpost input:last-child{
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+}
+
+input[name="postSub"]{
+  font-weight: bold;
+  background: none;
+  border: 2px solid;
+  line-height: 1;
+  padding: 0.5em 0.5em;
+  color: #F7E5E5;
+  border-color: #F7E5E5;
+  transition: 0.25s;
+  border-radius: .2rem;
+  outline: none;
+}
+
+input[name="postImage"]{
+  background: none;
+  border: 2px solid #F7E5E5;
+  line-height: 1;
+  padding: 0.5em 0.5em;
+  color: #F7E5E5;
+  transition: 0.25s;
+  border-radius: .2rem;
+  outline: none;
 }

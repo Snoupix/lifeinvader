@@ -4,6 +4,31 @@
   session_start();
   require 'database.php';
   date_default_timezone_set('Europe/Paris');
+
+  function incoming_files() {
+    $files = $_FILES;
+    $files2 = [];
+    foreach ($files as $input => $infoArr) {
+        $filesByInput = [];
+        foreach ($infoArr as $key => $valueArr) {
+            if (is_array($valueArr)) { // file input "multiple"
+                foreach($valueArr as $i=>$value) {
+                    $filesByInput[$i][$key] = $value;
+                }
+            }
+            else { // -> string, normal file input
+                $filesByInput[] = $infoArr;
+                break;
+            }
+        }
+        $files2 = array_merge($files2,$filesByInput);
+    }
+    $files3 = [];
+    foreach($files2 as $file) { // let's filter empty & errors
+        if (!$file['error']) $files3[] = $file;
+    }
+    return $files3;
+  }
   
   try{
 
@@ -39,11 +64,15 @@
     $avatarReq = 'SELECT avatar FROM user WHERE username ="'.$username.'";';
     $stalkers = 'SELECT COUNT(*) as stalkers FROM stalking WHERE stalked = "'.$username.'";';
     $whoIsHeStalking = 'SELECT stalked FROM stalking WHERE usernameFK = "'.$_SESSION['username'].'";'; // Renvoie les personnes que username stalk
+    $stalkReq = 'INSERT INTO stalking VALUES (:username, :userSrc)';
     $typeReq = 'SELECT type FROM user WHERE username = "'.$username.'";';
     $descReq = 'SELECT description FROM user WHERE username = "'.$username.'";';
     $setType = 'UPDATE user SET type = :type WHERE username = "'.$_SESSION['username'].'";';
     $setDesc = 'UPDATE user SET description = :desc WHERE username = "'.$_SESSION['username'].'";';
+    $setAbout = 'UPDATE user SET about = :about WHERE username = "'.$_SESSION['username'].'";';
     $postReq = 'SELECT * FROM post WHERE usernameFK = "'.$username.'";';
+    $newPost = 'INSERT INTO post (usernameFK, message, image, date) VALUES (:username, :txt, :image, :date)';
+    $aboutReq = 'SELECT about FROM user WHERE username = "'.$username.'";';
 
 
     $avatar = $conn->prepare($avatarReq);
@@ -65,10 +94,12 @@
     $postReq = $conn->query($postReq);
     $postRes = $postReq->fetchAll(PDO::FETCH_ASSOC);
 
+    $aboutReq = $conn->query($aboutReq);
+    $aboutRes = $aboutReq->fetch(PDO::FETCH_ASSOC);
+
   
 
     // click on stalk button
-    $stalkReq = 'INSERT INTO stalking VALUES (:username, :userSrc)';
     $stalk = $conn->prepare($stalkReq);
     $stalk->bindParam(':userSrc', $_GET['username']);
     $stalk->bindParam(':username', $_SESSION['username']);
@@ -86,12 +117,25 @@
 
     // add description and/or type of account
     if(isset($_POST['editDone'])){
-      $setType = $conn->prepare($setType);
-      $setType->bindParam(':type', $_POST['typeEdit']);
-      $setType->execute();
-      $setDesc = $conn->prepare($setDesc);
-      $setDesc->bindParam(':desc', $_POST['descEdit']);
-      $setDesc->execute();
+      if(!empty($_POST['typeEdit'])){
+        $setType = $conn->prepare($setType);
+        $setType->bindParam(':type', $_POST['typeEdit']);
+        $setType->execute();
+      }
+
+      if(!empty($_POST['descEdit'])){
+        $setDesc = $conn->prepare($setDesc);
+        $setDesc->bindParam(':desc', $_POST['descEdit']);
+        $setDesc->execute();
+      }
+
+      if(!empty($_POST['aboutEdit'])){
+        echo $_POST['aboutEdit'];
+        $setAbout = $conn->prepare($setAbout);
+        $setAbout->bindParam(':about', $_POST['aboutEdit']);
+        $setAbout->execute();
+      }
+      header("Refresh:0");
     }
     if(isset($_POST['unset'])){
       unset($_POST['editDone']);
@@ -100,6 +144,49 @@
 
 
 
+    $tmpFiles = incoming_files();
+    var_dump($tmpFiles);
+    var_dump($_FILES);
+    
+    if(isset($tmpFiles[0])){
+      echo "This is the name of the temporary file: ".$tmpFiles[0]["tmp_name"];
+      if($tmpFiles[0]["type"] == "image/png"){
+        $imgType = ".png";
+      }elseif($tmpFiles[0]["type"] == "image/jpg"){
+        $imgType = ".jpg";
+      }else{
+        $imgType = ".jpeg";
+      }
+
+      $targetDir = "./assets/postImages/".$username."/";
+      if(!is_dir($targetDir)){
+        mkdir($targetDir, 0700);
+      }
+
+      if(move_uploaded_file($tmpFiles[0]["tmp_name"], $targetDir.$tmpFiles[0]["tmp_name"].$imgType)) {
+        $targetDir = $targetDir;
+      }
+    }
+
+
+    $actualDate = date('D d M H:m');
+    $null = 'NULL';
+
+    if(!empty($_POST['postTxt'])){
+      $newPost = $conn->prepare($newPost);
+      $newPost->bindParam(':username', $_SESSION['username']);
+      $newPost->bindParam(':txt', $_POST['postTxt']);
+      if(isset($tmpFiles[0])){
+        $newPost->bindParam(':image', $targetDir);
+      }else{
+        $newPost->bindParam(':image', $null);
+      }
+      $newPost->bindParam(':date', $actualDate);
+      if(isset($_POST['postSub'])){
+        $newPost->execute();
+        header("Refresh:0");
+      }
+    }
 
 
 
@@ -151,7 +238,6 @@
                   </div>
                 </div>
                 <div class="col-8" style="padding-right: 0px!important;">
-                <!-- <div class="col-auto"> -->
                   <div class="row">
                     <div class="col name">
                       <h1><?php echo $username; ?></h1>
@@ -192,8 +278,7 @@
                               <input class="btn-sm btn-dark" name="editDone" type="submit" />
                               <input class="btn-sm btn-dark" name="unset" value="Cancel" type="submit" />
                             </form>
-                          <?php endif; ?>
-                          <?php if(!isset($_POST['edit'])): ?>
+                          <?php else: ?>
                               <?php if($type['type'] == NULL): ?>
                                 <p>Type of account</p>
                               <?php endif; ?>
@@ -214,6 +299,23 @@
                       </div>
                     </div>
                   </div>
+                  <?php if(empty($_GET['username'])): ?>
+                  <div class="row">
+                    <div class="col">
+                      <div id="postOpen" style="display:none;">
+                        <button id="postClose" style="border:none;background:none;float:right;outline:none;"><i class="fa fa-times-circle" aria-hidden="true"></i></button>
+                        <form id="postpost" method="POST" action="index.php">
+                          <textarea name="postTxt" id="postTxt" cols="40"></textarea>
+                          <input name="postImage" type="file" accept="image/png, image/jpeg, image/jpg">
+                          <input name="postSub" type="submit" value="Envoyer">
+                        </form>
+                      </div>
+                      <div id="postSmth">
+                        <button class="raise" id='postBtn'>Post something..</button>
+                      </div>
+                    </div>
+                  </div>
+                  <?php endif; ?>
                 </div>
               </div>
             </div>
@@ -224,42 +326,42 @@
       </div>
       <div class="row">
         <div class="col-3 about">
-          <p style="font-weight:bold;color:#666;line-height:1.15;">About</p>
-          <p>content</p>
-          <p>content</p>
-          <p>content</p>
-          <p>content</p>
+          <div class="row">
+            <div class="col-12">
+              <p style="font-weight:bold;color:#666;line-height:1.15;">About</p>
+              <?php if(isset($_POST['edit'])): ?>
+                <form method="POST" id="aboutForm">
+                  <textarea name="aboutEdit" cols="18" rows="10" placeholder="write things about you"></textarea>
+                  <input name="editDone" type="submit" value="OK" class="btn-sm btn-dark">
+                </form>
+              <?php else: ?>
+                <?php if($aboutRes['about'] == NULL): ?>
+                  <p>About content</p>
+                <?php else: ?>
+                  <p><?php echo $aboutRes['about']; ?></p>
+                <?php endif; ?>
+              <?php endif; ?>
+            </div>
+            <div class="col-12 divImage">
+              <p style="font-weight:bold;color:#666;line-height:1.15;">Images</p>
+              <p>Clickable image to toggle smth in js</p>
+            </div>
+          </div>
+          
         </div>
         <div class="col-9 wall">
           <?php
             # Boucle qui charge tout les posts
-            $picPath = "./assets/usersAvatar/";
- 
-          /*Array
-            (
-                [0] => Array
-                    (
-                        [usernameFK] => Bob-Lee
-                        [message] => Some fool on the street is sweatin my Chakra. He about to learn the Chakra Attack. I move in and out like some kind of Navy Seal. But I ain’t stealing your ship. I ain’t a Somali pirate. I am Dr. Ray De Angelo Harris, and I am a tug boat captain, about to push your big dumb heavy ass into port so you can get firmly grounded. You dig this nautical trip? We tying knots in here. That’s deep right there.
-                        [image] => 
-                        [likes] => 0
-                        [date] => Mon 08 Jun 07:06
-                    )
+            $picPath = "./assets/postImages/".$username;
             
-            ) */
-            
-            foreach($postRes as $key){
-              if($key['image']){ // Post avec image
-                mkdir($picPath.'/');
-                # J'EN éTAIT AUX CRéATIONS D'IMAGES FOLDER PAR UTILISATEUR
-
-
-
+            //mkdir($picPath.'/'.$username);
+            $reversedArray = array_reverse($postRes, true);
+            foreach($reversedArray as $key){
+              if($key['image'] != 'NULL'){ // Post avec image
                 echo '<div class="post">';
                   echo '<div class="postBanner">';
                     echo '<img src="'.$icon['avatar'].'" alt="profile pic" width="13%"/>';
                     echo '<a href="#">'.$username.'</a>';
-                    //date('D d M H:m')
                     echo '<span>Posted on '.$key['date'].'</span>';
                     echo '<hr/>';
                   echo '</div>';
@@ -272,7 +374,7 @@
                   echo '<div class="postFooter">';
                     echo '<hr/>';
                     echo '<form class="formLike" method="POST">';
-                    echo '<button type="submit" style="border:none;background:none;"><i class="fas fa-heart"></i></button><span> Likes '.$key['likes'].'</span>';
+                    echo '<button type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$key['likes'].'</span>';
                     echo '</form>';
                   echo '</div>';
                 echo '</div>';
@@ -291,7 +393,7 @@
                   echo '<div class="postFooter">';
                     echo '<hr/>';
                     echo '<form class="formLike" method="POST">';
-                    echo '<button type="submit" style="border:none;background:none;"><i class="fas fa-heart"></i></button><span> Likes '.$key['likes'].'</span>';
+                    echo '<button type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$key['likes'].'</span>';
                     echo '</form>';
                   echo '</div>';
                 echo '</div>';

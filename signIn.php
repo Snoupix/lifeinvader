@@ -16,7 +16,7 @@
     if (count($results) > 0 && password_verify($_POST['password'], $results['password'])) {
       $_SESSION['username'] = $_POST['username'];
       $messageC = "Connected!";
-      header("Refresh:3; url=index.php");
+      header("Refresh:2; url=index.php");
     } else {
       $message = 'Incorrect Password';
     }

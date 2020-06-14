@@ -53,15 +53,26 @@ if($('.toastError').length == 1){
   },2000)
 }
 
-$('#stalkForm').attr('action', document.URL);
-$('#descForm').attr('action', document.URL);
-$('.formLike').attr('action', document.URL);
+$('#stalkForm').attr('action', document.URL)
+$('#descForm').attr('action', document.URL)
+$('.formLike').attr('action', document.URL)
+$('#aboutForm').attr('action', document.URL)
 
 
 $('#unstalkButton').hover(()=>{
-  $('#pstalk').remove();
-  $('#unstalkButton').append('<p id="punstalk" style="margin-bottom:0px!important;"><i class="fas fa-times" style="font-size:12px;font-weight:bold;"></i> Unstalk</p>');
+  $('#pstalk').remove()
+  $('#unstalkButton').append('<p id="punstalk" style="margin-bottom:0px!important;"><i class="fas fa-times" style="font-size:12px;font-weight:bold;"></i> Unstalk</p>')
 },()=>{
-  $('#punstalk').remove();
-  $('#unstalkButton').append('<p id="pstalk" style="float:right;margin-top:0px;margin-bottom:0px!important;"><i class="fas fa-check" style="font-weight:bold;"></i> Stalking</p>');
+  $('#punstalk').remove()
+  $('#unstalkButton').append('<p id="pstalk" style="float:right;margin-top:0px;margin-bottom:0px!important;"><i class="fas fa-check" style="font-weight:bold;"></i> Stalking</p>')
+})
+
+$('#postBtn').click(()=>{
+  $('#postOpen').css('display', 'block')
+  $('#postBtn').css('display', 'none')
+})
+
+$('#postClose').click(()=>{
+  $('#postOpen').css('display', 'none')
+  $('#postBtn').css('display', 'block')
 })

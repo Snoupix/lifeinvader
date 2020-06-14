@@ -1,3 +1,7 @@
 Faire une page fil d'actu
 
 Pour les photos : mettre une div display none en php et manipuler le reste en JS
+
+A la connexion envoyer au fil d'actu
+
+[WORKING ON :] post image (Cannot retreive file)
