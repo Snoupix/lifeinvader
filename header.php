@@ -8,7 +8,12 @@
   <section class="container">
     <div class="row">
       <div class="col">
-        <a id="logo" href="index.php"></a>
+        <a id="logo" href="dashboard.php"></a>
+        <?php if(!empty($_SESSION['username'])): ?>
+        <div class="profileButton">
+          <a href="index.php"><i class="far fa-user-circle"></i></a>
+        </div>
+        <?php endif; ?>
       </div>
       <?php if(empty($_SESSION['username'])): ?>
       <div id="signinButton" class="col">
@@ -17,7 +22,7 @@
       <?php endif; ?>
       <?php if(!empty($_SESSION['username'])): ?>
       <div id="signinButton" class="col">
-        <span id="search"><i class="fa fa-search"></i></span>
+        <div id="search"><i class="fa fa-search"></i></div>
         <a class="btn btn-dark float-right" href="signout.php">Sign out</a>
       </div>
       <?php endif; ?>

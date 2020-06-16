@@ -1,132 +1,3 @@
-*{
-  box-sizing: border-box;
-  padding: 0px;
-  margin: 0px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-:root {
-  --mainpink: #FBF2F2;
-  --borderCol: #EBC2C2;
-  --descBg: #F7E5E5;
-}
-
-body{
-  font-size: calc(1vw + 1vh + .5vmin);
-  background-color: var(--mainpink)!important;
-}
-
-nav{
-  position: relative;
-  min-height: 56px;
-  width: auto;
-  background-image: linear-gradient(to bottom, #c60101, #aa0101);
-  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.1), 0 1px 10px rgba(0, 0, 0, 0.1);
-}
-
-.btn-dark{
-  background-image: linear-gradient(to bottom, #444444, #222222)!important;
-  background-repeat: repeat-x!important;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25)!important;
-}
-
-.btn-dark:focus{
-  outline: 5px auto -webkit-focus-ring-color;
-  outline-offset: -2px;
-}
-
-#search{
-  margin-top: 3px;
-  position: absolute;
-  font-size: 20px;
-}
-
-#searchMod{
-  z-index: 10;
-  position: absolute;
-  margin-top: 0px;
-  left: 0px;
-  width: 100%;
-  margin: auto;
-}
-
-#searchBar{
-  position: absolute;
-  display: flex;
-  margin-left: 32%;
-  margin-top: 34%;
-  align-items: center;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
-}
-
-.toastError{
-  z-index: 11;
-  opacity: 1;
-  transition: opacity 3s ease-out;
-}
-
-.fadeOut{
-  opacity: 0!important;
-}
-
-.fadeIn{
-  opacity: 1!important;
-}
-
-.closedSearch{
-  display: none;
-}
-
-nav h1{
-  margin: 0px;
-}
-
-#logo{
-  color: #fff;
-  height: 28px;
-  width: 152px;
-  float: left;
-  margin: 9px 0 0 0;
-  background-image: url('/assets/img/logo-small.png');
-  background-repeat: no-repeat;
-  background-position: 0 0;
-}
-
-#signinButton{
-  margin-top: 1%;
-  text-transform: uppercase;
-  font-size: 10px;
-  font-weight: bold;
-}
-
-@media only screen and (max-width: 1000px){
-  #signinButton{
-    margin-top: 1.5%;
-  }
-}
-
-#signinButton a{
-  max-height: 38px;
-  width: 88px;
-  padding: .25rem .5rem;
-  font-size: .875rem;
-  line-height: 1.5;
-  border-radius: .2rem;
-}
-
-@media only screen and (min-width: 1400px){
-  #signinButton a{
-    height: 30px;
-    line-height: 20px;
-    font-size: 12px;
-  }
-}
-
-.btn-sm{
-  padding: 0.10rem -0.5rem!important;
-}
-
 .profilePic{
   padding: 0px!important;
   overflow: hidden;
@@ -292,11 +163,6 @@ footer p{
   font-size: 13px;
 }
 
-.postFooter hr{
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
 .postFooter span{
   font-size: 11px;
   color: #aaa;
@@ -321,10 +187,12 @@ footer p{
 }
 
 .raise:hover,
-.raise:focus {
-  border-color: #ffcdaa;
-  color: #ffcdaa;
-  box-shadow: 0 0.5em 0.5em -0.4em #AC0101;
+.raise:focus,
+label[for="postImageButton"]:hover,
+label[for="postImageButton"]:focus {
+  border-color: #ffcdaa!important;
+  color: #ffcdaa!important;
+  box-shadow: 0 0.5em 0.5em -0.4em #AC0101!important;
   outline: none;
 }
 
@@ -338,15 +206,19 @@ footer p{
 
 #postpost{
   margin: 1em;
+  padding-bottom: 25px;
 }
 
-#postpost input:last-child{
-  position: absolute;
-  right: 0px;
-  bottom: 0px;
+.postImage{
+  align-items: center;
+  text-align: center;
+  margin: 0 auto;
 }
 
 input[name="postSub"]{
+  position: absolute;
+  right: -20px;
+  bottom: -20px;
   font-weight: bold;
   background: none;
   border: 2px solid;
@@ -359,7 +231,83 @@ input[name="postSub"]{
   outline: none;
 }
 
-input[name="postImage"]{
+.postImage img:hover {cursor: zoom-in;}
+
+#modalImage{
+  display: none;
+  position: fixed;
+  z-index: 10;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.9);
+}
+
+.modalImage-content {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+}
+
+#caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+
+.modalImage-content, #caption{
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+  from {transform:scale(0)}
+  to {transform:scale(1)}
+}
+
+#closeModalImage svg{
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+#closeModalImage svg:hover,
+#closeModalImage svg:focus{
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 700px){
+  .modalImage-content{
+    width: 100%;
+  }
+}
+
+#postImageButton{
+  width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+#postpost label{
   background: none;
   border: 2px solid #F7E5E5;
   line-height: 1;
@@ -368,4 +316,8 @@ input[name="postImage"]{
   transition: 0.25s;
   border-radius: .2rem;
   outline: none;
+  cursor: pointer;
+  position: absolute;
+  bottom: -18px;
+  left: 15px;
 }

@@ -67,7 +67,7 @@
     $stop = false; // Breakpoint
 
     if (isset($_POST['username']) && !empty($_POST['password'])){
-      $sql = "INSERT INTO user (username, password, avatar) VALUES (:username, :password, :avatar)";
+      $sql = 'INSERT INTO user (username, password, avatar) VALUES (:username, :password, :avatar)';
       $req = $conn->prepare($sql);
       $req->bindParam(':avatar', $avatar);
       
@@ -110,7 +110,7 @@
 
   <title>Lifeinvader</title>
 
-  <link rel="stylesheet" href="./assets/css/style.css">
+  <link rel="stylesheet" href="./assets/css/header.css">
   <link rel="stylesheet" href="./assets/css/signup.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="shortcut icon" href="./assets/img/favicon.ico">

@@ -23,6 +23,12 @@ $("#avatar").change(function (e) {
     }
 });
 
+// Resize username if too long
+if($('.name h1').text().length > 10){
+  $('.name h1').css('font-size', '26px')
+}
+
+
 
 // Search bar
 
@@ -59,6 +65,22 @@ $('.formLike').attr('action', document.URL)
 $('#aboutForm').attr('action', document.URL)
 
 
+var dayList = new Array('Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam');
+var monthList = new Array('Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aôut', 'Septembre', 'Octobre', 'Novembre', 'Décembre');
+var today = new Date()
+var todayDate = today.getDate() 
+var todayMin = today.getMinutes()
+if(today.getDate().toString().length == 1){
+  var todayDate = "0"+today.getDate()
+}
+if(today.getMinutes().toString().length == 1){
+  var todayMin = "0"+today.getMinutes()
+}
+today = dayList[today.getDay()]+" "+todayDate+" "+monthList[today.getMonth()]+" "+today.getHours()+":"+todayMin
+
+$('input[name="date"]').val(today)
+
+
 $('#unstalkButton').hover(()=>{
   $('#pstalk').remove()
   $('#unstalkButton').append('<p id="punstalk" style="margin-bottom:0px!important;"><i class="fas fa-times" style="font-size:12px;font-weight:bold;"></i> Unstalk</p>')
@@ -75,4 +97,24 @@ $('#postBtn').click(()=>{
 $('#postClose').click(()=>{
   $('#postOpen').css('display', 'none')
   $('#postBtn').css('display', 'block')
+})
+
+var modal = $("#modalImage")
+var modalImg = document.getElementById("modalImageSrc")
+var modalImageCaption = $('#caption')
+var author = $('#caption').text()
+$('.postImage img').click((e)=>{
+  modal.css("display", "block")
+  modalImg.src = e.currentTarget.currentSrc;
+  if(e.currentTarget.alt != "Post Picture"){
+    $('#caption').text(e.currentTarget.alt)
+    $('#caption').append('<br/><span style="font-weight:bold;">- '+author+' -</span>')
+  }else{
+    $('#caption').text(author)
+  }
+
+})
+$("#closeModalImage").click(()=>{
+  modal.css("display", "none")
+  $("#caption").text(author)
 })

@@ -1,7 +1,15 @@
-Faire une page fil d'actu
+Comment faire/gérer les sponsors/pubs
 
 Pour les photos : mettre une div display none en php et manipuler le reste en JS
 
-A la connexion envoyer au fil d'actu
 
-[WORKING ON :] post image (Cannot retreive file)
+To do list:
+
+-Modifier en JS les cols&rows (attr jquery) textarea du post Responsive 
+
+-Faire en JS : if profile pic . src == default.png et écran grand, centrer padding left
+
+-[Edit] mode Responsive
+
+
+[WORKING ON :] Dashboard and sponsors

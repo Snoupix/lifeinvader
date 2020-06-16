@@ -1,0 +1,21 @@
+.ads h3{
+  background-color: #EBC2C2;
+  color: #fff;
+  font-size: 13px;
+  line-height: 1;
+  margin: 10px 0 5px;
+  padding: 6px;
+  text-transform: uppercase;
+}
+
+.ad a{
+  color: #a30002;
+}
+
+.profileButton a{
+  bottom: 4px!important;
+}
+
+#search{
+  margin-top: 7px!important;
+}

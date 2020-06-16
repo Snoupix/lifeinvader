@@ -16,7 +16,7 @@
     if (count($results) > 0 && password_verify($_POST['password'], $results['password'])) {
       $_SESSION['username'] = $_POST['username'];
       $messageC = "Connected!";
-      header("Refresh:2; url=index.php");
+      header("Refresh:2; url=dashboard.php");
     } else {
       $message = 'Incorrect Password';
     }
@@ -30,7 +30,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Lifeinvader</title>
-  <link rel="stylesheet" href="./assets/css/style.css">
+  <link rel="stylesheet" href="./assets/css/header.css">
   <link rel="stylesheet" href="./assets/css/signup.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="shortcut icon" href="./assets/img/favicon.ico">

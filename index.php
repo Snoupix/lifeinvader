@@ -143,49 +143,45 @@
 
 
 
-
     $tmpFiles = incoming_files();
-    var_dump($tmpFiles);
-    var_dump($_FILES);
-    
-    if(isset($tmpFiles[0])){
-      echo "This is the name of the temporary file: ".$tmpFiles[0]["tmp_name"];
-      if($tmpFiles[0]["type"] == "image/png"){
-        $imgType = ".png";
-      }elseif($tmpFiles[0]["type"] == "image/jpg"){
-        $imgType = ".jpg";
-      }else{
-        $imgType = ".jpeg";
-      }
-
-      $targetDir = "./assets/postImages/".$username."/";
-      if(!is_dir($targetDir)){
-        mkdir($targetDir, 0700);
-      }
-
-      if(move_uploaded_file($tmpFiles[0]["tmp_name"], $targetDir.$tmpFiles[0]["tmp_name"].$imgType)) {
-        $targetDir = $targetDir;
-      }
-    }
-
-
-    $actualDate = date('D d M H:m');
     $null = 'NULL';
+    $targetDir = "./assets/postImages/".$username."/";
+    if(isset($tmpFiles[0])){
+      $imgPathName = $targetDir.$tmpFiles[0]["name"];
+    }
 
     if(!empty($_POST['postTxt'])){
       $newPost = $conn->prepare($newPost);
       $newPost->bindParam(':username', $_SESSION['username']);
       $newPost->bindParam(':txt', $_POST['postTxt']);
       if(isset($tmpFiles[0])){
-        $newPost->bindParam(':image', $targetDir);
+        if(!is_dir($targetDir)){
+          mkdir($targetDir, 0700);
+        }
+        if(!move_uploaded_file($tmpFiles[0]["tmp_name"], $targetDir.$tmpFiles[0]["name"])) {
+          die("Cannot move the uploaded file");
+        }
+        $newPost->bindParam(':image', $imgPathName);
       }else{
         $newPost->bindParam(':image', $null);
       }
-      $newPost->bindParam(':date', $actualDate);
-      if(isset($_POST['postSub'])){
-        $newPost->execute();
-        header("Refresh:0");
+      $newPost->bindParam(':date', $_POST['date']);
+    }elseif(isset($tmpFiles[0])){
+      if(!is_dir($targetDir)){
+        mkdir($targetDir, 0700);
       }
+      if(!move_uploaded_file($tmpFiles[0]["tmp_name"], $targetDir.$tmpFiles[0]["name"])) {
+        die("Cannot move the uploaded file");
+      }
+      $newPost = $conn->prepare($newPost);
+      $newPost->bindParam(':username', $_SESSION['username']);
+      $newPost->bindParam(':txt', $null);
+      $newPost->bindParam(':image', $imgPathName);
+      $newPost->bindParam(':date', $_POST['date']);
+    }
+    if(isset($_POST['postSub'])){
+      $newPost->execute();
+      header("Refresh:0");
     }
 
 
@@ -196,13 +192,22 @@
 
 ?>
 
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta property="og:url"           content="https://www.domain.com/index.php" />
+  <meta property="og:type"          content="website" />
+  <meta property="og:title"         content="Lifeinvader Atlantiss" />
+  <meta property="og:description"   content="Le réseau social du serveur GTA RP Atlantiss. Discord : https://discord.gg/w5HBjWw" />
+  <meta property="og:image"         content="./assets/img/favicon.ico" />
+
   <title>Lifeinvader</title>
-  <link rel="stylesheet" href="./assets/css/style.css">
+
+  <link rel="stylesheet" href="./assets/css/header.css">
+  <link rel="stylesheet" href="./assets/css/dashboard.css">
+  <link rel="stylesheet" href="./assets/css/index.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
   <link rel="shortcut icon" href="./assets/img/favicon.ico">
@@ -222,104 +227,104 @@
                   <strong class="mr-auto">Error</strong>
                 </div>
                 <div class="toast-body"> 
-                  Woops, this username doesn't exists, sorry! 
+                  Woops, ce nom d'utilisateur n'existe pas! 
                 </div>
               </div>
             </div>
           </div>
         <?php endif; ?>
       <div class="col">
-          <header>
-            <div class="container">
-              <div class="row">
-                <div class="borderPic col-3">
-                  <div class="profilePic">
-                    <?php echo '<img src="'.$icon['avatar'].'" alt="profile pic" height="95%"/>'; ?>
-                  </div>
-                </div>
-                <div class="col-8" style="padding-right: 0px!important;">
-                  <div class="row">
-                    <div class="col name">
-                      <h1><?php echo $username; ?></h1>
-                    </div>
-                    <div class="col">
-                    <?php if($isIndex != false && $srcReqOK != false): ?>
-                        <?php if(!$isStalking): ?>
-                          <form id="stalkForm" method="POST">
-                            <button type="submit" class="stalk float-right" name="stalk"><i class="fas fa-plus" style="font-size:12px;font-weight:bold;"></i> Stalk</button>
-                          </form>
-                        <?php endif; ?>
-                        <?php if($isStalking): ?>
-                          <form id="stalkForm" method="POST">
-                            <button id="unstalkButton" type="submit" class="stalk float-right" name="unstalk">
-                              <!-- <i class="fas fa-plus" style="font-size:12px;font-weight:bold;"></i> unstalk-->
-                              <p id="pstalk" style="float:right;margin-top:0px;margin-bottom:0px!important;"><i class="fa fa-check" style="font-weight:bold;"></i> Stalking</p>
-                            </button>
-                          </form>
-                        <?php endif; ?>
-                      <?php endif; ?>
-                      <?php 
-                        if(empty($_GET['username'])){
-                          echo '<form method="POST" action="index.php">';
-                          echo '<button name="edit" type="submit" class="btn-sm btn-dark float-right" style="margin-top:7%;">EDIT</button>';
-                          echo '</form>';
-                        }
-                      ?>
-                    </div>
-                  </div>
-                  <div class="row banner">
-                    <div class="col description">
-                      <div class="row">
-                        <div class="col-8">
-                          <?php if(isset($_POST['edit'])): ?>
-                            <form method="POST" id="descForm">
-                              <input name="typeEdit" type="text" placeholder="Type of account" />
-                              <input name="descEdit" type="text" placeholder="Description" />
-                              <input class="btn-sm btn-dark" name="editDone" type="submit" />
-                              <input class="btn-sm btn-dark" name="unset" value="Cancel" type="submit" />
-                            </form>
-                          <?php else: ?>
-                              <?php if($type['type'] == NULL): ?>
-                                <p>Type of account</p>
-                              <?php endif; ?>
-                              <?php if($type['type'] != NULL): ?>
-                                <p><?php echo $type['type']; ?></p>
-                              <?php endif; ?>
-                              <?php if($description['description'] == NULL): ?>
-                                <p>Description</p>
-                              <?php endif; ?>
-                              <?php if($description['description'] != NULL): ?>
-                                <p><?php echo $description['description']; ?></p>
-                            <?php endif; ?>
-                          <?php endif; ?>
-                        </div>
-                        <div class="col-4">
-                          <span class="float-right stalkers"><?php echo $stalkers['stalkers']; ?> Stalkers</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <?php if(empty($_GET['username'])): ?>
-                  <div class="row">
-                    <div class="col">
-                      <div id="postOpen" style="display:none;">
-                        <button id="postClose" style="border:none;background:none;float:right;outline:none;"><i class="fa fa-times-circle" aria-hidden="true"></i></button>
-                        <form id="postpost" method="POST" action="index.php">
-                          <textarea name="postTxt" id="postTxt" cols="40"></textarea>
-                          <input name="postImage" type="file" accept="image/png, image/jpeg, image/jpg">
-                          <input name="postSub" type="submit" value="Envoyer">
-                        </form>
-                      </div>
-                      <div id="postSmth">
-                        <button class="raise" id='postBtn'>Post something..</button>
-                      </div>
-                    </div>
-                  </div>
-                  <?php endif; ?>
+        <header>
+          <div class="container">
+            <div class="row">
+              <div class="borderPic col-3">
+                <div class="profilePic">
+                  <?php echo '<img src="'.$icon['avatar'].'" alt="profile pic" height="95%"/>'; ?>
                 </div>
               </div>
+              <div class="col-8" style="padding-right: 0px!important;">
+                <div class="row">
+                  <div class="col name">
+                    <h1><?php echo $username; ?></h1>
+                  </div>
+                  <div class="col">
+                  <?php if($isIndex != false && $srcReqOK != false): ?>
+                      <?php if(!$isStalking): ?>
+                        <form id="stalkForm" method="POST">
+                          <button type="submit" class="stalk float-right" name="stalk"><i class="fas fa-plus" style="font-size:12px;font-weight:bold;"></i> Stalk</button>
+                        </form>
+                      <?php endif; ?>
+                      <?php if($isStalking): ?>
+                        <form id="stalkForm" method="POST">
+                          <button id="unstalkButton" type="submit" class="stalk float-right" name="unstalk">
+                            <!-- <i class="fas fa-plus" style="font-size:12px;font-weight:bold;"></i> unstalk-->
+                            <p id="pstalk" style="float:right;margin-top:0px;margin-bottom:0px!important;"><i class="fa fa-check" style="font-weight:bold;"></i> Stalking</p>
+                          </button>
+                        </form>
+                      <?php endif; ?>
+                    <?php endif; ?>
+                    <?php 
+                      if(empty($_GET['username'])){
+                        echo '<form method="POST" action="index.php">';
+                        echo '<button name="edit" type="submit" class="btn-sm btn-dark float-right" style="margin-top:7%;">EDIT</button>';
+                        echo '</form>';
+                      }
+                    ?>
+                  </div>
+                </div>
+                <div class="row banner">
+                  <div class="col description">
+                    <div class="row">
+                      <div class="col-8">
+                        <?php if(isset($_POST['edit'])): ?>
+                          <form method="POST" id="descForm">
+                            <input name="typeEdit" type="text" placeholder="Type of account" />
+                            <input name="descEdit" type="text" placeholder="Description" />
+                            <input class="btn-sm btn-dark" name="editDone" type="submit" />
+                            <input class="btn-sm btn-dark" name="unset" value="Cancel" type="submit" />
+                          </form>
+                        <?php else: ?>
+                            <?php if($type['type'] == NULL): ?>
+                              <p>Type of account</p>
+                            <?php else: ?>
+                              <p><?php echo $type['type']; ?></p>
+                            <?php endif; ?>
+                            <?php if($description['description'] == NULL): ?>
+                              <p>Description</p>
+                            <?php else: ?>
+                              <p><?php echo $description['description']; ?></p>
+                          <?php endif; ?>
+                        <?php endif; ?>
+                      </div>
+                      <div class="col-4">
+                        <span class="float-right stalkers"><?php echo $stalkers['stalkers']; ?> Stalkers</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <?php if(empty($_GET['username'])): ?>
+                <div class="row">
+                  <div class="col">
+                    <div id="postOpen" style="display:none;">
+                      <button id="postClose" style="border:none;background:none;float:right;outline:none;"><i class="fa fa-times-circle" aria-hidden="true"></i></button>
+                      <form id="postpost" method="POST" action="index.php" enctype="multipart/form-data">
+                        <input type="hidden" name="date">
+                        <textarea name="postTxt" id="postTxt" cols="40"></textarea>
+                        <label for="postImageButton">Choose an image</label>
+                        <input type="file" id="postImageButton" name="postImage" accept="image/png, image/jpeg, image/jpg">
+                        <input class="raise" name="postSub" type="submit" value="Envoyer">
+                      </form>
+                    </div>
+                    <div id="postSmth">
+                      <button class="raise" id='postBtn'>Post something..</button>
+                    </div>
+                  </div>
+                </div>
+                <?php endif; ?>
+              </div>
             </div>
-          </header>
+          </div>
+        </header>
 
 
         </div>
@@ -349,46 +354,63 @@
           </div>
           
         </div>
-        <div class="col-9 wall">
+        <div class="col-7 wall"> <!-- 9 -->
           <?php
             # Boucle qui charge tout les posts
-            $picPath = "./assets/postImages/".$username;
-            
-            //mkdir($picPath.'/'.$username);
             $reversedArray = array_reverse($postRes, true);
             foreach($reversedArray as $key){
-              if($key['image'] != 'NULL'){ // Post avec image
+              if($key['image'] != 'NULL' && $key['message'] != "NULL"){ // Post text avec image
                 echo '<div class="post">';
                   echo '<div class="postBanner">';
-                    echo '<img src="'.$icon['avatar'].'" alt="profile pic" width="13%"/>';
+                    echo '<img src="'.$icon['avatar'].'" alt="Profile Picture" width="65px"/>';
                     echo '<a href="#">'.$username.'</a>';
-                    echo '<span>Posted on '.$key['date'].'</span>';
+                    echo '<span>Posté '.$key['date'].'</span>';
                     echo '<hr/>';
                   echo '</div>';
                   echo '<div class="postImage">';
-                  echo '<img src="'.$key['image'].'" alt="post pic" width="50%"/>';
+                    echo '<img src="'.$key['image'].'" alt="'.$key['message'].'" width="50%"/>';
+                    echo '<hr/>';
                   echo '</div>';
                   echo '<div class="postContent">';
                     echo '<p>'.$key['message'].'</p>';
                   echo '</div>';
                   echo '<div class="postFooter">';
-                    echo '<hr/>';
+                    echo '<hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;" />';
                     echo '<form class="formLike" method="POST">';
                     echo '<button type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$key['likes'].'</span>';
                     echo '</form>';
                   echo '</div>';
                 echo '</div>';
-              }else{ // Post sans image
+              }
+              if($key['image'] == "NULL" && $key['message'] != "NULL"){ // Post text sans image
                 echo '<div class="post">';
                   echo '<div class="postBanner">';
-                    echo '<img src="'.$icon['avatar'].'" alt="profile pic" width="13%"/>';
+                    echo '<img src="'.$icon['avatar'].'" alt="Profile Picture" width="65px"/>';
                     echo '<a href="#">'.$username.'</a>';
-                    //date('D d M H:m')
-                    echo '<span>Posted on '.$key['date'].'</span>';
+                    echo '<span>Posté '.$key['date'].'</span>';
                     echo '<hr/>';
                   echo '</div>';
                   echo '<div class="postContent">';
                     echo '<p>'.$key['message'].'</p>';
+                  echo '</div>';
+                  echo '<div class="postFooter">';
+                    echo '<hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;" />';
+                    echo '<form class="formLike" method="POST">';
+                    echo '<button type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$key['likes'].'</span>';
+                    echo '</form>';
+                  echo '</div>';
+                echo '</div>';
+              }
+              if($key['message'] == "NULL"){ // Post avec image seule
+                echo '<div class="post">';
+                  echo '<div class="postBanner">';
+                    echo '<img src="'.$icon['avatar'].'" alt="Profile Picture" width="65px"/>';
+                    echo '<a href="#">'.$username.'</a>';
+                    echo '<span>Posté '.$key['date'].'</span>';
+                    echo '<hr/>';
+                  echo '</div>';
+                  echo '<div class="postImage">';
+                    echo '<img src="'.$key['image'].'" alt="Post Picture" width="50%"/>';
                   echo '</div>';
                   echo '<div class="postFooter">';
                     echo '<hr/>';
@@ -400,23 +422,28 @@
               }
             }
           ?>
+          <div id="modalImage">
+            <span id="closeModalImage"><i class="fa fa-times" aria-hidden="true"></i></span>
+            <img class="modalImage-content" id="modalImageSrc">
+            <div id="caption"><?php echo $username; ?></div>
+          </div>
+        </div>
+        <div class="col-2" style="padding-left:0px;">
+          <div class="ads">
+            <h3>Sponsored</h3>
+            <div class="ad">
+              <h5><a href="index.php?username=Premium+Deluxe+Motorsport">Premium Deluxe Motorsport</a></h5>
+            </div>
+          </div>
         </div>
       </div>
       <hr/>
       <footer><p>© Butterfly Corp · Atlantiss 2020</p></footer>
     </div>
 
-    <?php endif; ?>
-    <?php if(empty($_SESSION['username'])): ?>
+    <?php else: ?>
     <!-- SI L'UTILISATEUR N'EST PAS CONNECTÉ -->
-      <div class="container">
-        <div class="row">
-          <div class="col">
-            <p style='text-align:center; margin: auto;'>Non-connecté</p>
-            <?php require('dashboard.php'); ?>
-          </div>
-        </div>
-      </div>
+    <?php require('dashboard.php'); ?>
     <?php endif; ?>
 
     
