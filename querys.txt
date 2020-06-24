@@ -1,15 +1,22 @@
-Comment faire/gérer les sponsors/pubs
-
-Pour les photos : mettre une div display none en php et manipuler le reste en JS
-
-
 To do list:
 
--Modifier en JS les cols&rows (attr jquery) textarea du post Responsive 
 
--Faire en JS : if profile pic . src == default.png et écran grand, centrer padding left
-
--[Edit] mode Responsive
+    -If telephone ou tablette div ad col-12
 
 
-[WORKING ON :] Dashboard and sponsors
+    -Likes button, find smth to do
+
+    -Comment on every post
+
+
+[WORKING ON :]  Edit mode Responsive button change profile pic
+
+
+
+
+
+
+Ajouter une pub:
+Créer le compte avec le nom exact.
+Ajouter l'image dans ./assets/adImages/
+INSERT INTO ads VALUES  ('nom', 'image path', 'lien vers le compte', 'texte promo court');

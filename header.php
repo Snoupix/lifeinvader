@@ -17,7 +17,7 @@
       </div>
       <?php if(empty($_SESSION['username'])): ?>
       <div id="signinButton" class="col">
-        <a class="btn btn-dark float-right" href="signup.php">Sign in</a>
+        <a class="btn btn-dark float-right" href="signin.php">Sign in</a>
       </div>
       <?php endif; ?>
       <?php if(!empty($_SESSION['username'])): ?>

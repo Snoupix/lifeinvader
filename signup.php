@@ -99,7 +99,6 @@
     }else{
       $messageErr = 'Please retype your password and make sure they are the same.';
     }
-
 ?>
 
 <html lang="en">

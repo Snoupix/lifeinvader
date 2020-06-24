@@ -8,12 +8,26 @@
   text-transform: uppercase;
 }
 
+.ads h5{
+  font-size: 16px;
+}
+
 .ad a{
   color: #a30002;
 }
 
+.ad a:hover{
+  color: #a30002;
+}
+
+.ad p {
+  font-size: 11px;
+  line-height: 1.15;
+  margin: 5px 0;
+}
+
 .profileButton a{
-  bottom: 4px!important;
+  top: 17px;
 }
 
 #search{

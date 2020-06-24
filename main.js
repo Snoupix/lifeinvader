@@ -1,14 +1,66 @@
+if(document.body.clientWidth > 1201){
+  $('#postTxt').attr('cols', '75')
+ }else if(document.body.clientWidth > 993){
+   $('#postTxt').attr('cols', '60')
+ }else if(document.body.clientWidth > 771){
+   $('#postTxt').attr('cols', '40')
+ }else if(document.body.clientWidth > 401){
+   $('#postTxt').attr('cols', '25')
+ }else{ // Phone size
+   $('#postTxt').attr('cols', '20')
+   $('#postTxt').attr('rows', '3')
+}
+
+
 window.onresize = () => {
   if (document.body.clientWidth > 950) {
     $('#signinButton a').addClass('btn-sm')
   }else{
     $('#signinButton a').removeClass('btn-sm')
   }
+
+  // Responsive
+  if(document.body.clientWidth > 1201){
+    $('#postTxt').attr('cols', '75')
+  }else if(document.body.clientWidth > 993){
+    $('#postTxt').attr('cols', '60')
+  }else if(document.body.clientWidth > 771){
+    $('#postTxt').attr('cols', '40')
+  }else if(document.body.clientWidth > 401){
+    $('#postTxt').attr('cols', '25')
+  }else{ // Phone size
+    $('#postTxt').attr('cols', '20')
+    $('#postTxt').attr('rows', '3')
+  }
+
+  if($('.profilePic img').attr('src') == "./assets/usersAvatar/default.png" && document.body.clientWidth < 1200){
+    $('.profilePic img').css('padding-left', '30px')
+  }else if($('.profilePic img').attr('src') == "./assets/usersAvatar/default.png" && document.body.clientWidth > 1200){
+    $('.profilePic img').css('padding-left', '50px')
+  }else{
+    $('.profilePic img').css('padding-left', '0px')
+  }
+  
 }
 
 // Restrict image size
-var _URL = window.URL || window.webkitURL;
+var _URL = window.URL || window.webkitURL
 $("#avatar").change(function (e) {
+    var file, img
+    if ((file = this.files[0])) {
+        img = new Image()
+        var objectUrl = _URL.createObjectURL(file)
+        img.onload = function () {
+            if(this.width > 1920 || this.height > 1080){
+              alert('Tu aura des problèmes si tu upload cette image, elle est trop grande.')
+            }
+            _URL.revokeObjectURL(objectUrl)
+        }
+        img.src = objectUrl
+    }
+})
+
+$("#profilePic").change(function (e) {
     var file, img;
     if ((file = this.files[0])) {
         img = new Image();
@@ -29,20 +81,17 @@ if($('.name h1').text().length > 10){
 }
 
 
-
 // Search bar
 
 $('#search').click(()=>{
   $('#searchMod')[0].classList.remove('closedSearch')
   $('#searchMod').css("backdrop-filter", "blur(8px)")
   $('#searchBar').focus()
-  //$('#go').addClass('fadeIn')
   $('#searchBar').addClass('fadeIn')
 })
 
 $('#searchBar').focusout(()=>{
   $('#searchMod')[0].classList.add('closedSearch')
-  //$('#go').removeClass('fadeIn')
   $('#searchBar').removeClass('fadeIn')
 })
 
@@ -82,11 +131,11 @@ $('input[name="date"]').val(today)
 
 
 $('#unstalkButton').hover(()=>{
-  $('#pstalk').remove()
-  $('#unstalkButton').append('<p id="punstalk" style="margin-bottom:0px!important;"><i class="fas fa-times" style="font-size:12px;font-weight:bold;"></i> Unstalk</p>')
+  $('.pstalk').remove()
+  $('#unstalkButton').append('<p class="punstalk" style="margin-bottom:0px!important;"><i class="fas fa-times" style="font-size:12px;font-weight:bold;"></i> Unstalk</p>')
 },()=>{
-  $('#punstalk').remove()
-  $('#unstalkButton').append('<p id="pstalk" style="float:right;margin-top:0px;margin-bottom:0px!important;"><i class="fas fa-check" style="font-weight:bold;"></i> Stalking</p>')
+  $('.punstalk').remove()
+  $('#unstalkButton').append('<p class="pstalk" style="float:right;margin-top:0px;margin-bottom:0px!important;"><i class="fas fa-check" style="font-weight:bold;"></i> Stalking</p>')
 })
 
 $('#postBtn').click(()=>{
@@ -106,6 +155,7 @@ var author = $('#caption').text()
 $('.postImage img').click((e)=>{
   modal.css("display", "block")
   modalImg.src = e.currentTarget.currentSrc;
+  console.log(modalImg)
   if(e.currentTarget.alt != "Post Picture"){
     $('#caption').text(e.currentTarget.alt)
     $('#caption').append('<br/><span style="font-weight:bold;">- '+author+' -</span>')
@@ -114,7 +164,42 @@ $('.postImage img').click((e)=>{
   }
 
 })
+$('#focusout').css('height', cssHeight)
+$("#focusout").click(()=>{
+  modal.css("display", "none")
+})
 $("#closeModalImage").click(()=>{
   modal.css("display", "none")
   $("#caption").text(author)
 })
+
+
+var modal2 = $("#imagesMod")
+var modalImg2 = document.getElementById("imagesModeSrc")
+var modalImageCaption = $('#caption')
+var author2 = $('#caption').text()
+$('.toggleImageDiv').click((e)=>{
+  modal2.css("display", "block")
+})
+$("#closeimagesMod").click(()=>{
+  modal2.css("display", "none")
+  $("#caption").text(author2)
+})
+
+$('#filter').on('change', ()=>{
+  // VOIR LES GENS STALKED
+  if($('#filter').val() == 'stalked'){
+    $('.notStalking').css('display', 'none')
+    $('.notStalking').css('visibility', 'hidden')
+  }else{// TOUT VOIR
+    $('.notStalking').css('display', 'block')
+    $('.notStalking').css('visibility', 'visible')
+  }
+})
+
+for(let e of document.getElementsByClassName('post')){
+  //console.log(e)
+  if(e > 25){
+    // place a limit
+  }
+}
