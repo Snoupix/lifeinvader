@@ -513,3 +513,8 @@ input[name="postSub"]{
   overflow: hidden;
   z-index: -1;
 }
+
+.liked svg path,
+.liked{
+  color: #bd362f;
+}

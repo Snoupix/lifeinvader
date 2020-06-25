@@ -5,6 +5,8 @@ To do list:
 
     -Comment on every post
 
+    -If not connected, can't like
+
 
 [WORKING ON :] Like button
 
@@ -17,3 +19,8 @@ Ajouter une pub:
 Créer le compte avec le nom exact.
 Ajouter l'image dans ./assets/adImages/
 INSERT INTO ads VALUES  ('nom', 'image path', 'lien vers le compte', 'texte promo court');
+
+
+Like : 
+A ligne per like with the post ID, and user who liked
+To get likes count all resluts with post ID

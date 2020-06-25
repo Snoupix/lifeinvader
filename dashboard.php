@@ -17,6 +17,9 @@
     $allPosts = 'SELECT * FROM post';
     $allUsers = 'SELECT * FROM user';
     $stalkReq = 'SELECT stalked FROM stalking WHERE usernameFK = "'.$username.'"';
+    $likesReq = 'SELECT * FROM likes';
+    $plusLike = 'INSERT INTO likes VALUES (:id, :wholiked);';
+    $unLike = 'DELETE FROM likes WHERE id = :id AND userWhoLike = :user ;';
     
 
 
@@ -32,8 +35,34 @@
     $stalkReq = $conn->query($stalkReq);
     $stalkReq = $stalkReq->fetchAll(PDO::FETCH_ASSOC);
     
+    $likesReq = $conn->query($likesReq);
+    $allLikes = $likesReq->fetchAll(PDO::FETCH_ASSOC);
+    
 
 
+    if(isset($_POST['likePost'])){
+      $breakpoint = false;
+      foreach($allLikes as $like){
+        if($like['userWhoLike'] == $_SESSION['username'] && $_POST['idLiked'] == $like['id']){
+          $breakpoint = true;
+        }
+      }
+      if(!$breakpoint){
+        $plusLike = $conn->prepare($plusLike);
+        $plusLike->bindParam(':id', $_POST['idLiked']);
+        $plusLike->bindParam(':wholiked', $_SESSION['username']);
+        $plusLike->execute();
+        header("Refresh:0");
+      }
+    }
+
+    if(isset($_POST['unLike'])){
+      $unLike = $conn->prepare($unLike);
+      $unLike->bindParam(':user', $_SESSION['username']);
+      $unLike->bindParam(':id', $_POST['idLiked']);
+      $unLike->execute();
+      header("Refresh:0");
+    }
 
 
   }catch(PDOException $e){
@@ -92,9 +121,7 @@
                   echo '</div>';
                   echo '<div class="postFooter">';
                     echo '<hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;" />';
-                    echo '<form class="formLike" method="POST">';
-                    echo '<button type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$key['likes'].'</span>';
-                    echo '</form>';
+                    echo '<button style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$key['likes'].'</span>';
                   echo '</div>';
                 echo '</div>';
               }
@@ -111,9 +138,7 @@
                   echo '</div>';
                   echo '<div class="postFooter">';
                     echo '<hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;" />';
-                    echo '<form class="formLike" method="POST">';
-                    echo '<button type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$key['likes'].'</span>';
-                    echo '</form>';
+                    echo '<button style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$key['likes'].'</span>';
                   echo '</div>';
                 echo '</div>';
               }
@@ -130,9 +155,7 @@
                   echo '</div>';
                   echo '<div class="postFooter">';
                     echo '<hr/>';
-                    echo '<form class="formLike" method="POST">';
-                    echo '<button type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$key['likes'].'</span>';
-                    echo '</form>';
+                    echo '<button style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$key['likes'].'</span>';
                   echo '</div>';
                 echo '</div>';
               }
@@ -188,7 +211,6 @@
           $reversedArray = array_reverse($allPosts, true);
 
           foreach($reversedArray as $key){
-
             foreach($allUsers as $user){
               if($user['username'] == $key['usernameFK']){
                 $userPost = $user;
@@ -198,6 +220,17 @@
             $stalking = (in_array($key['usernameFK'], $stalkingArray)) ? '' : ' notStalking';
 
             if($key['image'] != 'NULL' && $key['message'] != "NULL"){ // Post text avec image
+              $i = 0;
+              $yetLiked = false;
+              foreach($allLikes as $like){
+                if($like['id'] == $key['id']){
+                  $i = $i+1;
+                }
+                if($like['userWhoLike'] == $_SESSION['username'] && $key['id'] == $like['id']){
+                  $yetLiked = true;
+                }
+                $likeCount = $i;
+              }
               echo '<div class="post'.$stalking.'">';
                 echo '<div class="postBanner">';
                   echo '<img src="'.$userPost['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
@@ -214,13 +247,32 @@
                 echo '</div>';
                 echo '<div class="postFooter">';
                   echo '<hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;" />';
-                  echo '<form class="formLike" method="POST">';
-                  echo '<button type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$key['likes'].'</span>';
-                  echo '</form>';
+                  if($yetLiked){
+                    echo '<form method="POST">';
+                      echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
+                      echo '<button class="liked" name="unLike" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                    echo '</form>';
+                  }else{
+                    echo '<form class="formLike" method="POST">';
+                      echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
+                      echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                    echo '</form>';
+                  }
                 echo '</div>';
               echo '</div>';
             }
             if($key['image'] == "NULL" && $key['message'] != "NULL"){ // Post text sans image
+              $i = 0;
+              $yetLiked = false;
+              foreach($allLikes as $like){
+                if($like['id'] == $key['id']){
+                  $i = $i+1;
+                }
+                if($like['userWhoLike'] == $_SESSION['username'] && $key['id'] == $like['id']){
+                  $yetLiked = true;
+                }
+                $likeCount = $i;
+              }
               echo '<div class="post'.$stalking.'">';
                 echo '<div class="postBanner">';
                   echo '<img src="'.$userPost['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
@@ -233,13 +285,32 @@
                 echo '</div>';
                 echo '<div class="postFooter">';
                   echo '<hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;" />';
-                  echo '<form class="formLike" method="POST">';
-                  echo '<button type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$key['likes'].'</span>';
-                  echo '</form>';
+                  if($yetLiked){
+                    echo '<form method="POST">';
+                      echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
+                      echo '<button class="liked" name="unLike" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                    echo '</form>';
+                  }else{
+                    echo '<form class="formLike" method="POST">';
+                      echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
+                      echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                    echo '</form>';
+                  }
                 echo '</div>';
               echo '</div>';
             }
             if($key['message'] == "NULL"){ // Post avec image seule
+              $i = 0;
+              $yetLiked = false;
+              foreach($allLikes as $like){
+                if($like['id'] == $key['id']){
+                  $i = $i+1;
+                }
+                if($like['userWhoLike'] == $_SESSION['username'] && $key['id'] == $like['id']){
+                  $yetLiked = true;
+                }
+                $likeCount = $i;
+              }
               echo '<div class="post'.$stalking.'">';
                 echo '<div class="postBanner">';
                   echo '<img src="'.$userPost['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
@@ -252,13 +323,20 @@
                 echo '</div>';
                 echo '<div class="postFooter">';
                   echo '<hr/>';
-                  echo '<form class="formLike" method="POST">';
-                  echo '<button type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$key['likes'].'</span>';
-                  echo '</form>';
+                  if($yetLiked){
+                    echo '<form method="POST">';
+                      echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
+                      echo '<button class="liked" name="unLike" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                    echo '</form>';
+                  }else{
+                    echo '<form class="formLike" method="POST">';
+                      echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
+                      echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                    echo '</form>';
+                  }
                 echo '</div>';
               echo '</div>';
             }
-            $i = $i+1;
           }
         ?>
         <div id="modalImage">

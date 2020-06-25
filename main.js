@@ -11,6 +11,9 @@ $(document).ready(()=>{
       $('#wall').attr('class', 'col-9 wall')
       $('#ads').attr('class', 'col-12 ads')
     }else if(document.body.clientWidth > 771){
+      $('#ads img').css('width', '220px')
+      $('#wall').attr('class', 'col-9 wall')
+      $('#ads').attr('class', 'col-12 ads')
       $('#postTxt').attr('cols', '38')
     }else if(document.body.clientWidth > 401){
       $('#postTxt').attr('cols', '25')
@@ -18,6 +21,16 @@ $(document).ready(()=>{
       $('#postTxt').attr('cols', '20')
       $('#postTxt').attr('rows', '3')
     }
+
+    // Center default pic
+    if($('.profilePic img').attr('src') == "./assets/usersAvatar/default.png" && document.body.clientWidth > 1200){
+      $('.profilePic img').css('padding-left', '50px')
+    }else if($('.profilePic img').attr('src') == "./assets/usersAvatar/default.png" && document.body.clientWidth < 1200 && document.body.clientWidth > 990){
+      $('.profilePic img').css('padding-left', '30px')
+    }else if($('.profilePic img').attr('src') == "./assets/usersAvatar/default.png" && document.body.clientWidth < 990){
+      $('.profilePic img').css('padding-left', '0px')
+    }
+
   },1000)
 })
 
@@ -42,6 +55,9 @@ window.onresize = () => {
     $('#wall').attr('class', 'col-9 wall')
     $('#ads').attr('class', 'col-12 ads')
   }else if(document.body.clientWidth > 771){
+    $('#ads img').css('width', '220px')
+    $('#wall').attr('class', 'col-9 wall')
+    $('#ads').attr('class', 'col-12 ads')
     $('#postTxt').attr('cols', '38')
   }else if(document.body.clientWidth > 401){
     $('#postTxt').attr('cols', '25')
@@ -50,11 +66,11 @@ window.onresize = () => {
     $('#postTxt').attr('rows', '3')
   }
 
-  if($('.profilePic img').attr('src') == "./assets/usersAvatar/default.png" && document.body.clientWidth < 1200){
-    $('.profilePic img').css('padding-left', '30px')
-  }else if($('.profilePic img').attr('src') == "./assets/usersAvatar/default.png" && document.body.clientWidth > 1200){
+  if($('.profilePic img').attr('src') == "./assets/usersAvatar/default.png" && document.body.clientWidth > 1200){
     $('.profilePic img').css('padding-left', '50px')
-  }else{
+  }else if($('.profilePic img').attr('src') == "./assets/usersAvatar/default.png" && document.body.clientWidth < 1200 && document.body.clientWidth > 990){
+    $('.profilePic img').css('padding-left', '30px')
+  }else if($('.profilePic img').attr('src') == "./assets/usersAvatar/default.png" && document.body.clientWidth < 990){
     $('.profilePic img').css('padding-left', '0px')
   }
   
