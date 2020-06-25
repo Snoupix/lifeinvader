@@ -1,15 +1,12 @@
 To do list:
 
 
-    -If telephone ou tablette div ad col-12
-
-
     -Likes button, find smth to do
 
     -Comment on every post
 
 
-[WORKING ON :]  Edit mode Responsive button charge image profile
+[WORKING ON :] Like button
 
 
 

@@ -1,11 +1,17 @@
 $(document).ready(()=>{
   setTimeout(()=>{
     if(document.body.clientWidth > 1201){
-      $('#postTxt').attr('cols', '75')
+      $('#postTxt').attr('cols', '70')
+      $('#ads img').css('width', '100%')
+      $('#wall').attr('class', 'col-6 wall')
+      $('#ads').attr('class', 'col-3 ads')
     }else if(document.body.clientWidth > 993){
-      $('#postTxt').attr('cols', '60')
+      $('#postTxt').attr('cols', '55')
+      $('#ads img').css('width', '220px')
+      $('#wall').attr('class', 'col-9 wall')
+      $('#ads').attr('class', 'col-12 ads')
     }else if(document.body.clientWidth > 771){
-      $('#postTxt').attr('cols', '40')
+      $('#postTxt').attr('cols', '38')
     }else if(document.body.clientWidth > 401){
       $('#postTxt').attr('cols', '25')
     }else{ // Phone size
@@ -26,11 +32,17 @@ window.onresize = () => {
 
   // Responsive
   if(document.body.clientWidth > 1201){
-    $('#postTxt').attr('cols', '75')
+    $('#postTxt').attr('cols', '70')
+    $('#ads img').css('width', '100%')
+    $('#wall').attr('class', 'col-6 wall')
+    $('#ads').attr('class', 'col-3 ads')
   }else if(document.body.clientWidth > 993){
-    $('#postTxt').attr('cols', '60')
+    $('#postTxt').attr('cols', '55')
+    $('#ads img').css('width', '220px')
+    $('#wall').attr('class', 'col-9 wall')
+    $('#ads').attr('class', 'col-12 ads')
   }else if(document.body.clientWidth > 771){
-    $('#postTxt').attr('cols', '40')
+    $('#postTxt').attr('cols', '38')
   }else if(document.body.clientWidth > 401){
     $('#postTxt').attr('cols', '25')
   }else{ // Phone size

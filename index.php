@@ -356,7 +356,7 @@
                       <button id="postClose" style="border:none;background:none;float:right;outline:none;"><i class="fa fa-times-circle" aria-hidden="true"></i></button>
                       <form id="postpost" method="POST" action="index.php" enctype="multipart/form-data">
                         <input type="hidden" name="date">
-                        <textarea name="postTxt" id="postTxt" cols="40" placeholder="  Poster un message de 420 caractères max."></textarea>
+                        <textarea name="postTxt" id="postTxt" cols="40" placeholder="Postez un message de 420 caractères max."></textarea>
                         <label for="postImageButton">Choisir une image</label>
                         <input type="file" id="postImageButton" name="postImage" accept="image/png, image/jpeg, image/jpg">
                         <input class="raise" name="postSub" type="submit" value="Envoyer">
@@ -406,7 +406,7 @@
           </div>
           
         </div>
-        <div class="col-6 wall">
+        <div class="col-6 wall" id="wall">
           <?php
             # Boucle qui charge tout les posts
             $reversedArray = array_reverse($postRes, true);
@@ -534,26 +534,24 @@
             </div>
           </div>
         </div>
-        <div class="col-3" style="padding-left:0px;">
-          <div class="ads">
-            <h3>Sponsored</h3>
-            <?php
-              foreach($ads as $val){
-                $adStalking = [];
-                $adStalkers = 'SELECT COUNT(*) as stalkers FROM stalking WHERE stalked = "'.$val['name'].'";';
-                $adStalkers = $conn->query($adStalkers);
-                $adStalkers = $adStalkers->fetch(PDO::FETCH_ASSOC);
-                array_push($adStalking, $val['name'], $adStalkers['stalkers']);
+        <div class="col-3 ads" id="ads" style="padding-left:0px;">
+          <h3>Sponsored</h3>
+          <?php
+            foreach($ads as $val){
+              $adStalking = [];
+              $adStalkers = 'SELECT COUNT(*) as stalkers FROM stalking WHERE stalked = "'.$val['name'].'";';
+              $adStalkers = $conn->query($adStalkers);
+              $adStalkers = $adStalkers->fetch(PDO::FETCH_ASSOC);
+              array_push($adStalking, $val['name'], $adStalkers['stalkers']);
 
-                echo '<div class="ad">';
-                  echo '<h5><a href="'.$val['link'].'">'.$val['name'].'</a></h5>';
-                  echo '<a href="'.$val['link'].'"><img src="'.$val['image'].'" width="100%" alt="'.$val['name'].'"></a>';
-                  echo '<p>'.$val['promo'].'</p>';
-                  echo '<p>'.$adStalking["1"].' people are stalking '.$val['name'].'</p>';
-                echo '</div>';
-              }
-            ?>
-          </div>
+              echo '<div class="ad">';
+                echo '<h5><a href="'.$val['link'].'">'.$val['name'].'</a></h5>';
+                echo '<a href="'.$val['link'].'"><img src="'.$val['image'].'" width="100%" alt="'.$val['name'].'"></a>';
+                echo '<p>'.$val['promo'].'</p>';
+                echo '<p style="opacity:0.75;">'.$adStalking["1"].' people are stalking '.$val['name'].'</p>';
+              echo '</div>';
+            }
+          ?>
         </div>
       </div>
       <hr/>
