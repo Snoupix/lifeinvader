@@ -77,6 +77,7 @@
     $imagesReq = 'SELECT image, message FROM post WHERE usernameFK = "'.$username.'" AND image != "NULL";';
     $adReq = 'SELECT * FROM ads';
     $updateAvatar = 'UPDATE user SET avatar = :avatar WHERE username ="'.$_SESSION['username'].'";';
+    $likesReq = 'SELECT id, number FROM likes';
     
 
 
@@ -107,6 +108,9 @@
 
     $adReq = $conn->query($adReq);
     $ads = $adReq->fetchAll(PDO::FETCH_ASSOC);
+
+    $likesReq = $conn->query($likesReq);
+    $allLikes = $likesReq->fetchAll(PDO::FETCH_ASSOC);
 
 
 
@@ -229,6 +233,8 @@
   }catch(PDOException $e){
     echo 'Échec lors de la requête SQL : ' . $e->getMessage();
   }
+
+  print_r($allLikes);
 
 ?>
 

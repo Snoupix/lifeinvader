@@ -186,7 +186,7 @@
           }
 
           $reversedArray = array_reverse($allPosts, true);
-          $i = 0;
+
           foreach($reversedArray as $key){
 
             foreach($allUsers as $user){
