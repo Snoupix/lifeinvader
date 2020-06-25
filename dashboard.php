@@ -5,7 +5,7 @@
 
   if(isset($_SESSION['username'])){
     $username = $_SESSION['username'];
-  }else{
+  }else if(isset($_GET['username'])){
     $username = $_GET['username'];
   }
   
@@ -104,6 +104,13 @@
                   $userPost = $user;
                 }
               }
+              $i = 0;
+              foreach($allLikes as $like){
+                if($like['id'] == $key['id']){
+                  $i = $i+1;
+                }
+                $likeCount = $i;
+              }
               if($key['image'] != 'NULL' && $key['message'] != "NULL"){ // Post text avec image
                 echo '<div class="post">';
                   echo '<div class="postBanner">';
@@ -121,11 +128,18 @@
                   echo '</div>';
                   echo '<div class="postFooter">';
                     echo '<hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;" />';
-                    echo '<button style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$key['likes'].'</span>';
+                    echo '<button style="border:none;background:none;outline:none;cursor:default;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
                   echo '</div>';
                 echo '</div>';
               }
               if($key['image'] == "NULL" && $key['message'] != "NULL"){ // Post text sans image
+                $i = 0;
+                foreach($allLikes as $like){
+                  if($like['id'] == $key['id']){
+                    $i = $i+1;
+                  }
+                  $likeCount = $i;
+                }
                 echo '<div class="post">';
                   echo '<div class="postBanner">';
                     echo '<img src="'.$userPost['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
@@ -138,11 +152,18 @@
                   echo '</div>';
                   echo '<div class="postFooter">';
                     echo '<hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;" />';
-                    echo '<button style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$key['likes'].'</span>';
+                    echo '<button style="border:none;background:none;outline:none;cursor:default;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
                   echo '</div>';
                 echo '</div>';
               }
               if($key['message'] == "NULL"){ // Post avec image seule
+                $i = 0;
+                foreach($allLikes as $like){
+                  if($like['id'] == $key['id']){
+                    $i = $i+1;
+                  }
+                  $likeCount = $i;
+                }
                 echo '<div class="post">';
                   echo '<div class="postBanner">';
                     echo '<img src="'.$userPost['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
@@ -155,7 +176,7 @@
                   echo '</div>';
                   echo '<div class="postFooter">';
                     echo '<hr/>';
-                    echo '<button style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$key['likes'].'</span>';
+                    echo '<button style="border:none;background:none;outline:none;cursor:default;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
                   echo '</div>';
                 echo '</div>';
               }

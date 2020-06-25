@@ -63,58 +63,61 @@
 
     $avatarReq = 'SELECT avatar FROM user WHERE username ="'.$username.'";';
     $stalkers = 'SELECT COUNT(*) as stalkers FROM stalking WHERE stalked = "'.$username.'";';
-    $whoIsHeStalking = 'SELECT stalked FROM stalking WHERE usernameFK = "'.$_SESSION['username'].'";'; // Renvoie les personnes que username stalk
+    $whoIsHeStalking = (isset($_SESSION['username'])) ? 'SELECT stalked FROM stalking WHERE usernameFK = "'.$_SESSION['username'].'";' : ''; // Renvoie les personnes que username stalk
     $stalkReq = 'INSERT INTO stalking VALUES (:username, :userSrc)';
-    $unstalkReq = 'DELETE FROM stalking WHERE usernameFK = "'.$_SESSION['username'].'" AND stalked = :getUsername;';
+    $unstalkReq = (isset($_SESSION['username'])) ? 'DELETE FROM stalking WHERE usernameFK = "'.$_SESSION['username'].'" AND stalked = :getUsername;' : '';
     $typeReq = 'SELECT type FROM user WHERE username = "'.$username.'";';
     $descReq = 'SELECT description FROM user WHERE username = "'.$username.'";';
-    $setType = 'UPDATE user SET type = :type WHERE username = "'.$_SESSION['username'].'";';
-    $setDesc = 'UPDATE user SET description = :desc WHERE username = "'.$_SESSION['username'].'";';
-    $setAbout = 'UPDATE user SET about = :about WHERE username = "'.$_SESSION['username'].'";';
+    $setType = (isset($_SESSION['username'])) ? 'UPDATE user SET type = :type WHERE username = "'.$_SESSION['username'].'";' : '';
+    $setDesc = (isset($_SESSION['username'])) ? 'UPDATE user SET description = :desc WHERE username = "'.$_SESSION['username'].'";' : '';
+    $setAbout = (isset($_SESSION['username'])) ? 'UPDATE user SET about = :about WHERE username = "'.$_SESSION['username'].'";' : '';
     $postReq = 'SELECT * FROM post WHERE usernameFK = "'.$username.'";';
     $newPost = 'INSERT INTO post (usernameFK, message, image, date) VALUES (:username, :txt, :image, :date)';
     $aboutReq = 'SELECT about FROM user WHERE username = "'.$username.'";';
     $imagesReq = 'SELECT image, message FROM post WHERE usernameFK = "'.$username.'" AND image != "NULL";';
     $adReq = 'SELECT * FROM ads';
-    $updateAvatar = 'UPDATE user SET avatar = :avatar WHERE username ="'.$_SESSION['username'].'";';
+    $updateAvatar = (isset($_SESSION['username'])) ? 'UPDATE user SET avatar = :avatar WHERE username ="'.$_SESSION['username'].'";' : '';
     $likesReq = 'SELECT * FROM likes';
     $plusLike = 'INSERT INTO likes VALUES (:id, :wholiked);';
     $unLike = 'DELETE FROM likes WHERE id = :id AND userWhoLike = :user ;';
     
 
+    if(isset($_SESSION['username'])){
 
-    $avatar = $conn->prepare($avatarReq);
-    $avatar->execute();
-    $icon = $avatar->fetch(PDO::FETCH_ASSOC); // = Array ( [avatar] => path )
+      $avatar = $conn->prepare($avatarReq);
+      $avatar->execute();
+      $icon = $avatar->fetch(PDO::FETCH_ASSOC); // = Array ( [avatar] => path )
 
-    $stalkers = $conn->query($stalkers);
-    $stalkers = $stalkers->fetch(PDO::FETCH_ASSOC);
+      $stalkers = $conn->query($stalkers);
+      $stalkers = $stalkers->fetch(PDO::FETCH_ASSOC);
 
-    $whoIsHeStalking = $conn->query($whoIsHeStalking);
-    $whoIsHeStalking = $whoIsHeStalking->fetchAll(PDO::FETCH_ASSOC);
+      $whoIsHeStalking = $conn->query($whoIsHeStalking);
+      $whoIsHeStalking = $whoIsHeStalking->fetchAll(PDO::FETCH_ASSOC);
 
-    $typeAcc = $conn->query($typeReq);
-    $type = $typeAcc->fetch(PDO::FETCH_ASSOC);
+      $typeAcc = $conn->query($typeReq);
+      $type = $typeAcc->fetch(PDO::FETCH_ASSOC);
 
-    $descAcc = $conn->query($descReq);
-    $description = $descAcc->fetch(PDO::FETCH_ASSOC);
+      $descAcc = $conn->query($descReq);
+      $description = $descAcc->fetch(PDO::FETCH_ASSOC);
 
-    $postReq = $conn->query($postReq);
-    $postRes = $postReq->fetchAll(PDO::FETCH_ASSOC);
+      $postReq = $conn->query($postReq);
+      $postRes = $postReq->fetchAll(PDO::FETCH_ASSOC);
 
-    $aboutReq = $conn->query($aboutReq);
-    $aboutRes = $aboutReq->fetch(PDO::FETCH_ASSOC);
+      $aboutReq = $conn->query($aboutReq);
+      $aboutRes = $aboutReq->fetch(PDO::FETCH_ASSOC);
 
-    $imagesFetched = $conn->query($imagesReq);
-    $imagesFetched = $imagesFetched->fetchAll(PDO::FETCH_ASSOC);
+      $imagesFetched = $conn->query($imagesReq);
+      $imagesFetched = $imagesFetched->fetchAll(PDO::FETCH_ASSOC);
 
-    $adReq = $conn->query($adReq);
-    $ads = $adReq->fetchAll(PDO::FETCH_ASSOC);
+      $adReq = $conn->query($adReq);
+      $ads = $adReq->fetchAll(PDO::FETCH_ASSOC);
 
-    $likesReq = $conn->query($likesReq);
-    $allLikes = $likesReq->fetchAll(PDO::FETCH_ASSOC);
+      $likesReq = $conn->query($likesReq);
+      $allLikes = $likesReq->fetchAll(PDO::FETCH_ASSOC);
 
 
+    
+    }
 
   
 
@@ -127,9 +130,11 @@
       header("Refresh:0");
     }
     
-    for($i = 0;$i<=count($whoIsHeStalking)-1;$i++){
-      if($whoIsHeStalking[$i]['stalked'] == $_GET['username']){
-        $isStalking = true;
+    if(isset($_SESSION['username'])){
+      for($i = 0;$i<=count($whoIsHeStalking)-1;$i++){
+        if($whoIsHeStalking[$i]['stalked'] == $_GET['username']){
+          $isStalking = true;
+        }
       }
     }
 
