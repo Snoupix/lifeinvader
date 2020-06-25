@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jun 16, 2020 at 06:44 PM
+-- Generation Time: Jun 25, 2020 at 02:58 AM
 -- Server version: 5.7.24
 -- PHP Version: 7.2.14
 
@@ -25,12 +25,32 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ads`
+--
+
+CREATE TABLE `ads` (
+  `name` varchar(150) NOT NULL,
+  `image` varchar(150) NOT NULL,
+  `link` varchar(150) NOT NULL,
+  `promo` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `ads`
+--
+
+INSERT INTO `ads` (`name`, `image`, `link`, `promo`) VALUES
+('Premium Deluxe Motorsport', './assets/adImages/Premium Deluxe Motorsport.jpeg', 'index.php?username=Premium+Deluxe+Motorsport', '10% discount on your first purchase.');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `post`
 --
 
 CREATE TABLE `post` (
   `usernameFK` varchar(50) NOT NULL,
-  `message` varchar(500) NOT NULL,
+  `message` varchar(420) NOT NULL,
   `image` varchar(50) DEFAULT 'NULL',
   `likes` int(2) NOT NULL DEFAULT '0',
   `date` varchar(50) NOT NULL
@@ -48,7 +68,11 @@ INSERT INTO `post` (`usernameFK`, `message`, `image`, `likes`, `date`) VALUES
 ('Bob-Lee', 'I will go to the beach tonight!', 'NULL', 0, 'Mer 10 Juin 06:06'),
 ('Bob-Lee', 'NULL', './assets/postImages/Bob-Lee/20200515034011_1.jpg', 0, 'Lun 15 Juin 18:06'),
 ('Andy', 'NULL', './assets/postImages/Andy/20200516184608_1.jpg', 0, 'Lun 15 Juin 19:06'),
-('Bob-Lee', 'J\'adore ma moto !', './assets/postImages/Bob-Lee/20200609022105_1.jpg', 0, 'Lun 15 Juin 22:02');
+('Bob-Lee', 'J\'adore ma moto !', './assets/postImages/Bob-Lee/20200609022105_1.jpg', 0, 'Lun 15 Juin 22:02'),
+('Bob-Lee', 'Good old vibes.. Miss you guys.', './assets/postImages/Bob-Lee/20200503041325_1.jpg', 0, 'Sam 20 Juin 6:26'),
+('admin', 'Yo soy admin.', 'NULL', 0, 'Lun 22 Juin 3:42'),
+('Bob-Lee', 'NULL', './assets/postImages/Bob-Lee/20200614233444_1.jpg', 0, 'Lun 22 Juin 4:14'),
+('bob', 'bitches', 'NULL', 0, 'Lun 22 Juin 4:15');
 
 -- --------------------------------------------------------
 
@@ -66,12 +90,13 @@ CREATE TABLE `stalking` (
 --
 
 INSERT INTO `stalking` (`usernameFK`, `stalked`) VALUES
-('Bob-Lee', 'bob'),
 ('Bob-Lee', 'admin'),
 ('admin', 'bob'),
 ('bob', 'Andy'),
 ('admin', 'Bob-Lee'),
 ('Andy', 'Bob-Lee'),
+('Bob-Lee', 'bob'),
+('Bob-Lee', 'Premium Deluxe Motorsport'),
 ('Bob-Lee', 'Andy');
 
 -- --------------------------------------------------------
