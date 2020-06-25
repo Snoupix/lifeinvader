@@ -221,6 +221,7 @@
         die("Cannot move the uploaded file");
       }
       $updateAvatar->execute();
+      header("Cache-Control: no-cache, no-store, must-revalidate");
       header("Refresh:0, Expires: 0");
     }  
     
@@ -283,6 +284,7 @@
                 <?php else: ?>
                 <div class="profilePicEdit">
                   <form action="index.php" method="post" enctype="multipart/form-data">
+                    <label for="profilePic">Nouvelle photo</label>
                     <input type="file" name="profilePic" id="profilePic" accept="image/png, image/jpeg, image/jpg">
                     <input type="submit" name="changeProfilePic" value="Changer" class="btn-sm btn-dark">
                   </form>
@@ -563,7 +565,7 @@
     <div class="container">
       <div class="row">
         <div class="col">
-          <div class="alert alert-danger" style="margin-top:35%;text-align:center;" role="alert">
+          <div class="alert alert-danger" style="margin-top:25%;text-align:center;" role="alert">
             <span>Connectez vous ou créez vous un compte pour pouvoir voir cette page.</span>
           </div>
         </div>

@@ -211,7 +211,9 @@ footer p{
 .raise:hover,
 .raise:focus,
 label[for="postImageButton"]:hover,
-label[for="postImageButton"]:focus {
+label[for="postImageButton"]:focus,
+label[for="profilePic"]:hover,
+label[for="profilePic"]:focus{
   border-color: #ffcdaa!important;
   color: #ffcdaa!important;
   box-shadow: 0 0.5em 0.5em -0.4em #AC0101!important;
@@ -463,7 +465,7 @@ input[name="postSub"]{
 
 .profilePicEdit input[type='submit']{
   display: block;
-  margin: 60% auto;
+  margin: 48% auto;
   text-align: center;
   width: 80px!important;
 }
@@ -480,4 +482,28 @@ input[name="postSub"]{
   border-radius: 50%;
   width: 30px;
   height: 30px;
+}
+
+.profilePicEdit label{
+  background: none;
+  border: 2px solid #F7E5E5;
+  line-height: 1;
+  padding: 0.5em 0.5em;
+  color: #F7E5E5;
+  transition: 0.25s;
+  border-radius: .2rem;
+  outline: none;
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
+#profilePic{
+  position: absolute;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  z-index: -1;
 }

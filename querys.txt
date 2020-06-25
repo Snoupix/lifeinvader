@@ -9,7 +9,7 @@ To do list:
     -Comment on every post
 
 
-[WORKING ON :]  Edit mode Responsive button change profile pic
+[WORKING ON :]  Edit mode Responsive button charge image profile
 
 
 
