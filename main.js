@@ -188,7 +188,6 @@ var author = $('#caption').text()
 $('.postImage img').click((e)=>{
   modal.css("display", "block")
   modalImg.src = e.currentTarget.currentSrc;
-  console.log(modalImg)
   if(e.currentTarget.alt != "Post Picture"){
     $('#caption').text(e.currentTarget.alt)
     $('#caption').append('<br/><span style="font-weight:bold;">- '+author+' -</span>')
@@ -236,3 +235,16 @@ for(let e of document.getElementsByClassName('post')){
     // place a limit
   }
 }
+
+$('.displayComms').click((e)=>{
+  var postval = '.id'+e.currentTarget.parentElement[0].value
+  if($(postval).css('display') == 'none'){
+    e.currentTarget.childNodes[0].classList.replace('fa-chevron-down', 'fa-chevron-up')
+    e.currentTarget.childNodes[3].classList.replace('fa-chevron-down', 'fa-chevron-up')
+    $(postval).css('display', 'block')
+  }else{
+    e.currentTarget.childNodes[0].classList.replace('fa-chevron-up', 'fa-chevron-down')
+    e.currentTarget.childNodes[3].classList.replace('fa-chevron-up', 'fa-chevron-down')
+    $(postval).css('display', 'none')
+  }
+})

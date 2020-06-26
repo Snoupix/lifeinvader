@@ -2,8 +2,16 @@ To do list:
 
     -Comment on every post
 
+    Be connected to see comments
+    Can't open section if there is no comment so if
+    more than one comment => display by adding a class
+    then in JS if class and click, display
+    No likes for comments
 
-[WORKING ON :] Comment section
+    The post owner (self) can delete comments
+
+
+[WORKING ON :] Comment section PhP
 
 ideas : put them all in php. Make the same as likes with table and display them in JS
 

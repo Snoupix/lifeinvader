@@ -485,8 +485,23 @@
                       echo '<form class="formLike" method="POST">';
                         echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
                         echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                        echo '<span class="displayComms" style="cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>';
                       echo '</form>';
                     }
+                    echo '<div class="comms id'.$key['id'].'" style="display:none;">';
+                      echo '<div class="comment">';
+                        echo '<div class="comm-banner">';
+                          echo '<hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;" />';
+                          echo '<img src="" alt="">';
+                          echo '<a href="hisProfile">authorName</a>';
+                          echo '<span>date</span>';
+                        echo '</div>';
+                        echo '<div class="comm-content">';
+                          echo '<p>msg</p>';
+                        echo '</div>';
+                      echo '</div>';
+                    echo '</div>';
+
                   echo '</div>';
                 echo '</div>';
               }
