@@ -80,6 +80,8 @@
     $likesReq = 'SELECT * FROM likes';
     $plusLike = 'INSERT INTO likes VALUES (:id, :wholiked);';
     $unLike = 'DELETE FROM likes WHERE id = :id AND userWhoLike = :user ;';
+    $commentsReq = 'SELECT * FROM comments';
+    $allUsers = 'SELECT * FROM user';
     
 
     if(isset($_SESSION['username'])){
@@ -115,6 +117,11 @@
       $likesReq = $conn->query($likesReq);
       $allLikes = $likesReq->fetchAll(PDO::FETCH_ASSOC);
 
+      $commentsReq = $conn->query($commentsReq);
+      $comments = $commentsReq->fetchAll(PDO::FETCH_ASSOC);
+      
+      $allUsers = $conn->query($allUsers);
+      $allUsers = $allUsers->fetchAll(PDO::FETCH_ASSOC);
 
     
     }
@@ -125,7 +132,7 @@
     $stalk = $conn->prepare($stalkReq);
     $stalk->bindParam(':userSrc', $_GET['username']);
     $stalk->bindParam(':username', $_SESSION['username']);
-    if(isset($_POST['stalk'])){ // stalk
+    if(isset($_POST['stalk']) && $_GET['username'] != $_SESSION['username']){ // stalk
       $stalk->execute();
       header("Refresh:0");
     }
@@ -232,8 +239,8 @@
         die("Cannot move the uploaded file");
       }
       $updateAvatar->execute();
-      header("Cache-Control: no-cache, no-store, must-revalidate");
-      header("Refresh:0, Expires: 0");
+      header("Cache-Control: no-cache, must-revalidate");
+      header("Refresh:2, Expires: 0");
     }
 
     
@@ -260,6 +267,8 @@
       $unLike->execute();
       header("Refresh:0");
     }
+
+    
     
 
   }catch(PDOException $e){
@@ -368,7 +377,7 @@
                           </form>
                         <?php else: ?>
                             <?php if($type['type'] == NULL): ?>
-                              <p>Type of account</p>
+                              <p>Type de compte</p>
                             <?php else: ?>
                               <p><?php echo $type['type']; ?></p>
                             <?php endif; ?>
@@ -424,7 +433,7 @@
                 </form>
               <?php else: ?>
                 <?php if($aboutRes['about'] == NULL): ?>
-                  <p>About</p>
+                  <p></p>
                 <?php else: ?>
                   <p><?php echo $aboutRes['about']; ?></p>
                 <?php endif; ?>
@@ -448,9 +457,23 @@
             $reversedArray = array_reverse($postRes, true);
 
             foreach($reversedArray as $key){
+              $i = 0;
+              $yetLiked = false;
+              $comment = [];
+              $i2 = 0;
+              $commAuth = [];
+              foreach($comments as $comm){
+                if($key['id'] == $comm['idPost']){
+                  $comment[$i2] = $comm;
+                  foreach($allUsers as $user){
+                    if($user['username'] == $comm['author']){
+                      $commAuth[$i2] = $user;
+                    }
+                  }
+                  $i2 = $i2+1;
+                }
+              }
               if($key['image'] != 'NULL' && $key['message'] != "NULL"){ // Post text avec image
-                $i = 0;
-                $yetLiked = false;
                 foreach($allLikes as $like){
                   if($like['id'] == $key['id']){
                     $i = $i+1;
@@ -480,34 +503,37 @@
                       echo '<form method="POST">';
                         echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
                         echo '<button class="liked" name="unLike" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                        echo (!empty($comment)) ? '<span class="displayComms" style="padding-top:1%;cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                       echo '</form>';
                     }else{
                       echo '<form class="formLike" method="POST">';
                         echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
                         echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
-                        echo '<span class="displayComms" style="cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>';
+                        echo (!empty($comment)) ? '<span class="displayComms" style="padding-top:1%;cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                       echo '</form>';
                     }
-                    echo '<div class="comms id'.$key['id'].'" style="display:none;">';
-                      echo '<div class="comment">';
-                        echo '<div class="comm-banner">';
-                          echo '<hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;" />';
-                          echo '<img src="" alt="">';
-                          echo '<a href="hisProfile">authorName</a>';
-                          echo '<span>date</span>';
-                        echo '</div>';
-                        echo '<div class="comm-content">';
-                          echo '<p>msg</p>';
-                        echo '</div>';
+                    if(!empty($comment)){
+                      echo '<div class="comms id'.$key['id'].'" style="display:none;">';
+                      echo '<hr style="margin-top: 0.7rem;margin-bottom: 0.5rem;" />';
+                      for($i = 0;$i<count($comment);$i++){
+                          echo '<div class="comment">';
+                            echo '<div class="comm-banner">';
+                              echo '<img src="'.$commAuth[$i]["avatar"].'" alt="'.$commAuth[$i]["username"].' profilePic">';
+                              echo '<a href="index.php?username='.$comment[$i]['author'].'">'.$comment[$i]['author'].'</a>';
+                              echo '<span>'.$comment[$i]['date'].'</span>';
+                            echo '</div>';
+                            echo '<div class="comm-content">';
+                              echo '<p>'.$comment[$i]['message'].'</p>';
+                            echo '</div>';
+                          echo '</div>';
+                          echo '<hr/>';
+                      }
                       echo '</div>';
-                    echo '</div>';
-
+                    }
                   echo '</div>';
                 echo '</div>';
               }
               if($key['image'] == "NULL" && $key['message'] != "NULL"){ // Post text sans image
-                $i = 0;
-                $yetLiked = false;
                 foreach($allLikes as $like){
                   if($like['id'] == $key['id']){
                     $i = $i+1;
@@ -528,24 +554,42 @@
                     echo '<p>'.$key['message'].'</p>';
                   echo '</div>';
                   echo '<div class="postFooter">';
-                    echo '<hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;" />';
+                    echo '<hr style="margin-top: 0.7rem;margin-bottom: 0.5rem;" />';
                     if($yetLiked){
                       echo '<form method="POST">';
                         echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
                         echo '<button class="liked" name="unLike" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                        echo (!empty($comment)) ? '<span class="displayComms" style="padding-top:1%;cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                       echo '</form>';
                     }else{
                       echo '<form class="formLike" method="POST">';
                         echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
                         echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                        echo (!empty($comment)) ? '<span class="displayComms" style="padding-top:1%;cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                       echo '</form>';
+                    }
+                    if(!empty($comment)){
+                      echo '<div class="comms id'.$key['id'].'" style="display:none;">';
+                      echo '<hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;" />';
+                      for($i = 0;$i<count($comment);$i++){
+                          echo '<div class="comment">';
+                            echo '<div class="comm-banner">';
+                            echo '<img src="'.$commAuth[$i]["avatar"].'" alt="'.$commAuth[$i]["username"].' profilePic">';
+                              echo '<a href="index.php?username='.$comment[$i]['author'].'">'.$comment[$i]['author'].'</a>';
+                              echo '<span>'.$comment[$i]['date'].'</span>';
+                            echo '</div>';
+                            echo '<div class="comm-content">';
+                              echo '<p>'.$comment[$i]['message'].'</p>';
+                            echo '</div>';
+                          echo '</div>';
+                          echo '<hr/>';
+                      }
+                      echo '</div>';
                     }
                   echo '</div>';
                 echo '</div>';
               }
               if($key['message'] == "NULL"){ // Post avec image seule
-                $i = 0;
-                $yetLiked = false;
                 foreach($allLikes as $like){
                   if($like['id'] == $key['id']){
                     $i = $i+1;
@@ -571,12 +615,32 @@
                       echo '<form method="POST">';
                         echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
                         echo '<button class="liked" name="unLike" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                        echo (!empty($comment)) ? '<span class="displayComms" style="padding-top:1%;cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                       echo '</form>';
                     }else{
                       echo '<form class="formLike" method="POST">';
                         echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
                         echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                        echo (!empty($comment)) ? '<span class="displayComms" style="padding-top:1%;cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                       echo '</form>';
+                    }
+                    if(!empty($comment)){
+                      echo '<div class="comms id'.$key['id'].'" style="display:none;">';
+                      echo '<hr style="margin-top: 0.7rem;margin-bottom: 0.5rem;" />';
+                      for($i = 0;$i<count($comment);$i++){
+                          echo '<div class="comment">';
+                            echo '<div class="comm-banner">';
+                            echo '<img src="'.$commAuth[$i]["avatar"].'" alt="'.$commAuth[$i]["username"].' profilePic">';
+                              echo '<a href="index.php?username='.$comment[$i]['author'].'">'.$comment[$i]['author'].'</a>';
+                              echo '<span>'.$comment[$i]['date'].'</span>';
+                            echo '</div>';
+                            echo '<div class="comm-content">';
+                              echo '<p>'.$comment[$i]['message'].'</p>';
+                            echo '</div>';
+                          echo '</div>';
+                          echo '<hr/>';
+                      }
+                      echo '</div>';
                     }
                   echo '</div>';
                 echo '</div>';

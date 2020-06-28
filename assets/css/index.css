@@ -522,3 +522,44 @@ input[name="postSub"]{
 .comms{
   background-color: #EDEDED;
 }
+
+.comm-banner span{
+  float: right;
+}
+
+.comm-banner{
+  margin-right:3%;
+  margin-left: 3%;  
+}
+
+.comm-banner img{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.comm-banner a{
+  font-size: 1em;
+  margin-left: 2%;
+}
+
+.comm-banner a:link,
+.comm-banner a:active,
+.comm-banner a:visited,
+.comm-banner a:focus{
+  text-decoration: none;
+  color: #A30002;
+}
+
+.comm-banner a:hover{
+  text-decoration: underline;
+}
+
+.comm-content{
+  margin: 10px 3% 0px 3%;
+}
+
+.comm-content p{
+  margin-bottom: 0px;
+  font-size: 0.8em;
+}

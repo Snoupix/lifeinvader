@@ -10,6 +10,8 @@ To do list:
 
     The post owner (self) can delete comments
 
+    - Responsive Tel with cols & rows for the header
+
 
 [WORKING ON :] Comment section PhP
 

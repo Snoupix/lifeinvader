@@ -31,7 +31,7 @@ $(document).ready(()=>{
       $('.profilePic img').css('padding-left', '0px')
     }
 
-  },1000)
+  },700)
 })
 
 
@@ -237,7 +237,16 @@ for(let e of document.getElementsByClassName('post')){
 }
 
 $('.displayComms').click((e)=>{
-  var postval = '.id'+e.currentTarget.parentElement[0].value
+  if(window.location.pathname == "/index.php"){
+    var postval = '.id'+e.currentTarget.parentElement[0].value
+  }else{
+    if($('#signinButton a').text() == "Sign in"){
+      var postval = '.id'+e.currentTarget.parentElement.childNodes[1].value
+    }else{
+      var postval = '.id'+e.currentTarget.parentElement.childNodes[2].value
+    }
+  }
+  console.log(e.currentTarget.parentElement)
   if($(postval).css('display') == 'none'){
     e.currentTarget.childNodes[0].classList.replace('fa-chevron-down', 'fa-chevron-up')
     e.currentTarget.childNodes[3].classList.replace('fa-chevron-down', 'fa-chevron-up')

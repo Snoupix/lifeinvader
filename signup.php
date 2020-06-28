@@ -88,6 +88,7 @@
         }else{
           if($req->execute()) {
             $message = 'Successfully created user';
+            header("Refresh:2; url=index.php");
             $_SESSION["username"] = $_POST["username"];
           }else{
             $message = 'Sorry there must have been an issue creating new user. (SQL Error)';
