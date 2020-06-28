@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jun 25, 2020 at 02:58 AM
+-- Generation Time: Jun 28, 2020 at 12:59 AM
 -- Server version: 5.7.24
 -- PHP Version: 7.2.14
 
@@ -45,14 +45,62 @@ INSERT INTO `ads` (`name`, `image`, `link`, `promo`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `comments`
+--
+
+CREATE TABLE `comments` (
+  `idPost` int(255) UNSIGNED NOT NULL,
+  `author` varchar(50) NOT NULL,
+  `message` varchar(150) NOT NULL,
+  `date` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `comments`
+--
+
+INSERT INTO `comments` (`idPost`, `author`, `message`, `date`) VALUES
+(9, 'Andy', 'Miss that too', 'Ven 26 Juin 06:43'),
+(11, 'admin', 'Nice one !', 'Sam 27 Juin 23:39'),
+(9, 'Zola', 'So much', 'Dim 28 Juin 00:39'),
+(5, 'Andy', 'Coming!', 'Dim 28 Juin 00:54');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `likes`
+--
+
+CREATE TABLE `likes` (
+  `id` int(255) UNSIGNED NOT NULL,
+  `userWhoLike` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `likes`
+--
+
+INSERT INTO `likes` (`id`, `userWhoLike`) VALUES
+(11, 'Andy'),
+(8, 'bob'),
+(8, 'admin'),
+(6, 'Bob-Lee'),
+(11, 'Bob-Lee'),
+(7, 'Bob-Lee'),
+(3, 'Bob-Lee'),
+(13, 'Bob-Lee');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `post`
 --
 
 CREATE TABLE `post` (
+  `id` int(255) UNSIGNED NOT NULL,
   `usernameFK` varchar(50) NOT NULL,
   `message` varchar(420) NOT NULL,
   `image` varchar(50) DEFAULT 'NULL',
-  `likes` int(2) NOT NULL DEFAULT '0',
   `date` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -60,19 +108,20 @@ CREATE TABLE `post` (
 -- Dumping data for table `post`
 --
 
-INSERT INTO `post` (`usernameFK`, `message`, `image`, `likes`, `date`) VALUES
-('Bob-Lee', 'Some fool on the street is sweatin my Chakra. He about to learn the Chakra Attack. I move in and out like some kind of Navy Seal. But I ain’t stealing your ship. I ain’t a Somali pirate. I am Dr. Ray De Angelo Harris, and I am a tug boat captain, about to push your big dumb heavy ass into port so you can get firmly grounded. You dig this nautical trip? We tying knots in here. That’s deep right there.', './assets/postImages/Bob-Lee/20200524012811_1.jpg', 0, 'Lun 8 Juin 07:06'),
-('Bob-Lee', 'I don\'t know what to say', 'NULL', 0, 'Lun 8 Juin 07:24'),
-('Andy', 'Promotion sur toutes les supersportives', 'NULL', 0, 'Lun 8 Juin 17:35'),
-('Bob-Lee', 'Hello', 'NULL', 0, 'Mer 10 Juin 05:06'),
-('Bob-Lee', 'I will go to the beach tonight!', 'NULL', 0, 'Mer 10 Juin 06:06'),
-('Bob-Lee', 'NULL', './assets/postImages/Bob-Lee/20200515034011_1.jpg', 0, 'Lun 15 Juin 18:06'),
-('Andy', 'NULL', './assets/postImages/Andy/20200516184608_1.jpg', 0, 'Lun 15 Juin 19:06'),
-('Bob-Lee', 'J\'adore ma moto !', './assets/postImages/Bob-Lee/20200609022105_1.jpg', 0, 'Lun 15 Juin 22:02'),
-('Bob-Lee', 'Good old vibes.. Miss you guys.', './assets/postImages/Bob-Lee/20200503041325_1.jpg', 0, 'Sam 20 Juin 6:26'),
-('admin', 'Yo soy admin.', 'NULL', 0, 'Lun 22 Juin 3:42'),
-('Bob-Lee', 'NULL', './assets/postImages/Bob-Lee/20200614233444_1.jpg', 0, 'Lun 22 Juin 4:14'),
-('bob', 'bitches', 'NULL', 0, 'Lun 22 Juin 4:15');
+INSERT INTO `post` (`id`, `usernameFK`, `message`, `image`, `date`) VALUES
+(1, 'Bob-Lee', 'Some fool on the street is sweatin my Chakra. He about to learn the Chakra Attack. I move in and out like some kind of Navy Seal. But I ain’t stealing your ship. I ain’t a Somali pirate. I am Dr. Ray De Angelo Harris, and I am a tug boat captain, about to push your big dumb heavy ass into port so you can get firmly grounded. You dig this nautical trip? We tying knots in here. That’s deep right there.', './assets/postImages/Bob-Lee/20200524012811_1.jpg', 'Lun 8 Juin 07:06'),
+(2, 'Bob-Lee', 'I don\'t know what to say', 'NULL', 'Lun 8 Juin 07:24'),
+(3, 'Andy', 'Promotion sur toutes les supersportives', 'NULL', 'Lun 8 Juin 17:35'),
+(4, 'Bob-Lee', 'Hello', 'NULL', 'Mer 10 Juin 05:06'),
+(5, 'Bob-Lee', 'I will go to the beach tonight!', 'NULL', 'Mer 10 Juin 06:06'),
+(6, 'Bob-Lee', 'NULL', './assets/postImages/Bob-Lee/20200515034011_1.jpg', 'Lun 15 Juin 18:06'),
+(7, 'Andy', 'NULL', './assets/postImages/Andy/20200516184608_1.jpg', 'Lun 15 Juin 19:06'),
+(8, 'Bob-Lee', 'J\'adore ma moto !', './assets/postImages/Bob-Lee/20200609022105_1.jpg', 'Lun 15 Juin 22:02'),
+(9, 'Bob-Lee', 'Good old vibes.. Miss you guys.', './assets/postImages/Bob-Lee/20200503041325_1.jpg', 'Sam 20 Juin 6:26'),
+(11, 'Bob-Lee', 'NULL', './assets/postImages/Bob-Lee/20200614233444_1.jpg', 'Lun 22 Juin 4:14'),
+(12, 'bob', 'Salut Los Santos !', 'NULL', 'Lun 22 Juin 4:15'),
+(10, 'Andy', 'Qui sort ce soir ?', 'NULL', 'Mar 23 Juin 20:42'),
+(13, 'Zola', 'Les plus beaux', './assets/postImages/Zola/20200604194858_1.jpg', 'Dim 28 Juin 0:35');
 
 -- --------------------------------------------------------
 
@@ -97,7 +146,8 @@ INSERT INTO `stalking` (`usernameFK`, `stalked`) VALUES
 ('Andy', 'Bob-Lee'),
 ('Bob-Lee', 'bob'),
 ('Bob-Lee', 'Premium Deluxe Motorsport'),
-('Bob-Lee', 'Andy');
+('Bob-Lee', 'Andy'),
+('Andy', 'Premium Deluxe Motorsport');
 
 -- --------------------------------------------------------
 
@@ -122,18 +172,32 @@ INSERT INTO `user` (`username`, `password`, `avatar`, `type`, `description`, `ab
 ('admin', '$2y$10$hKkKSsW2eJL9FhRdgejHYeB8O9RrQqz2foJY97T6TuEPBwvP1WkQi', './assets/usersAvatar/default.png', NULL, NULL, ''),
 ('Andy', '$2y$10$1T9R6ryf3g9wvQ.WPhhJmOCuC6WjeasnHHq8bldGJTLKQvXzKEWXS', './assets/usersAvatar/Andy.jpeg', 'PDG Concess SUD', 'Mec à Rachou', ''),
 ('bob', '$2y$10$fD.817Ws1DMoqmtHrHbIlePmF6fMKbMCyafOkSIirabZQhw9yY9OG', './assets/usersAvatar/bob.jpeg', NULL, NULL, ''),
-('Bob-Lee', '$2y$10$QoVWKZZI39yOI5HkNlow2e.RA00S.ancZ9JCNQqyI.orKEFXXOPo.', './assets/usersAvatar/Bob-Lee.jpeg', 'PDG Distillerie', 'Distillateur professionnel', 'I\'m legit, wola.'),
-('Premium Deluxe Motorsport', '$2y$10$TAmRfLkuY0DJFL9ktdh1Suno4DvyH7xM7Njh1/PFJaXPmGu8FzMjS', './assets/usersAvatar/Premium Deluxe Motorsport.jpeg', NULL, NULL, NULL);
+('Bob-Lee', '$2y$10$QoVWKZZI39yOI5HkNlow2e.RA00S.ancZ9JCNQqyI.orKEFXXOPo.', './assets/usersAvatar/Bob-Lee.jpeg', 'PDG Distillerie', 'Distillateur professionnel', 'Ancien Marine, sniper d\'élite.'),
+('Premium Deluxe Motorsport', '$2y$10$TAmRfLkuY0DJFL9ktdh1Suno4DvyH7xM7Njh1/PFJaXPmGu8FzMjS', './assets/usersAvatar/Premium Deluxe Motorsport.jpeg', NULL, NULL, NULL),
+('Zola', '$2y$10$AXnQE07nlsF/1YnOPsVsge6VFD4B67mQLA8dM6/6W42GS62k4RSG2', './assets/usersAvatar/Zola.jpeg', NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
 --
 
 --
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD KEY `idPost` (`idPost`);
+
+--
+-- Indexes for table `likes`
+--
+ALTER TABLE `likes`
+  ADD KEY `postId` (`id`);
+
+--
 -- Indexes for table `post`
 --
 ALTER TABLE `post`
-  ADD KEY `usernameWall` (`usernameFK`);
+  ADD KEY `usernameWall` (`usernameFK`),
+  ADD KEY `id` (`id`) USING BTREE;
 
 --
 -- Indexes for table `stalking`
@@ -146,6 +210,44 @@ ALTER TABLE `stalking`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`username`) USING BTREE;
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `idPost` int(255) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `likes`
+--
+ALTER TABLE `likes`
+  MODIFY `id` int(255) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `post`
+--
+ALTER TABLE `post`
+  MODIFY `id` int(255) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `comments`
+--
+ALTER TABLE `comments`
+  ADD CONSTRAINT `idPost` FOREIGN KEY (`idPost`) REFERENCES `post` (`id`);
+
+--
+-- Constraints for table `likes`
+--
+ALTER TABLE `likes`
+  ADD CONSTRAINT `postId` FOREIGN KEY (`id`) REFERENCES `post` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
