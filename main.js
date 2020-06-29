@@ -181,21 +181,37 @@ $('#postClose').click(()=>{
   $('#postBtn').css('display', 'block')
 })
 
-var modal = $("#modalImage")
-var modalImg = document.getElementById("modalImageSrc")
-var modalImageCaption = $('#caption')
-var author = $('#caption').text()
-$('.postImage img').click((e)=>{
-  modal.css("display", "block")
-  modalImg.src = e.currentTarget.currentSrc;
-  if(e.currentTarget.alt != "Post Picture"){
-    $('#caption').text(e.currentTarget.alt)
-    $('#caption').append('<br/><span style="font-weight:bold;">- '+author+' -</span>')
-  }else{
-    $('#caption').text(author)
-  }
-
-})
+if(window.location.pathname == "index.php"){
+  var modal = $("#modalImage")
+  var modalImg = document.getElementById("modalImageSrc")
+  var modalImageCaption = $('#caption')
+  var author = $('#caption').text()
+  $('.postImage img').click((e)=>{
+    modal.css("display", "block")
+    modalImg.src = e.currentTarget.currentSrc;
+    if(e.currentTarget.alt != "Post Picture"){
+      $('#caption').text(e.currentTarget.alt)
+      $('#caption').append('<br/><span style="font-weight:bold;">- '+author+' -</span>')
+    }else{
+      $('#caption').text(author)
+    }
+  })
+}else{ // Dashboard
+  var modal = $("#modalImage")
+  var modalImg = document.getElementById("modalImageSrc")
+  var modalImageCaption = $('#caption')
+  $('.postImage img').click((e)=>{
+    var author = e.target.parentElement.parentElement.children[0].children[1].innerText
+    modal.css("display", "block")
+    modalImg.src = e.currentTarget.currentSrc;
+    if(e.currentTarget.alt != "Post Picture"){
+      $('#caption').text(e.currentTarget.alt)
+      $('#caption').append('<br/><span style="font-weight:bold;">- '+author+' -</span>')
+    }else{
+      $('#caption').text(author)
+    }
+  })
+}
 $('#focusout').css('height', cssHeight)
 $("#focusout").click(()=>{
   modal.css("display", "none")
@@ -246,7 +262,6 @@ $('.displayComms').click((e)=>{
       var postval = '.id'+e.currentTarget.parentElement.childNodes[2].value
     }
   }
-  console.log(e.currentTarget.parentElement)
   if($(postval).css('display') == 'none'){
     e.currentTarget.childNodes[0].classList.replace('fa-chevron-down', 'fa-chevron-up')
     e.currentTarget.childNodes[3].classList.replace('fa-chevron-down', 'fa-chevron-up')
