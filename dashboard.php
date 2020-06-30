@@ -21,6 +21,7 @@
     $plusLike = 'INSERT INTO likes VALUES (:id, :wholiked);';
     $unLike = 'DELETE FROM likes WHERE id = :id AND userWhoLike = :user ;';
     $commentsReq = 'SELECT * FROM comments';
+    $newComment = 'INSERT INTO comments VALUES(:id, :author, :message, :date)';
     
 
 
@@ -69,6 +70,17 @@
     }
 
 
+    if(!empty($_POST['commentaire'])){
+      $newComment = $conn->prepare($newComment);
+      $newComment->bindParam(":id", $_POST['commentID']);
+      $newComment->bindParam(":author", $_SESSION['username']);
+      $newComment->bindParam(":message", $_POST['commentaire']);
+      $newComment->bindParam(":date", $_POST['dateComm']);
+      $newComment->execute();
+      header("Refresh:0");
+    }
+
+
   }catch(PDOException $e){
     echo 'Échec lors de la requête SQL : ' . $e->getMessage();
   }
@@ -81,7 +93,7 @@
   <meta property="og:url"            content="https://www.domain.com/index.php" />
   <meta property="og:type"           content="website" />
   <meta property="og:title"          content="Lifeinvader Atlantiss" />
-  <meta property="og:description"    content="Le réseau social du serveur GTA RP Atlantiss. Discord : https://discord.gg/w5HBjWw" />
+  <meta property="og:description"    content="Le réseau social du serveur GTA RP Atlantiss. Discord : https://discord.gg/atlantiss" />
   <meta property="og:image"          content="./assets/img/favicon.ico" />
 
   <title>Lifeinvader</title>
@@ -364,12 +376,14 @@
                     echo '<form method="POST">';
                       echo '<button class="liked" name="unLike" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
                       echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
+                      echo '<input class="commenter raise" type="button" value="commenter" />';
                       echo (!empty($comment)) ? '<span class="displayComms" style="cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                     echo '</form>';
                   }else{
                     echo '<form class="formLike" method="POST">';
                     echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
                     echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
+                    echo '<input class="commenter raise" type="button" value="commenter" />';
                       echo (!empty($comment)) ? '<span class="displayComms" style="cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                     echo '</form>';
                   }
@@ -422,12 +436,14 @@
                     echo '<form method="POST">';
                       echo '<button class="liked" name="unLike" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
                       echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
+                      echo '<input class="commenter raise" type="button" value="commenter" />';
                       echo (!empty($comment)) ? '<span class="displayComms" style="cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                     echo '</form>';
                   }else{
                     echo '<form class="formLike" method="POST">';
                       echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
                       echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
+                      echo '<input class="commenter raise" type="button" value="commenter" />';
                       echo (!empty($comment)) ? '<span class="displayComms" style="cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                     echo '</form>';
                   }
@@ -480,12 +496,14 @@
                     echo '<form method="POST">';
                       echo '<button class="liked" name="unLike" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
                       echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
+                      echo '<input class="commenter raise" type="button" value="commenter" />';
                       echo (!empty($comment)) ? '<span class="displayComms" style="cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                     echo '</form>';
                   }else{
                     echo '<form class="formLike" method="POST">';
                       echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
                       echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
+                      echo '<input class="commenter raise" type="button" value="commenter" />';
                       echo (!empty($comment)) ? '<span class="displayComms" style="cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                     echo '</form>';
                   }
@@ -518,6 +536,16 @@
             <img class="modalImage-content" id="modalImageSrc" style="z-index:11;">
             <div id="caption"><?php echo $username; ?></div>
         </div>
+        <div id="commentModal">
+          <form id="commentForm" method="post">
+            <span id="closeCommentModal"><i class="fa fa-times" aria-hidden="true"></i></span>
+            <textarea rows="3" cols="50" type="text" name="commentaire" placeholder="Commentaire (420 caractères max.)" maxlength="420"></textarea><br/><br/>
+            <input type="hidden" name="commentID" id="commentID">
+            <input type="hidden" name="dateComm" id="dateComm">
+            <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" />
+            <button onclick="submitComm();" ><i class="fas fa-arrow-circle-right"></i></button>
+          </form>
+        </div>
       </div>
       <div class="col-3 ads">
         <h3>Sponsored</h3>
@@ -540,6 +568,8 @@
       </div>
     </div>
   </div>
+  <hr/>
+  <footer><p style="padding-bottom:15px;">© Butterfly Corp · Atlantiss 2020</p></footer>
 
   <?php endif; ?>
 

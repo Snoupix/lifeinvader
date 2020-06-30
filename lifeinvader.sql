@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jun 28, 2020 at 12:59 AM
+-- Generation Time: Jun 30, 2020 at 04:52 AM
 -- Server version: 5.7.24
 -- PHP Version: 7.2.14
 
@@ -51,7 +51,7 @@ INSERT INTO `ads` (`name`, `image`, `link`, `promo`) VALUES
 CREATE TABLE `comments` (
   `idPost` int(255) UNSIGNED NOT NULL,
   `author` varchar(50) NOT NULL,
-  `message` varchar(150) NOT NULL,
+  `message` varchar(420) NOT NULL,
   `date` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -63,7 +63,8 @@ INSERT INTO `comments` (`idPost`, `author`, `message`, `date`) VALUES
 (9, 'Andy', 'Miss that too', 'Ven 26 Juin 06:43'),
 (11, 'admin', 'Nice one !', 'Sam 27 Juin 23:39'),
 (9, 'Zola', 'So much', 'Dim 28 Juin 00:39'),
-(5, 'Andy', 'Coming!', 'Dim 28 Juin 00:54');
+(5, 'Andy', 'Coming!', 'Dim 28 Juin 00:54'),
+(13, 'Bob-Lee', 'Je suis bien d\'accord !', 'Mar 30 Juin 6:30');
 
 -- --------------------------------------------------------
 
@@ -147,7 +148,28 @@ INSERT INTO `stalking` (`usernameFK`, `stalked`) VALUES
 ('Bob-Lee', 'bob'),
 ('Bob-Lee', 'Premium Deluxe Motorsport'),
 ('Bob-Lee', 'Andy'),
-('Andy', 'Premium Deluxe Motorsport');
+('Andy', 'Premium Deluxe Motorsport'),
+('Bob-Lee', 'Zola');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `test`
+--
+
+CREATE TABLE `test` (
+  `id` int(11) NOT NULL,
+  `uuid` varchar(50) NOT NULL,
+  `coowner` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `test`
+--
+
+INSERT INTO `test` (`id`, `uuid`, `coowner`) VALUES
+(29, '05b87586-ba68-11ea-b3de-0242ac130054', NULL),
+(30, '05b87586-ba68-11ea-b3de-0242ac130054', '05b877ca-ba68-11ea-b3de-0242ac130004');
 
 -- --------------------------------------------------------
 
@@ -206,6 +228,12 @@ ALTER TABLE `stalking`
   ADD KEY `usernameFK` (`usernameFK`) USING HASH;
 
 --
+-- Indexes for table `test`
+--
+ALTER TABLE `test`
+  ADD KEY `Index 1` (`id`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -219,7 +247,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `idPost` int(255) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `idPost` int(255) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `likes`
@@ -232,6 +260,12 @@ ALTER TABLE `likes`
 --
 ALTER TABLE `post`
   MODIFY `id` int(255) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `test`
+--
+ALTER TABLE `test`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- Constraints for dumped tables

@@ -15,8 +15,6 @@ To do list:
 
 [WORKING ON :] Comment section PhP
 
-ideas : put them all in php. Make the same as likes with table and display them in JS
-
 
 
 
@@ -25,4 +23,4 @@ ideas : put them all in php. Make the same as likes with table and display them 
 Ajouter une pub:
 Créer le compte avec le nom exact.
 Ajouter l'image dans ./assets/adImages/
-INSERT INTO ads VALUES  ('nom', 'image path', 'lien vers le compte', 'texte promo court');
+INSERT INTO ads VALUES ('nom', 'image path', 'lien vers le compte', 'texte promo court');

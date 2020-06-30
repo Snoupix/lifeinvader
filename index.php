@@ -82,7 +82,8 @@
     $unLike = 'DELETE FROM likes WHERE id = :id AND userWhoLike = :user ;';
     $commentsReq = 'SELECT * FROM comments';
     $allUsers = 'SELECT * FROM user';
-    
+    $newComment = 'INSERT INTO comments VALUES(:id, :author, :message, :date)';
+
 
     if(isset($_SESSION['username'])){
 
@@ -268,6 +269,16 @@
       header("Refresh:0");
     }
 
+
+    if(!empty($_POST['commentaire'])){
+      $newComment = $conn->prepare($newComment);
+      $newComment->bindParam(":id", $_POST['commentID']);
+      $newComment->bindParam(":author", $_SESSION['username']);
+      $newComment->bindParam(":message", $_POST['commentaire']);
+      $newComment->bindParam(":date", $_POST['dateComm']);
+      $newComment->execute();
+      header("Refresh:0");
+    }
     
     
 
@@ -401,7 +412,7 @@
                       <button id="postClose" style="border:none;background:none;float:right;outline:none;"><i class="fa fa-times-circle" aria-hidden="true"></i></button>
                       <form id="postpost" method="POST" action="index.php" enctype="multipart/form-data">
                         <input type="hidden" name="date">
-                        <textarea name="postTxt" id="postTxt" cols="40" placeholder="Postez un message de 420 caractères max."></textarea>
+                        <textarea name="postTxt" id="postTxt" cols="40" maxlength="420" placeholder="Postez un message de 420 caractères max."></textarea>
                         <label for="postImageButton">Choisir une image</label>
                         <input type="file" id="postImageButton" name="postImage" accept="image/png, image/jpeg, image/jpg">
                         <input class="raise" name="postSub" type="submit" value="Envoyer">
@@ -503,12 +514,14 @@
                       echo '<form method="POST">';
                         echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
                         echo '<button class="liked" name="unLike" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                        echo '<input class="commenter raise" type="button" value="commenter" />';
                         echo (!empty($comment)) ? '<span class="displayComms" style="padding-top:1%;cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                       echo '</form>';
                     }else{
                       echo '<form class="formLike" method="POST">';
                         echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
                         echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                        echo '<input class="commenter raise" type="button" value="commenter" />';
                         echo (!empty($comment)) ? '<span class="displayComms" style="padding-top:1%;cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                       echo '</form>';
                     }
@@ -559,12 +572,14 @@
                       echo '<form method="POST">';
                         echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
                         echo '<button class="liked" name="unLike" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                        echo '<input class="commenter raise" type="button" value="commenter" />';
                         echo (!empty($comment)) ? '<span class="displayComms" style="padding-top:1%;cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                       echo '</form>';
                     }else{
                       echo '<form class="formLike" method="POST">';
                         echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
                         echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                        echo '<input class="commenter raise" type="button" value="commenter" />';
                         echo (!empty($comment)) ? '<span class="displayComms" style="padding-top:1%;cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                       echo '</form>';
                     }
@@ -615,12 +630,14 @@
                       echo '<form method="POST">';
                         echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
                         echo '<button class="liked" name="unLike" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                        echo '<input class="commenter raise" type="button" value="commenter" />';
                         echo (!empty($comment)) ? '<span class="displayComms" style="padding-top:1%;cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                       echo '</form>';
                     }else{
                       echo '<form class="formLike" method="POST">';
                         echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
                         echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                        echo '<input class="commenter raise" type="button" value="commenter" />';
                         echo (!empty($comment)) ? '<span class="displayComms" style="padding-top:1%;cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                       echo '</form>';
                     }
@@ -652,6 +669,16 @@
               <span id="closeModalImage"><i class="fa fa-times" aria-hidden="true"></i></span>
               <img class="modalImage-content" id="modalImageSrc" style="z-index:11;">
               <div id="caption"><?php echo $username; ?></div>
+          </div>
+          <div id="commentModal">
+            <form id="commentForm" method="post">
+              <span id="closeCommentModal"><i class="fa fa-times" aria-hidden="true"></i></span>
+              <textarea rows="3" cols="50" type="text" name="commentaire" placeholder="Commentaire (420 caractères max.)" maxlength="420"></textarea><br/><br/>
+              <input type="hidden" name="commentID" id="commentID">
+              <input type="hidden" name="dateComm" id="dateComm">
+              <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" />
+              <button onclick="submitComm();" ><i class="fas fa-arrow-circle-right"></i></button>
+            </form>
           </div>
 
           <div id="imagesMod">

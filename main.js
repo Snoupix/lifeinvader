@@ -272,3 +272,26 @@ $('.displayComms').click((e)=>{
     $(postval).css('display', 'none')
   }
 })
+
+var commentaire = $("#commentModal")
+var id
+$('.commenter').click((e)=>{
+  if(window.location.pathname == "/index.php"){
+    id = e.currentTarget.parentElement.childNodes[0].value
+  }else{
+    id = e.currentTarget.parentElement.childNodes[2].value
+  }
+  commentaire.css("display", "block")
+})
+$('#closeCommentModal').click(()=>{
+  commentaire.css("display", "none")
+  $("#commentModal textarea").val("")
+})
+
+function submitComm(){
+  $("#commentID").val(id)
+  $("#dateComm").val(today)
+  if($("#commentModal textarea").val().length > 1){
+    $("#commentForm").submit()
+  }
+}

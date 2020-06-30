@@ -216,10 +216,10 @@ footer p{
 
 .raise:hover,
 .raise:focus,
-label[for="postImageButton"]:hover,
-label[for="postImageButton"]:focus,
 label[for="profilePic"]:hover,
-label[for="profilePic"]:focus{
+label[for="profilePic"]:focus,
+label[for="postImageButton"]:hover,
+label[for="postImageButton"]:focus{
   border-color: #ffcdaa!important;
   color: #ffcdaa!important;
   box-shadow: 0 0.5em 0.5em -0.4em #AC0101!important;
@@ -562,4 +562,79 @@ input[name="postSub"]{
 .comm-content p{
   margin-bottom: 0px;
   font-size: 0.8em;
+}
+
+.commenter{
+  border: 1px solid #EBC2C2;
+  border-radius: 25px;
+  background:none;
+  outline:none;
+  font-size: 11px;
+  color: #aaa;
+  font-weight: bold;
+  padding: 1%;
+  margin: 0px 0px 0px 2%;
+  padding: 10px;
+}
+
+.commenter:hover{
+  color: #EBC2C2!important;
+  border-color: #EBC2C2!important;
+}
+
+#closeCommentModal svg{
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+#closeCommentModal svg:hover,
+#closeCommentModal svg:focus{
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#commentModal{
+  display: none;
+  position: fixed;
+  z-index: 10;
+  padding-top: 150px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.9);
+  text-align: center;
+}
+
+#commentModal button{
+  border: none;
+  border-radius: 50%;
+  background: none;
+  position: absolute;
+  font-size: 30px;
+  transition: all 0.1s ease-in;
+  outline: none;
+}
+
+#commentModal textarea{
+  border-radius: 25px;
+  padding: 1%;
+  outline: none;
+}
+
+#commentModal button:hover{
+  transform: scale(1.2, 1.2);
+  background-color: #fff;
+}
+
+#commentModal svg path{
+  color: #aaa;
 }
