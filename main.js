@@ -15,11 +15,39 @@ $(document).ready(()=>{
       $('#wall').attr('class', 'col-9 wall')
       $('#ads').attr('class', 'col-12 ads')
       $('#postTxt').attr('cols', '38')
-    }else if(document.body.clientWidth > 401){
+    }else if(document.body.clientWidth > 420){
       $('#postTxt').attr('cols', '25')
     }else{ // Phone size
       $('#postTxt').attr('cols', '20')
       $('#postTxt').attr('rows', '3')
+      $('#wall').attr('class', 'col-9 wall')
+      $('#ads img').css('width', '200px')
+      $('#ads').attr('class', 'col-12 ads')
+      $(".postFooter span").css("font-size", "8px")
+      $(".postFooter span").css("margin-top", "5px")
+      $(".postBanner span").css("font-size", "8px")
+      $('.borderPic').css("padding", "0px")
+      $('.borderPic').css("margin", "0px")
+      $('.borderPic').css("border", "none")
+      $('.profilePic').css("height", "346px")
+      $('.profilePic img').css("height", "55%")
+      $(".commenter").css("font-size", "9px")
+      $(".commenter").css("padding", "3px")
+      $(".borderPic").attr("class", 'borderPic col-12')
+      $("header .col-8").attr("class", 'col-12')
+      $("header .col-12").css('padding-top', '24px')
+      $(".banner").attr('class', 'row banner bannerPhone')
+      $(".description .col-12").attr('class', 'col-8')
+      $(".description .col-8").css('padding-top', '0px')
+      $('button[name="edit"]').css('margin-right', '10px')
+      $(".about p").css('font-size', '10px')
+      $("#signinButton").css('margin-top', '3%')
+      $(".name h1").css('margin-top', '10px')
+      $(".name h1").css('margin-bottom', '10px')
+      $("#stalkForm button").css('margin-right', '15px')
+      $("carousel-item img").css('margin', '60px auto')
+      $('input[name="postSub"]').css('right', '0px')
+      if(!$('textarea[name="postTxt"]').length){$(".bannerPhone").css('margin-bottom', '30px')}
     }
 
     // Center default pic
@@ -100,7 +128,7 @@ $("#profilePic").change(function (e) {
         var objectUrl = _URL.createObjectURL(file);
         img.onload = function () {
             if(this.width > 1920 || this.height > 1080){
-              alert('Tu aura des problèmes si tu upload cette image, elle est trop grande.');
+              alert('Tu aura des problèmes si tu upload cette image, elle est trop grande.')
             }
             _URL.revokeObjectURL(objectUrl);
         };
@@ -111,6 +139,20 @@ $("#profilePic").change(function (e) {
 // Resize username if too long
 if($('.name h1').text().length > 10){
   $('.name h1').css('font-size', '26px')
+}
+/* if($('.postBanner a').text().length > 10){
+  $('.postBanner a').css('font-size', '8px')
+  $('.postBanner a').css('margin-right', '100px')
+  $('.postBanner').css('margin-bottom', '37px')
+} */
+
+for(let e of document.getElementsByClassName('post')){
+  console.log(e)
+  e.style.marginRight = '100px'
+  /* if($(e+' a').text().length > 10){
+    $(e+' a').css('font-size', '8px')
+    /* $('.postBanner').css('margin-bottom', '37px')
+  } */
 }
 
 
@@ -282,6 +324,7 @@ $('.commenter').click((e)=>{
     id = e.currentTarget.parentElement.childNodes[2].value
   }
   commentaire.css("display", "block")
+  $("#commentModal textarea").focus()
 })
 $('#closeCommentModal').click(()=>{
   commentaire.css("display", "none")

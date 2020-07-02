@@ -47,6 +47,10 @@ header{
   margin-bottom: 0px;
 }
 
+.banner input{
+  margin-left: 195px;
+}
+
 @media only screen and (min-width: 990px){
   .banner{
     margin-right: -58px!important;
@@ -77,8 +81,14 @@ header{
   }
 }
 
-.banner input{
-  margin-left: 195px;
+
+@media only screen and (max-width: 500px){
+  .description{
+    padding-right: 15px!important;
+  }
+  .banner p{
+    padding-left: 0px;
+  }
 }
 
 @media only screen and (min-width: 1000px){
@@ -91,6 +101,11 @@ header{
   .banner input{
     margin-left: 300px!important;
   }
+}
+
+.bannerPhone{
+  margin-left: -15px!important;
+  margin-right: 0px!important;
 }
 
 .stalkers{

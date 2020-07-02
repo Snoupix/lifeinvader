@@ -147,8 +147,8 @@
                     echo '<img src="'.$userPost['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
                     echo '<a href="index.php?username='.$userPost['username'].'">'.$key['usernameFK'].'</a>';
                     echo '<span>Posté '.$key['date'].'</span>';
-                    echo '<hr/>';
                   echo '</div>';
+                    echo '<hr/>';
                   echo '<div class="postImage">';
                     echo '<img src="'.$key['image'].'" alt="'.$key['message'].'" width="50%"/>';
                     echo '<hr/>';
@@ -195,8 +195,8 @@
                     echo '<img src="'.$userPost['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
                     echo '<a href="index.php?username='.$userPost['username'].'">'.$key['usernameFK'].'</a>';
                     echo '<span>Posté '.$key['date'].'</span>';
-                    echo '<hr/>';
                   echo '</div>';
+                    echo '<hr/>';
                   echo '<div class="postContent">';
                     echo '<p>'.$key['message'].'</p>';
                   echo '</div>';
@@ -239,8 +239,8 @@
                     echo '<img src="'.$userPost['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
                     echo '<a href="index.php?username='.$userPost['username'].'">'.$key['usernameFK'].'</a>';
                     echo '<span>Posté '.$key['date'].'</span>';
-                    echo '<hr/>';
                   echo '</div>';
+                    echo '<hr/>';
                   echo '<div class="postImage">';
                     echo '<img src="'.$key['image'].'" alt="Post Picture" width="50%"/>';
                   echo '</div>';
@@ -361,8 +361,8 @@
                   echo '<img src="'.$userPost['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
                   echo '<a href="index.php?username='.$userPost['username'].'">'.$key['usernameFK'].'</a>';
                   echo '<span>Posté '.$key['date'].'</span>';
-                  echo '<hr/>';
                 echo '</div>';
+                  echo '<hr/>';
                 echo '<div class="postImage">';
                   echo '<img src="'.$key['image'].'" alt="'.$key['message'].'" width="50%"/>';
                   echo '<hr/>';
@@ -425,8 +425,8 @@
                   echo '<img src="'.$userPost['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
                   echo '<a href="index.php?username='.$userPost['username'].'">'.$key['usernameFK'].'</a>';
                   echo '<span>Posté '.$key['date'].'</span>';
-                  echo '<hr/>';
                 echo '</div>';
+                  echo '<hr/>';
                 echo '<div class="postContent">';
                   echo '<p>'.$key['message'].'</p>';
                 echo '</div>';
@@ -485,8 +485,8 @@
                   echo '<img src="'.$userPost['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
                   echo '<a href="index.php?username='.$userPost['username'].'">'.$key['usernameFK'].'</a>';
                   echo '<span>Posté '.$key['date'].'</span>';
-                  echo '<hr/>';
                 echo '</div>';
+                  echo '<hr/>';
                 echo '<div class="postImage">';
                   echo '<img src="'.$key['image'].'" alt="Post Picture" width="50%"/>';
                 echo '</div>';

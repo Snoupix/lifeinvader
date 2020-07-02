@@ -1,19 +1,9 @@
 To do list:
 
-    -Comment on every post
-
-    Be connected to see comments
-    Can't open section if there is no comment so if
-    more than one comment => display by adding a class
-    then in JS if class and click, display
-    No likes for comments
-
-    The post owner (self) can delete comments
-
     - Responsive Tel with cols & rows for the header
 
 
-[WORKING ON :] Comment section PhP
+[WORKING ON :] Telephone adaptation, username in the feed
 
 
 

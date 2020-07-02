@@ -353,7 +353,7 @@
                     <h1><?php echo $username; ?></h1>
                   </div>
                   <div class="col">
-                  <?php if($isIndex != false && $srcReqOK != false): ?>
+                  <?php if($isIndex != false && $srcReqOK != false && $_GET['username'] != $_SESSION['username']): ?>
                       <?php if(!$isStalking): ?>
                         <form id="stalkForm" method="POST">
                           <button type="submit" class="stalk float-right" name="stalk"><i class="fas fa-plus" style="font-size:12px;font-weight:bold;"></i> Stalk</button>
@@ -499,8 +499,8 @@
                     echo '<img src="'.$icon['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
                     echo '<a href="#">'.$username.'</a>';
                     echo '<span>Posté '.$key['date'].'</span>';
-                    echo '<hr/>';
                   echo '</div>';
+                    echo '<hr/>';
                   echo '<div class="postImage">';
                     echo '<img src="'.$key['image'].'" alt="'.$key['message'].'" width="50%"/>';
                     echo '<hr/>';
@@ -561,8 +561,8 @@
                     echo '<img src="'.$icon['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
                     echo '<a href="#">'.$username.'</a>';
                     echo '<span>Posté '.$key['date'].'</span>';
-                    echo '<hr/>';
                   echo '</div>';
+                    echo '<hr/>';
                   echo '<div class="postContent">';
                     echo '<p>'.$key['message'].'</p>';
                   echo '</div>';
@@ -619,8 +619,8 @@
                     echo '<img src="'.$icon['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
                     echo '<a href="#">'.$username.'</a>';
                     echo '<span>Posté '.$key['date'].'</span>';
-                    echo '<hr/>';
                   echo '</div>';
+                    echo '<hr/>';
                   echo '<div class="postImage">';
                     echo '<img src="'.$key['image'].'" alt="Post Picture" width="50%"/>';
                   echo '</div>';
