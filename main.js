@@ -146,9 +146,9 @@ if($('.name h1').text().length > 10){
   $('.postBanner').css('margin-bottom', '37px')
 } */
 
-for(let e of document.getElementsByClassName('post')){
+for(let e of $(".post")){
   console.log(e)
-  e.style.marginRight = '100px'
+  /* e.style.marginRight = '100px' */
   /* if($(e+' a').text().length > 10){
     $(e+' a').css('font-size', '8px')
     /* $('.postBanner').css('margin-bottom', '37px')
