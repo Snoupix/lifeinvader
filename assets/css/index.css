@@ -392,8 +392,12 @@ input[name="postSub"]{
 
 .ad p{
   font-size: 11px;
-  margin-bottom: 2px;
-  margin-top: 2px;
+  margin-bottom: 4px;
+  margin-top: 4px;
+}
+
+.ad{
+  text-align: center;
 }
 
 .profileButton a{

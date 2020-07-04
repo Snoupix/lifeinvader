@@ -734,9 +734,10 @@
             </div>
           </div>
         </div>
-        <div class="col-3 ads" id="ads" style="padding-left:0px;">
+        <div class="col-3 ads" id="ads" style="padding-left:0px;padding-right:0px;">
           <h3>Sponsored</h3>
           <?php
+            $iads = 0;
             foreach($ads as $val){
               $adStalking = [];
               $adStalkers = 'SELECT COUNT(*) as stalkers FROM stalking WHERE stalked = "'.$val['name'].'";';
@@ -744,12 +745,14 @@
               $adStalkers = $adStalkers->fetch(PDO::FETCH_ASSOC);
               array_push($adStalking, $val['name'], $adStalkers['stalkers']);
 
+              echo ($iads != 0) ? '<hr/>' : '';
               echo '<div class="ad">';
                 echo '<h5><a href="'.$val['link'].'">'.$val['name'].'</a></h5>';
-                echo '<a href="'.$val['link'].'"><img src="'.$val['image'].'" width="100%" alt="'.$val['name'].'"></a>';
+                echo '<a href="'.$val['link'].'"><img src="'.$val['image'].'" width="220px" alt="'.$val['name'].'"></a>';
                 echo '<p>'.$val['promo'].'</p>';
                 echo '<p style="opacity:0.75;">'.$adStalking["1"].' people are stalking '.$val['name'].'</p>';
               echo '</div>';
+              $iads = $iads + 1;
             }
           ?>
         </div>

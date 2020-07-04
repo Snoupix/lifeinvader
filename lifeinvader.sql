@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jun 30, 2020 at 04:52 AM
+-- Generation Time: Jul 04, 2020 at 03:09 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.2.14
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `ads` (
   `name` varchar(150) NOT NULL,
-  `image` varchar(150) NOT NULL,
+  `image` varchar(450) NOT NULL,
   `link` varchar(150) NOT NULL,
   `promo` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -40,7 +40,8 @@ CREATE TABLE `ads` (
 --
 
 INSERT INTO `ads` (`name`, `image`, `link`, `promo`) VALUES
-('Premium Deluxe Motorsport', './assets/adImages/Premium Deluxe Motorsport.jpeg', 'index.php?username=Premium+Deluxe+Motorsport', '10% discount on your first purchase.');
+('Premium Deluxe Motorsport', './assets/adImages/Premium Deluxe Motorsport.jpeg', 'index.php?username=Premium+Deluxe+Motorsport', '10% discount on your first purchase.'),
+('Distillerie Jonhson', './assets/adImages/Distillerie.jpg', 'index.php?username=Distillerie+Jonhson', 'Distributeurs d\'alcools depuis longtemps.');
 
 -- --------------------------------------------------------
 
@@ -64,7 +65,9 @@ INSERT INTO `comments` (`idPost`, `author`, `message`, `date`) VALUES
 (11, 'admin', 'Nice one !', 'Sam 27 Juin 23:39'),
 (9, 'Zola', 'So much', 'Dim 28 Juin 00:39'),
 (5, 'Andy', 'Coming!', 'Dim 28 Juin 00:54'),
-(13, 'Bob-Lee', 'Je suis bien d\'accord !', 'Mar 30 Juin 6:30');
+(13, 'Bob-Lee', 'Je suis bien d\'accord !', 'Mar 30 Juin 6:30'),
+(14, 'Premium Deluxe Motorsport', 'Not anymore !', 'Sam 04 Juillet 1:45'),
+(15, 'Bob-Lee', 'Ouieuuh 23 euuh', 'Sam 04 Juillet 2:29');
 
 -- --------------------------------------------------------
 
@@ -89,7 +92,8 @@ INSERT INTO `likes` (`id`, `userWhoLike`) VALUES
 (11, 'Bob-Lee'),
 (7, 'Bob-Lee'),
 (3, 'Bob-Lee'),
-(13, 'Bob-Lee');
+(13, 'Bob-Lee'),
+(15, 'Bob-Lee');
 
 -- --------------------------------------------------------
 
@@ -101,7 +105,7 @@ CREATE TABLE `post` (
   `id` int(255) UNSIGNED NOT NULL,
   `usernameFK` varchar(50) NOT NULL,
   `message` varchar(420) NOT NULL,
-  `image` varchar(50) DEFAULT 'NULL',
+  `image` varchar(450) DEFAULT NULL,
   `date` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -122,7 +126,10 @@ INSERT INTO `post` (`id`, `usernameFK`, `message`, `image`, `date`) VALUES
 (11, 'Bob-Lee', 'NULL', './assets/postImages/Bob-Lee/20200614233444_1.jpg', 'Lun 22 Juin 4:14'),
 (12, 'bob', 'Salut Los Santos !', 'NULL', 'Lun 22 Juin 4:15'),
 (10, 'Andy', 'Qui sort ce soir ?', 'NULL', 'Mar 23 Juin 20:42'),
-(13, 'Zola', 'Les plus beaux', './assets/postImages/Zola/20200604194858_1.jpg', 'Dim 28 Juin 0:35');
+(13, 'Zola', 'Les plus beaux', './assets/postImages/Zola/20200604194858_1.jpg', 'Dim 28 Juin 0:35'),
+(14, 'Premium Deluxe Motorsport', 'We\'re opened tonight !', 'NULL', 'Mer 01 Juillet 0:34'),
+(15, 'Distillerie Jonhson', 'Nous aimons l\'alcool. (Et, accessoirement, nous en vendons !)', './assets/postImages/Distillerie/20200610000658_1.jpg', 'Sam 04 Juillet 2:19'),
+(16, 'admin', 'Hello', 'NULL', 'Sam 04 Juillet 5:04');
 
 -- --------------------------------------------------------
 
@@ -140,7 +147,6 @@ CREATE TABLE `stalking` (
 --
 
 INSERT INTO `stalking` (`usernameFK`, `stalked`) VALUES
-('Bob-Lee', 'admin'),
 ('admin', 'bob'),
 ('bob', 'Andy'),
 ('admin', 'Bob-Lee'),
@@ -149,7 +155,9 @@ INSERT INTO `stalking` (`usernameFK`, `stalked`) VALUES
 ('Bob-Lee', 'Premium Deluxe Motorsport'),
 ('Bob-Lee', 'Andy'),
 ('Andy', 'Premium Deluxe Motorsport'),
-('Bob-Lee', 'Zola');
+('Bob-Lee', 'Distillerie Jonhson'),
+('Andy', 'Distillerie Jonhson'),
+('Zola', 'Distillerie Jonhson');
 
 -- --------------------------------------------------------
 
@@ -168,8 +176,8 @@ CREATE TABLE `test` (
 --
 
 INSERT INTO `test` (`id`, `uuid`, `coowner`) VALUES
-(29, '05b87586-ba68-11ea-b3de-0242ac130054', NULL),
-(30, '05b87586-ba68-11ea-b3de-0242ac130054', '05b877ca-ba68-11ea-b3de-0242ac130004');
+(31, '05b87586-ba68-11ea-b3de-0242ac130054', NULL),
+(32, '05b87586-ba68-11ea-b3de-0242ac130054', '05b877ca-ba68-11ea-b3de-0242ac130004');
 
 -- --------------------------------------------------------
 
@@ -195,6 +203,7 @@ INSERT INTO `user` (`username`, `password`, `avatar`, `type`, `description`, `ab
 ('Andy', '$2y$10$1T9R6ryf3g9wvQ.WPhhJmOCuC6WjeasnHHq8bldGJTLKQvXzKEWXS', './assets/usersAvatar/Andy.jpeg', 'PDG Concess SUD', 'Mec à Rachou', ''),
 ('bob', '$2y$10$fD.817Ws1DMoqmtHrHbIlePmF6fMKbMCyafOkSIirabZQhw9yY9OG', './assets/usersAvatar/bob.jpeg', NULL, NULL, ''),
 ('Bob-Lee', '$2y$10$QoVWKZZI39yOI5HkNlow2e.RA00S.ancZ9JCNQqyI.orKEFXXOPo.', './assets/usersAvatar/Bob-Lee.jpeg', 'PDG Distillerie', 'Distillateur professionnel', 'Ancien Marine, sniper d\'élite.'),
+('Distillerie Jonhson', '$2y$10$isqwxjEap3H7n16DYgy6e.rVGXOMCSLT9zo3hBdpbmyaCtL8IemzK', './assets/usersAvatar/Distillerie.jpeg', 'Entreprise', 'Distillateur de tout types d\'alcool.', 'Nous travaillons avec tout notre cœur pour vous proposer le meilleur alcool que vous avez jamais bu.'),
 ('Premium Deluxe Motorsport', '$2y$10$TAmRfLkuY0DJFL9ktdh1Suno4DvyH7xM7Njh1/PFJaXPmGu8FzMjS', './assets/usersAvatar/Premium Deluxe Motorsport.jpeg', NULL, NULL, NULL),
 ('Zola', '$2y$10$AXnQE07nlsF/1YnOPsVsge6VFD4B67mQLA8dM6/6W42GS62k4RSG2', './assets/usersAvatar/Zola.jpeg', NULL, NULL, NULL);
 
@@ -247,25 +256,25 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `idPost` int(255) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `idPost` int(255) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `likes`
 --
 ALTER TABLE `likes`
-  MODIFY `id` int(255) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(255) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `post`
 --
 ALTER TABLE `post`
-  MODIFY `id` int(255) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(255) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `test`
 --
 ALTER TABLE `test`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- Constraints for dumped tables

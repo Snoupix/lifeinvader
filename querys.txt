@@ -1,9 +1,9 @@
 To do list:
 
-    - Responsive Tel with cols & rows for the header
+    - Check ads on mobile
 
 
-[WORKING ON :] Telephone adaptation, username in the feed
+[WORKING ON :] Last thing to do : EDIT mode Responsive
 
 
 

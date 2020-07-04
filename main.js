@@ -1,36 +1,40 @@
 $(document).ready(()=>{
+
+  /* console.log('%c Hey, ce site a été créé par :', 'font-weight: bold; font-size: 20px;color: rgb(2,135,206)')
+  console.log('%c <Butterfly Corp/>', 'font-weight: bold; font-size: 40px;color: red; text-shadow: 3px 3px 0 rgb(217,31,38) , 6px 6px 0 rgb(226,91,14) , 9px 9px 0 rgb(245,221,8) , 12px 12px 0 rgb(5,148,68) , 15px 15px 0 rgb(2,135,206) , 18px 18px 0 rgb(4,77,145) , 21px 21px 0 rgb(42,21,113)');
+  console.log('%c Butterfly Corp est une entreprise sous l\'auto-entreprenariat de Bob-Lee "Snoupix" Jonhson.', 'font-weight: bold; font-size: 15px;color: rgb(226,91,14)')
+  console.log('%c Tu peux le contacter via Discord', 'font-weight: bold; font-size: 15px;color: rgb(226,91,14)')
+  console.log('%c Snoupix#1264', 'font-weight: bold; font-size: 18px;color: rgb(245,221,8)') */
+
   setTimeout(()=>{
     if(document.body.clientWidth > 1201){
       $('#postTxt').attr('cols', '70')
-      $('#ads img').css('width', '100%')
       $('#wall').attr('class', 'col-6 wall')
       $('#ads').attr('class', 'col-3 ads')
     }else if(document.body.clientWidth > 993){
       $('#postTxt').attr('cols', '55')
-      $('#ads img').css('width', '220px')
       $('#wall').attr('class', 'col-9 wall')
       $('#ads').attr('class', 'col-12 ads')
     }else if(document.body.clientWidth > 771){
-      $('#ads img').css('width', '220px')
       $('#wall').attr('class', 'col-9 wall')
       $('#ads').attr('class', 'col-12 ads')
       $('#postTxt').attr('cols', '38')
     }else if(document.body.clientWidth > 420){
       $('#postTxt').attr('cols', '25')
     }else{ // Phone size
-      $('#postTxt').attr('cols', '20')
-      $('#postTxt').attr('rows', '3')
+      $('#postTxt').attr('cols', '30')
+      $('#postTxt').attr('rows', '2')
       $('#wall').attr('class', 'col-9 wall')
-      $('#ads img').css('width', '200px')
-      $('#ads').attr('class', 'col-12 ads')
       $(".postFooter span").css("font-size", "8px")
       $(".postFooter span").css("margin-top", "5px")
       $(".postBanner span").css("font-size", "8px")
       $('.borderPic').css("padding", "0px")
       $('.borderPic').css("margin", "0px")
       $('.borderPic').css("border", "none")
-      $('.profilePic').css("height", "346px")
-      $('.profilePic img').css("height", "55%")
+      $('.profilePic').css("height", "192px")
+      $('.profilePic img').css("height", "100%")
+      $('.profilePic img').css("width", "100%")
+      $('.profilePic img').attr('src') == "./assets/usersAvatar/default.png" ? $('.profilePic img').attr('src', './assets/default.png') : ''
       $(".commenter").css("font-size", "9px")
       $(".commenter").css("padding", "3px")
       $(".borderPic").attr("class", 'borderPic col-12')
@@ -47,7 +51,32 @@ $(document).ready(()=>{
       $("#stalkForm button").css('margin-right', '15px')
       $("carousel-item img").css('margin', '60px auto')
       $('input[name="postSub"]').css('right', '0px')
+      $(".posts").attr('class', 'col-12 posts')
+      $(".ads").attr('class', 'col-12 ads')
+      $(".row .name").attr('class', 'col-8 name')
+      $('.ad img').attr('width', '220px')
+      $('.postBanner span').css('margin-top', '-9px')
+      $('.postBanner span').css('margin-right', '-5px')
+      $('#commentForm textarea').attr('cols', '35')
+      $('#commentForm textarea').attr('rows', '2')
+      $('#unstalkButton').css('margin-right', '6px')
+      $('#postClose').css('margin-right', '20px')
+      $('input[name="postSub"]').css('bottom', '-27px')
+      $("#imagesMod #carouselIndicators").css('margin-top', '50px')
       if(!$('textarea[name="postTxt"]').length){$(".bannerPhone").css('margin-bottom', '30px')}
+      for(let e of $(".post")){
+        if(e.childNodes[0].childNodes[1].innerText.length > 10){
+          e.childNodes[0].childNodes[1].style.fontSize = '14px'
+        }
+      }
+      for(let c of $(".comment")){
+        if(c.childNodes[0].childNodes[1].innerText.length > 10){
+          c.childNodes[0].childNodes[1].style.fontSize = '9px'
+        }
+        if(c.childNodes[0].childNodes[1].innerText.length > 6 && c.childNodes[0].childNodes[1].innerText.length < 10){
+          c.childNodes[0].childNodes[1].style.fontSize = '13px'
+        }
+      }
     }
 
     // Center default pic
@@ -63,6 +92,32 @@ $(document).ready(()=>{
 })
 
 
+hasTouch = () => {
+  return 'ontouchstart' in document.documentElement
+         || navigator.maxTouchPoints > 0
+         || navigator.msMaxTouchPoints > 0;
+}
+if(hasTouch()){ // remove all the :hover stylesheets
+  try { // prevent exception on browsers not supporting DOM styleSheets properly
+    for(var si in document.styleSheets){
+      if(!si.href.startsWith('http://')){
+        console.log('yes')
+        console.log(si)
+      }
+      var styleSheet = document.styleSheets[si];
+      //if (!styleSheet.rules) continue;
+
+      for(var ri = styleSheet.rules.length - 1; ri >= 0; ri--){
+        if(!styleSheet.rules[ri].selectorText) continue;
+
+        if(styleSheet.rules[ri].selectorText.match(':hover')){
+          styleSheet.deleteRule(ri);
+        }
+      }
+    }
+  }catch(err){/* console.error(err) */}
+}
+
 
 window.onresize = () => {
   if (document.body.clientWidth > 950) {
@@ -74,16 +129,13 @@ window.onresize = () => {
   // Responsive
   if(document.body.clientWidth > 1201){
     $('#postTxt').attr('cols', '70')
-    $('#ads img').css('width', '100%')
     $('#wall').attr('class', 'col-6 wall')
     $('#ads').attr('class', 'col-3 ads')
   }else if(document.body.clientWidth > 993){
     $('#postTxt').attr('cols', '55')
-    $('#ads img').css('width', '220px')
     $('#wall').attr('class', 'col-9 wall')
     $('#ads').attr('class', 'col-12 ads')
   }else if(document.body.clientWidth > 771){
-    $('#ads img').css('width', '220px')
     $('#wall').attr('class', 'col-9 wall')
     $('#ads').attr('class', 'col-12 ads')
     $('#postTxt').attr('cols', '38')
@@ -112,8 +164,8 @@ $("#avatar").change(function (e) {
         img = new Image()
         var objectUrl = _URL.createObjectURL(file)
         img.onload = function () {
-            if(this.width > 1920 || this.height > 1080){
-              alert('Tu aura des problèmes si tu upload cette image, elle est trop grande.')
+            if(this.width < 1920 || this.height < 1080){
+              alert('Tu peux avoir des problèmes si tu upload cette image, utilises-en une de 1920 x 1080 px.')
             }
             _URL.revokeObjectURL(objectUrl)
         }
@@ -127,8 +179,8 @@ $("#profilePic").change(function (e) {
         img = new Image();
         var objectUrl = _URL.createObjectURL(file);
         img.onload = function () {
-            if(this.width > 1920 || this.height > 1080){
-              alert('Tu aura des problèmes si tu upload cette image, elle est trop grande.')
+            if(this.width < 1920 || this.height < 1080){
+              alert('Tu peux avoir des problèmes si tu upload cette image, utilises-en une de 1920 x 1080 px.')
             }
             _URL.revokeObjectURL(objectUrl);
         };
@@ -140,24 +192,9 @@ $("#profilePic").change(function (e) {
 if($('.name h1').text().length > 10){
   $('.name h1').css('font-size', '26px')
 }
-/* if($('.postBanner a').text().length > 10){
-  $('.postBanner a').css('font-size', '8px')
-  $('.postBanner a').css('margin-right', '100px')
-  $('.postBanner').css('margin-bottom', '37px')
-} */
-
-for(let e of $(".post")){
-  console.log(e)
-  /* e.style.marginRight = '100px' */
-  /* if($(e+' a').text().length > 10){
-    $(e+' a').css('font-size', '8px')
-    /* $('.postBanner').css('margin-bottom', '37px')
-  } */
-}
 
 
 // Search bar
-
 $('#search').click(()=>{
   $('#searchMod')[0].classList.remove('closedSearch')
   $('#searchMod').css("backdrop-filter", "blur(8px)")
