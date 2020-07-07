@@ -1,10 +1,10 @@
 $(document).ready(()=>{
 
-  /* console.log('%c Hey, ce site a été créé par :', 'font-weight: bold; font-size: 20px;color: rgb(2,135,206)')
-  console.log('%c <Butterfly Corp/>', 'font-weight: bold; font-size: 40px;color: red; text-shadow: 3px 3px 0 rgb(217,31,38) , 6px 6px 0 rgb(226,91,14) , 9px 9px 0 rgb(245,221,8) , 12px 12px 0 rgb(5,148,68) , 15px 15px 0 rgb(2,135,206) , 18px 18px 0 rgb(4,77,145) , 21px 21px 0 rgb(42,21,113)');
-  console.log('%c Butterfly Corp est une entreprise sous l\'auto-entreprenariat de Bob-Lee "Snoupix" Jonhson.', 'font-weight: bold; font-size: 15px;color: rgb(226,91,14)')
-  console.log('%c Tu peux le contacter via Discord', 'font-weight: bold; font-size: 15px;color: rgb(226,91,14)')
-  console.log('%c Snoupix#1264', 'font-weight: bold; font-size: 18px;color: rgb(245,221,8)') */
+  console.log('%c Hey, ce site a été créé par :', 'font-weight: bold; font-size: 20px;color: red')
+  console.log('%c <Butterfly Corp/> ', 'font-weight: bold; font-size: 40px;color: red; text-shadow: 3px 3px 0 rgb(217,31,38) , 6px 6px 0 rgb(226,91,14) , 9px 9px 0 rgb(245,221,8) , 12px 12px 0 rgb(5,148,68) , 15px 15px 0 rgb(2,135,206) , 18px 18px 0 rgb(4,77,145) , 21px 21px 0 rgb(42,21,113)')
+  console.log('%c Butterfly Corp est une entreprise sous l\'auto-entreprenariat de Snoupix (ou Samuel pour les intimes).', 'font-weight: bold; font-size: 15px;color: rgb(2,135,206)')
+  console.log('%c Tu peux le contacter via Discord', 'font-weight: bold; font-size: 15px;color: rgb(245,221,8)')
+  console.log('%c Snoupix#1264', 'font-weight: bold; font-size: 18px;color: rgb(5,148,68)')
 
   setTimeout(()=>{
     if(document.body.clientWidth > 1201){
