@@ -109,31 +109,80 @@
   <?php require('header.php'); ?>
   <?php if(empty($_SESSION['username'])): ?> <!-- If disconnected -->
 
-    <div class="container">
-      <div class="row">
-        <div class="col-9 posts nomargin">
-          <?php
-            $reversedArray = array_reverse($allPosts, true);
-            foreach($reversedArray as $key){
-              $comment = [];
-              $i2 = 0;
-              $commAuth = [];
-              foreach($comments as $comm){
-                if($key['id'] == $comm['idPost']){
-                  $comment[$i2] = $comm;
-                  foreach($allUsers as $user){
-                    if($user['username'] == $comm['author']){
-                      $commAuth[$i2] = $user;
-                    }
+  <div class="container">
+    <div class="row">
+      <div class="col-9 posts nomargin">
+        <?php
+          $reversedArray = array_reverse($allPosts, true);
+          foreach($reversedArray as $key){
+            $comment = [];
+            $i2 = 0;
+            $commAuth = [];
+            foreach($comments as $comm){
+              if($key['id'] == $comm['idPost']){
+                $comment[$i2] = $comm;
+                foreach($allUsers as $user){
+                  if($user['username'] == $comm['author']){
+                    $commAuth[$i2] = $user;
                   }
-                  $i2 = $i2+1;
                 }
+                $i2 = $i2+1;
               }
-              foreach($allUsers as $user){
-                if($user['username'] == $key['usernameFK']){
-                  $userPost = $user;
+            }
+            foreach($allUsers as $user){
+              if($user['username'] == $key['usernameFK']){
+                $userPost = $user;
+              }
+            }
+            $i = 0;
+            foreach($allLikes as $like){
+              if($like['id'] == $key['id']){
+                $i = $i+1;
+              }
+              $likeCount = $i;
+            }
+            if($key['image'] != 'NULL' && $key['message'] != "NULL"){ // Post text avec image
+              echo '<div class="post">';
+                echo '<div class="postBanner">';
+                  echo '<img src="'.$userPost['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
+                  echo '<a href="index.php?username='.$userPost['username'].'">'.$key['usernameFK'].'</a>';
+                  echo '<span>Posté '.$key['date'].'</span>';
+                echo '</div>';
+                  echo '<hr/>';
+                echo '<div class="postImage">';
+                  echo '<img src="'.$key['image'].'" alt="'.$key['message'].'" width="50%"/>';
+                  echo '<hr/>';
+                echo '</div>';
+                echo '<div class="postContent">';
+                  echo '<p>'.$key['message'].'</p>';
+                echo '</div>';
+                echo '<div class="postFooter">';
+                  echo '<hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;" />';
+                  echo '<input type="hidden" value="'.$key['id'].'"/>';
+                  echo '<button style="border:none;background:none;outline:none;cursor:default;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                  echo (!empty($comment)) ? '<span class="displayComms" style="cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
+                if(!empty($comment)){
+                  echo '<div class="comms id'.$key['id'].'" style="display:none;">';
+                  echo '<hr style="margin-top: 0.7rem;margin-bottom: 0.5rem;" />';
+                  for($i = 0;$i<count($comment);$i++){
+                    echo '<div class="comment">';
+                      echo '<div class="comm-banner">';
+                        echo '<img src="'.$commAuth[$i]["avatar"].'" alt="'.$commAuth[$i]["username"].' profilePic">';
+                        echo '<a href="index.php?username='.$comment[$i]['author'].'">'.$comment[$i]['author'].'</a>';
+                        echo '<span>'.$comment[$i]['date'].'</span>';
+                      echo '</div>';
+                      echo '<div class="comm-content">';
+                        echo '<p>'.$comment[$i]['message'].'</p>';
+                      echo '</div>';
+                    echo '</div>';
+                    echo '<hr/>';
+                  }
+                  echo '</div>';
                 }
-              }
+                echo '</div>';
+              echo '</div>';
+            }
+            if($key['image'] == "NULL" && $key['message'] != "NULL"){ // Post text sans image
               $i = 0;
               foreach($allLikes as $like){
                 if($like['id'] == $key['id']){
@@ -141,165 +190,118 @@
                 }
                 $likeCount = $i;
               }
-              if($key['image'] != 'NULL' && $key['message'] != "NULL"){ // Post text avec image
-                echo '<div class="post">';
-                  echo '<div class="postBanner">';
-                    echo '<img src="'.$userPost['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
-                    echo '<a href="index.php?username='.$userPost['username'].'">'.$key['usernameFK'].'</a>';
-                    echo '<span>Posté '.$key['date'].'</span>';
-                  echo '</div>';
-                    echo '<hr/>';
-                  echo '<div class="postImage">';
-                    echo '<img src="'.$key['image'].'" alt="'.$key['message'].'" width="50%"/>';
-                    echo '<hr/>';
-                  echo '</div>';
-                  echo '<div class="postContent">';
-                    echo '<p>'.$key['message'].'</p>';
-                  echo '</div>';
-                  echo '<div class="postFooter">';
-                    echo '<hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;" />';
-                    echo '<input type="hidden" value="'.$key['id'].'"/>';
-                    echo '<button style="border:none;background:none;outline:none;cursor:default;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
-                    echo (!empty($comment)) ? '<span class="displayComms" style="cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
-                  if(!empty($comment)){
-                    echo '<div class="comms id'.$key['id'].'" style="display:none;">';
-                    echo '<hr style="margin-top: 0.7rem;margin-bottom: 0.5rem;" />';
-                    for($i = 0;$i<count($comment);$i++){
-                      echo '<div class="comment">';
-                        echo '<div class="comm-banner">';
-                          echo '<img src="'.$commAuth[$i]["avatar"].'" alt="'.$commAuth[$i]["username"].' profilePic">';
-                          echo '<a href="index.php?username='.$comment[$i]['author'].'">'.$comment[$i]['author'].'</a>';
-                          echo '<span>'.$comment[$i]['date'].'</span>';
-                        echo '</div>';
-                        echo '<div class="comm-content">';
-                          echo '<p>'.$comment[$i]['message'].'</p>';
-                        echo '</div>';
-                      echo '</div>';
-                      echo '<hr/>';
-                    }
-                    echo '</div>';
-                  }
-                  echo '</div>';
+              echo '<div class="post">';
+                echo '<div class="postBanner">';
+                  echo '<img src="'.$userPost['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
+                  echo '<a href="index.php?username='.$userPost['username'].'">'.$key['usernameFK'].'</a>';
+                  echo '<span>Posté '.$key['date'].'</span>';
                 echo '</div>';
-              }
-              if($key['image'] == "NULL" && $key['message'] != "NULL"){ // Post text sans image
-                $i = 0;
-                foreach($allLikes as $like){
-                  if($like['id'] == $key['id']){
-                    $i = $i+1;
+                  echo '<hr/>';
+                echo '<div class="postContent">';
+                  echo '<p>'.$key['message'].'</p>';
+                echo '</div>';
+                echo '<div class="postFooter">';
+                  echo '<hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;" />';
+                  echo '<input type="hidden" value="'.$key['id'].'"/>';
+                  echo '<button style="border:none;background:none;outline:none;cursor:default;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                  echo (!empty($comment)) ? '<span class="displayComms" style="cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
+                if(!empty($comment)){
+                  echo '<div class="comms id'.$key['id'].'" style="display:none;">';
+                  echo '<hr style="margin-top: 0.7rem;margin-bottom: 0.5rem;" />';
+                  for($i = 0;$i<count($comment);$i++){
+                    echo '<div class="comment">';
+                      echo '<div class="comm-banner">';
+                        echo '<img src="'.$commAuth[$i]["avatar"].'" alt="'.$commAuth[$i]["username"].' profilePic">';
+                        echo '<a href="index.php?username='.$comment[$i]['author'].'">'.$comment[$i]['author'].'</a>';
+                        echo '<span>'.$comment[$i]['date'].'</span>';
+                      echo '</div>';
+                      echo '<div class="comm-content">';
+                        echo '<p>'.$comment[$i]['message'].'</p>';
+                      echo '</div>';
+                    echo '</div>';
+                    echo '<hr/>';
                   }
-                  $likeCount = $i;
+                  echo '</div>';
                 }
-                echo '<div class="post">';
-                  echo '<div class="postBanner">';
-                    echo '<img src="'.$userPost['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
-                    echo '<a href="index.php?username='.$userPost['username'].'">'.$key['usernameFK'].'</a>';
-                    echo '<span>Posté '.$key['date'].'</span>';
-                  echo '</div>';
-                    echo '<hr/>';
-                  echo '<div class="postContent">';
-                    echo '<p>'.$key['message'].'</p>';
-                  echo '</div>';
-                  echo '<div class="postFooter">';
-                    echo '<hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;" />';
-                    echo '<input type="hidden" value="'.$key['id'].'"/>';
-                    echo '<button style="border:none;background:none;outline:none;cursor:default;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
-                    echo (!empty($comment)) ? '<span class="displayComms" style="cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
-                  if(!empty($comment)){
-                    echo '<div class="comms id'.$key['id'].'" style="display:none;">';
-                    echo '<hr style="margin-top: 0.7rem;margin-bottom: 0.5rem;" />';
-                    for($i = 0;$i<count($comment);$i++){
-                      echo '<div class="comment">';
-                        echo '<div class="comm-banner">';
-                          echo '<img src="'.$commAuth[$i]["avatar"].'" alt="'.$commAuth[$i]["username"].' profilePic">';
-                          echo '<a href="index.php?username='.$comment[$i]['author'].'">'.$comment[$i]['author'].'</a>';
-                          echo '<span>'.$comment[$i]['date'].'</span>';
-                        echo '</div>';
-                        echo '<div class="comm-content">';
-                          echo '<p>'.$comment[$i]['message'].'</p>';
-                        echo '</div>';
-                      echo '</div>';
-                      echo '<hr/>';
-                    }
-                    echo '</div>';
-                  }
-                  echo '</div>';
                 echo '</div>';
-              }
-              if($key['message'] == "NULL"){ // Post avec image seule
-                $i = 0;
-                foreach($allLikes as $like){
-                  if($like['id'] == $key['id']){
-                    $i = $i+1;
-                  }
-                  $likeCount = $i;
-                }
-                echo '<div class="post">';
-                  echo '<div class="postBanner">';
-                    echo '<img src="'.$userPost['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
-                    echo '<a href="index.php?username='.$userPost['username'].'">'.$key['usernameFK'].'</a>';
-                    echo '<span>Posté '.$key['date'].'</span>';
-                  echo '</div>';
-                    echo '<hr/>';
-                  echo '<div class="postImage">';
-                    echo '<img src="'.$key['image'].'" alt="Post Picture" width="50%"/>';
-                  echo '</div>';
-                  echo '<div class="postFooter">';
-                    echo '<hr/>';
-                    echo '<input type="hidden" value="'.$key['id'].'"/>';
-                    echo '<button style="border:none;background:none;outline:none;cursor:default;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
-                    echo (!empty($comment)) ? '<span class="displayComms" style="cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
-                  if(!empty($comment)){
-                    echo '<div class="comms id'.$key['id'].'" style="display:none;">';
-                    echo '<hr style="margin-top: 0.7rem;margin-bottom: 0.5rem;" />';
-                    for($i = 0;$i<count($comment);$i++){
-                      echo '<div class="comment">';
-                        echo '<div class="comm-banner">';
-                          echo '<img src="'.$commAuth[$i]["avatar"].'" alt="'.$commAuth[$i]["username"].' profilePic">';
-                          echo '<a href="index.php?username='.$comment[$i]['author'].'">'.$comment[$i]['author'].'</a>';
-                          echo '<span>'.$comment[$i]['date'].'</span>';
-                        echo '</div>';
-                        echo '<div class="comm-content">';
-                          echo '<p>'.$comment[$i]['message'].'</p>';
-                        echo '</div>';
-                      echo '</div>';
-                      echo '<hr/>';
-                    }
-                    echo '</div>';
-                  }
-                  echo '</div>';
-                echo '</div>';
-              }
-            }
-          ?>
-          <div id="modalImage">
-            <div id="focusout"></div>
-              <span id="closeModalImage"><i class="fa fa-times" aria-hidden="true"></i></span>
-              <img class="modalImage-content" id="modalImageSrc" style="z-index:11;">
-              <div id="caption"><?php echo $username; ?></div>
-          </div>
-        </div>
-        <div class="col-3 ads">
-          <h3>Sponsored</h3>
-          <?php
-            foreach($ads as $val){
-              $adStalking = [];
-              $adStalkers = 'SELECT COUNT(*) as stalkers FROM stalking WHERE stalked = "'.$val['name'].'";';
-              $adStalkers = $conn->query($adStalkers);
-              $adStalkers = $adStalkers->fetch(PDO::FETCH_ASSOC);
-              array_push($adStalking, $val['name'], $adStalkers['stalkers']);
-
-              echo '<div class="ad">';
-                echo '<h5><a href="'.$val['link'].'">'.$val['name'].'</a></h5>';
-                echo '<a href="'.$val['link'].'"><img src="'.$val['image'].'" width="100%" alt="'.$val['name'].'"></a>';
-                echo '<p>'.$val['promo'].'</p>';
-                echo '<p>'.$adStalking["1"].' people are stalking '.$val['name'].'</p>';
               echo '</div>';
             }
-          ?>
+            if($key['message'] == "NULL"){ // Post avec image seule
+              $i = 0;
+              foreach($allLikes as $like){
+                if($like['id'] == $key['id']){
+                  $i = $i+1;
+                }
+                $likeCount = $i;
+              }
+              echo '<div class="post">';
+                echo '<div class="postBanner">';
+                  echo '<img src="'.$userPost['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
+                  echo '<a href="index.php?username='.$userPost['username'].'">'.$key['usernameFK'].'</a>';
+                  echo '<span>Posté '.$key['date'].'</span>';
+                echo '</div>';
+                  echo '<hr/>';
+                echo '<div class="postImage">';
+                  echo '<img src="'.$key['image'].'" alt="Post Picture" width="50%"/>';
+                echo '</div>';
+                echo '<div class="postFooter">';
+                  echo '<hr/>';
+                  echo '<input type="hidden" value="'.$key['id'].'"/>';
+                  echo '<button style="border:none;background:none;outline:none;cursor:default;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                  echo (!empty($comment)) ? '<span class="displayComms" style="cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
+                if(!empty($comment)){
+                  echo '<div class="comms id'.$key['id'].'" style="display:none;">';
+                  echo '<hr style="margin-top: 0.7rem;margin-bottom: 0.5rem;" />';
+                  for($i = 0;$i<count($comment);$i++){
+                    echo '<div class="comment">';
+                      echo '<div class="comm-banner">';
+                        echo '<img src="'.$commAuth[$i]["avatar"].'" alt="'.$commAuth[$i]["username"].' profilePic">';
+                        echo '<a href="index.php?username='.$comment[$i]['author'].'">'.$comment[$i]['author'].'</a>';
+                        echo '<span>'.$comment[$i]['date'].'</span>';
+                      echo '</div>';
+                      echo '<div class="comm-content">';
+                        echo '<p>'.$comment[$i]['message'].'</p>';
+                      echo '</div>';
+                    echo '</div>';
+                    echo '<hr/>';
+                  }
+                  echo '</div>';
+                }
+                echo '</div>';
+              echo '</div>';
+            }
+          }
+        ?>
+        <div id="modalImage">
+          <div id="focusout"></div>
+            <span id="closeModalImage"><i class="fa fa-times" aria-hidden="true"></i></span>
+            <img class="modalImage-content" id="modalImageSrc" style="z-index:11;">
+            <div id="caption"><?php echo $username; ?></div>
         </div>
       </div>
+      <div class="col-3 ads">
+        <h3>Sponsored</h3>
+        <?php
+          foreach($ads as $val){
+            $adStalking = [];
+            $adStalkers = 'SELECT COUNT(*) as stalkers FROM stalking WHERE stalked = "'.$val['name'].'";';
+            $adStalkers = $conn->query($adStalkers);
+            $adStalkers = $adStalkers->fetch(PDO::FETCH_ASSOC);
+            array_push($adStalking, $val['name'], $adStalkers['stalkers']);
+
+            echo '<div class="ad">';
+              echo '<h5><a href="'.$val['link'].'">'.$val['name'].'</a></h5>';
+              echo '<a href="'.$val['link'].'"><img src="'.$val['image'].'" width="100%" alt="'.$val['name'].'"></a>';
+              echo '<p>'.$val['promo'].'</p>';
+              echo '<p>'.$adStalking["1"].' people are stalking '.$val['name'].'</p>';
+            echo '</div>';
+          }
+        ?>
+      </div>
     </div>
+  </div>
+  <hr/>
+  <footer><p style="padding-bottom:15px;">© Butterfly Corp · Atlantiss 2020</p></footer>
 
   <?php else: ?> <!-- If connected -->
   <form id="filterForm" method="POST" action="dashboard.php">

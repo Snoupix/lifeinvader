@@ -651,7 +651,6 @@ input[name="postSub"]{
 
 #commentModal button:hover{
   transform: scale(1.2, 1.2);
-  background-color: #fff;
 }
 
 #commentModal svg path{
