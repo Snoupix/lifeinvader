@@ -214,7 +214,7 @@
         $newPost->bindParam(':image', $null);
       }
       $newPost->bindParam(':date', $_POST['date']);
-    }elseif(isset($tmpFiles[0]) && isset($_POST['postSub'])){ // Upload image post without text
+    }elseif(!empty($tmpFiles) && isset($_POST['postSub'])){ // Upload image post without text
       if(!is_dir($targetDir)){
         mkdir($targetDir, 0700);
       }
@@ -226,6 +226,8 @@
       $newPost->bindParam(':txt', $null);
       $newPost->bindParam(':image', $imgPathName);
       $newPost->bindParam(':date', $_POST['date']);
+      $newPost->execute();
+      header("Refresh:0");
     }
     if(isset($_POST['postSub']) && !empty($_POST['postTxt'])){
       $newPost->execute();
@@ -293,7 +295,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta property="og:url"           content="https://www.domain.com/index.php" />
+  <meta property="og:url"           content="http://lifeinvader.atlantiss-rp.fr/" />
   <meta property="og:type"          content="website" />
   <meta property="og:title"         content="Lifeinvader Atlantiss" />
   <meta property="og:description"   content="Le réseau social du serveur GTA RP Atlantiss. Discord : https://discord.gg/w5HBjWw" />
@@ -498,7 +500,7 @@
                   echo '<div class="postBanner">';
                     echo '<img src="'.$icon['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
                     echo '<a href="#">'.$username.'</a>';
-                    echo '<span>Posté '.$key['date'].'</span>';
+                    echo '<span>Posté '.$key['date'].' <i style="font-size:1.4em;" class="fas fa-times-circle"></i></span>';
                   echo '</div>';
                     echo '<hr/>';
                   echo '<div class="postImage">';
@@ -560,7 +562,7 @@
                   echo '<div class="postBanner">';
                     echo '<img src="'.$icon['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
                     echo '<a href="#">'.$username.'</a>';
-                    echo '<span>Posté '.$key['date'].'</span>';
+                    echo '<span>Posté '.$key['date'].' <i style="font-size:1.4em;" class="fas fa-times-circle"></i></span>';
                   echo '</div>';
                     echo '<hr/>';
                   echo '<div class="postContent">';
@@ -618,7 +620,7 @@
                   echo '<div class="postBanner">';
                     echo '<img src="'.$icon['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
                     echo '<a href="#">'.$username.'</a>';
-                    echo '<span>Posté '.$key['date'].'</span>';
+                    echo '<span>Posté '.$key['date'].' <i style="font-size:1.4em;position:absolute;top:25px;right:40px;" class="fas fa-times-circle"></i></span>';
                   echo '</div>';
                     echo '<hr/>';
                   echo '<div class="postImage">';
@@ -735,7 +737,7 @@
           </div>
         </div>
         <div class="col-3 ads" id="ads" style="padding-left:0px;padding-right:0px;">
-          <h3>Sponsored</h3>
+          <h3>Sponsorisé</h3>
           <?php
             $iads = 0;
             foreach($ads as $val){
@@ -750,7 +752,7 @@
                 echo '<h5><a href="'.$val['link'].'">'.$val['name'].'</a></h5>';
                 echo '<a href="'.$val['link'].'"><img src="'.$val['image'].'" width="220px" alt="'.$val['name'].'"></a>';
                 echo '<p>'.$val['promo'].'</p>';
-                echo '<p style="opacity:0.75;">'.$adStalking["1"].' people are stalking '.$val['name'].'</p>';
+                echo '<p style="opacity:0.75;">'.$adStalking["1"].' personnes suivent '.$val['name'].'</p>';
               echo '</div>';
               $iads = $iads + 1;
             }

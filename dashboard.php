@@ -90,7 +90,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta property="og:url"            content="https://www.domain.com/index.php" />
+  <meta property="og:url"            content="http://lifeinvader.atlantiss-rp.fr/" />
   <meta property="og:type"           content="website" />
   <meta property="og:title"          content="Lifeinvader Atlantiss" />
   <meta property="og:description"    content="Le réseau social du serveur GTA RP Atlantiss. Discord : https://discord.gg/atlantiss" />
@@ -280,7 +280,7 @@
         </div>
       </div>
       <div class="col-3 ads">
-        <h3>Sponsored</h3>
+        <h3>Sponsorisé</h3>
         <?php
           foreach($ads as $val){
             $adStalking = [];
@@ -307,7 +307,7 @@
   <form id="filterForm" method="POST" action="dashboard.php">
     <select class="btn btn-sm btn-dark" name="filter" id="filter">
       <option value="all">Tout voir</option>
-      <option value="stalked">Voir les personnes stalked</option>
+      <option value="stalked">Voir les personnes suivies</option>
     </select>
     <input type="hidden" name="value">
   </form>
@@ -550,7 +550,7 @@
         </div>
       </div>
       <div class="col-3 ads">
-        <h3>Sponsored</h3>
+        <h3>Sponsorisé</h3>
         <?php
             $iads = 0;
             foreach($ads as $val){
@@ -565,7 +565,7 @@
                 echo '<h5><a href="'.$val['link'].'">'.$val['name'].'</a></h5>';
                 echo '<a href="'.$val['link'].'"><img src="'.$val['image'].'" width="100%" alt="'.$val['name'].'"></a>';
                 echo '<p>'.$val['promo'].'</p>';
-                echo '<p style="opacity:0.75;">'.$adStalking["1"].' people are stalking '.$val['name'].'</p>';
+                echo '<p style="opacity:0.75;">'.$adStalking["1"].' personnes suivent '.$val['name'].'</p>';
               echo '</div>';
               $iads = $iads + 1;
             }

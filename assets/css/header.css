@@ -142,9 +142,9 @@ nav h1{
 
 #signinButton a{
   max-height: 38px;
-  width: 88px;
+  width: 97px;
   padding: .25rem .5rem;
-  font-size: .875rem;
+  font-size: .675rem;
   line-height: 1.5;
   border-radius: .2rem;
 }

@@ -17,13 +17,13 @@
       </div>
       <?php if(empty($_SESSION['username'])): ?>
       <div id="signinButton" class="col">
-        <a class="btn btn-dark float-right" href="signin.php">Sign in</a>
+        <a class="btn btn-dark float-right" href="signin.php">Connexion</a>
       </div>
       <?php endif; ?>
       <?php if(!empty($_SESSION['username'])): ?>
       <div id="signinButton" class="col">
         <div id="search"><i class="fa fa-search"></i></div>
-        <a class="btn btn-dark float-right" href="signout.php">Sign out</a>
+        <a class="btn btn-dark float-right" href="signout.php">Déconnexion</a>
       </div>
       <?php endif; ?>
     </div>

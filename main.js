@@ -88,6 +88,8 @@ $(document).ready(()=>{
       $('.profilePic img').css('padding-left', '0px')
     }
 
+    $('#searchMod').css("height", $(this).height())
+
   },700)
 })
 
@@ -165,7 +167,7 @@ $("#avatar").change(function (e) {
         var objectUrl = _URL.createObjectURL(file)
         img.onload = function () {
             if(this.width < 1920 || this.height < 1080){
-              alert('Tu peux avoir des problèmes si tu upload cette image, utilises-en une de 1920 x 1080 px.')
+              alert('Tu peux avoir des problèmes si tu upload cette image, utilises-en une de 1920 x 1080 px si tu veux que ce soit optimal.')
             }
             _URL.revokeObjectURL(objectUrl)
         }
@@ -173,20 +175,29 @@ $("#avatar").change(function (e) {
     }
 })
 
-$("#profilePic").change(function (e) {
-    var file, img;
+$("#profilePic").change(()=>{
+    var file, img
     if ((file = this.files[0])) {
-        img = new Image();
-        var objectUrl = _URL.createObjectURL(file);
+        img = new Image()
+        var objectUrl = _URL.createObjectURL(file)
         img.onload = function () {
             if(this.width < 1920 || this.height < 1080){
-              alert('Tu peux avoir des problèmes si tu upload cette image, utilises-en une de 1920 x 1080 px.')
+              alert('Tu peux avoir des problèmes si tu upload cette image, utilises-en une de 1920 x 1080 px si tu veux que ce soit optimal.')
             }
-            _URL.revokeObjectURL(objectUrl);
+            _URL.revokeObjectURL(objectUrl)
         };
-        img.src = objectUrl;
+        img.src = objectUrl
     }
-});
+})
+
+
+if(window.location.pathname == '/signup.php'){
+  $('input[name="createdTime"]').val(new Date().getMinutes())
+  setInterval(()=>{
+    $('input[name="createdTime"]').val(new Date().getMinutes())
+  }, 30000) // 30 s
+}
+
 
 // Resize username if too long
 if($('.name h1').text().length > 10){
@@ -206,9 +217,6 @@ $('#searchBar').focusout(()=>{
   $('#searchMod')[0].classList.add('closedSearch')
   $('#searchBar').removeClass('fadeIn')
 })
-
-var cssHeight = $(window).height()
-$('#searchMod').css("height", cssHeight)
 
 
 if($('.toastError').length == 1){
@@ -291,7 +299,7 @@ if(window.location.pathname == "index.php"){
     }
   })
 }
-$('#focusout').css('height', cssHeight)
+$('#focusout').css('height', $(this).height())
 $("#focusout").click(()=>{
   modal.css("display", "none")
 })
@@ -323,13 +331,6 @@ $('#filter').on('change', ()=>{
     $('.notStalking').css('visibility', 'visible')
   }
 })
-
-for(let e of document.getElementsByClassName('post')){
-  //console.log(e)
-  if(e > 25){
-    // place a limit
-  }
-}
 
 $('.displayComms').click((e)=>{
   if(window.location.pathname == "/index.php"){

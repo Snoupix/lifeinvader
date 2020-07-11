@@ -39,8 +39,8 @@
   <?php require('header.php') ?>
 
   <section class="container mrgIndex text-center">
-    <h1>SignIn</h1>
-    <span>or <a href="signup.php">Signup</a></span>
+    <h1>Connexion</h1>
+    <span>ou <a href="signup.php">Inscription</a></span>
 
     <?php if(!empty($message)): ?>
       <p class="alert alert-danger"><?= $message ?></p>

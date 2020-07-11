@@ -48,7 +48,7 @@
     $targetDir = "./assets/usersAvatar/";
 
     if(isset($_POST['username'])){
-      if($tmpFiles[0]){
+      if(!empty($tmpFiles)){
         if(move_uploaded_file($tmpFiles[0]["tmp_name"], $targetDir.$_POST["username"].$imgType)){
           $avatar = "./assets/usersAvatar/".$_POST['username'].$imgType;
           //echo "The file ". $tmpFiles[0]["name"] . " has been uploaded.";
@@ -69,9 +69,10 @@
     $stop = false; // Breakpoint
 
     if (isset($_POST['username']) && !empty($_POST['password'])){
-      $sql = 'INSERT INTO user (username, password, avatar) VALUES (:username, :password, :avatar)';
+      $sql = 'INSERT INTO user (username, password, avatar, created, discord) VALUES (:username, :password, :avatar, :created, 0)';
       $req = $conn->prepare($sql);
       $req->bindParam(':avatar', $avatar);
+      $req->bindParam(':created', $_POST['createdTime']);
       
       for($i = 0; $i<count($users); $i++){
         if($_POST['username'] == $users[$i]){
@@ -127,11 +128,12 @@
     <?php if(isset($_POST['username']) && !empty($messageErr)): ?>
       <p class="alert alert-danger"><?= $messageErr ?></p>
     <?php endif; ?>
-    <h1>SignUp</h1>
-    <span>or <a href="signin.php">SignIn</a></span>
+    <h1>Inscription</h1>
+    <span>ou <a href="signin.php">Connexion</a></span>
     <form action="signup.php" method="post" enctype="multipart/form-data" style="margin-top: 12px;">
       <label for="avatar" style="vertical-align: top;">Avatar: (non obligatoire)<br/>Taille mini 172 x 172px et max 1920 x 1080px<br/>Poids ne dépassant pas 1.30 Mo</label><br/>
       <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg, image/jpg">
+      <input type="hidden" name="createdTime">
       <input type="text" name="username" placeholder="Nom d'utilisateur">
       <input type="password" name="password" placeholder="Mot de passe (6 carac. min)">
       <input type="password" name="confirm_password" placeholder="Confirmation du mot de passe">
