@@ -1,10 +1,11 @@
-To do list:
+[WORKING ON :] Delete button post
 
-    - Check ads on mobile
+to do list :
 
-
-[WORKING ON :] Last thing to do : EDIT mode Responsive
-
+- Delete post on index
+- Limiter à 30-35 posts pour le dashboard ? Pour éviter un long chargement
+- modal to show likes with a link to their profiles and this same modal shows stalkers
+- Banner on the header
 
 
 

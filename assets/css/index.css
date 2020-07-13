@@ -202,7 +202,7 @@ footer p{
 @media only screen and (max-width: 1000px){
   .postBanner span{
     font-size: 11px;
-    margin-top: 11px;
+    margin-top: 8px;
   }
 }
 
@@ -655,4 +655,37 @@ input[name="postSub"]{
 
 #commentModal svg path{
   color: #aaa;
+}
+
+.xDelete{
+  position:relative;
+  font-size:1.4em!important;
+  top:-25px;
+  right:-10px;
+  cursor: pointer;
+}
+
+#deletePost{
+  display: none;
+  background-color: #fff;
+  position: fixed;
+  top: 40%;
+  left: 43%;
+  z-index: 20;
+  border: 1px solid var(--borderCol);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+#deletePostForm{
+  text-align: center;
+}
+
+#deletePostForm button{
+  margin-right: 1.5em;
+}
+
+#deletePostForm button,
+#deletePostForm input{
+  padding: 1.5% 5%;
 }

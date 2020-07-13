@@ -83,6 +83,9 @@
     $commentsReq = 'SELECT * FROM comments';
     $allUsers = 'SELECT * FROM user';
     $newComment = 'INSERT INTO comments VALUES(:id, :author, :message, :date)';
+    $deletePost1 = 'DELETE FROM likes WHERE id = :id';
+    $deletePost2 = 'DELETE FROM comments WHERE idPost = :idPost';
+    $deletePost3 = 'DELETE FROM post WHERE id = :id';
 
 
     if(isset($_SESSION['username'])){
@@ -281,7 +284,21 @@
       $newComment->execute();
       header("Refresh:0");
     }
-    
+
+
+    if(isset($_POST['deleteThisP'])){
+      $deletePost1 = $conn->prepare($deletePost1);
+      $deletePost1->bindParam(":id", $_POST['idDeletePost']);
+      $deletePost1->execute();
+      $deletePost2 = $conn->prepare($deletePost2);
+      $deletePost2->bindParam(":idPost", $_POST['idDeletePost']);
+      $deletePost2->execute();
+      $deletePost3 = $conn->prepare($deletePost3);
+      $deletePost3->bindParam(":id", $_POST['idDeletePost']);
+      $deletePost3->execute();
+      header("Refresh:0");
+    }
+
     
 
   }catch(PDOException $e){
@@ -500,7 +517,7 @@
                   echo '<div class="postBanner">';
                     echo '<img src="'.$icon['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
                     echo '<a href="#">'.$username.'</a>';
-                    echo '<span>Posté '.$key['date'].' <i style="font-size:1.4em;" class="fas fa-times-circle"></i></span>';
+                    echo '<span>Posté '.$key['date'].' <span class="xDelete"><i class="far fa-times-circle"></i></span></span>';
                   echo '</div>';
                     echo '<hr/>';
                   echo '<div class="postImage">';
@@ -562,7 +579,7 @@
                   echo '<div class="postBanner">';
                     echo '<img src="'.$icon['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
                     echo '<a href="#">'.$username.'</a>';
-                    echo '<span>Posté '.$key['date'].' <i style="font-size:1.4em;" class="fas fa-times-circle"></i></span>';
+                    echo '<span>Posté '.$key['date'].' <span class="xDelete"><i class="far fa-times-circle"></i></span></span>';
                   echo '</div>';
                     echo '<hr/>';
                   echo '<div class="postContent">';
@@ -620,7 +637,7 @@
                   echo '<div class="postBanner">';
                     echo '<img src="'.$icon['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
                     echo '<a href="#">'.$username.'</a>';
-                    echo '<span>Posté '.$key['date'].' <i style="font-size:1.4em;position:absolute;top:25px;right:40px;" class="fas fa-times-circle"></i></span>';
+                    echo '<span>Posté '.$key['date'].' <span class="xDelete"><i class="far fa-times-circle"></i></span></span>';
                   echo '</div>';
                     echo '<hr/>';
                   echo '<div class="postImage">';
@@ -680,6 +697,14 @@
               <input type="hidden" name="dateComm" id="dateComm">
               <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" />
               <button onclick="submitComm();" ><i class="fas fa-arrow-circle-right"></i></button>
+            </form>
+          </div>
+          <div id="deletePost">
+            <p>Voulez-vous vraiment supprimer ce post ?</p>
+            <form action="index.php" id="deletePostForm" method="post">
+              <button type="button" class="btn btn-dark" id="closeDeletePost">Non</button>
+              <input class="btn btn-dark" type="submit" value="Oui" name="deleteThisP">
+              <input type="hidden" id="idDeletePost" name="idDeletePost">
             </form>
           </div>
 

@@ -49,7 +49,7 @@ $(document).ready(()=>{
       $(".name h1").css('margin-top', '10px')
       $(".name h1").css('margin-bottom', '10px')
       $("#stalkForm button").css('margin-right', '15px')
-      $("carousel-item img").css('margin', '60px auto')
+      $(".carousel-item img").css('margin', '60px auto')
       $('input[name="postSub"]').css('right', '0px')
       $(".posts").attr('class', 'col-12 posts')
       $(".ads").attr('class', 'col-12 ads')
@@ -63,6 +63,15 @@ $(document).ready(()=>{
       $('#postClose').css('margin-right', '20px')
       $('input[name="postSub"]').css('bottom', '-27px')
       $("#imagesMod #carouselIndicators").css('margin-top', '50px')
+      $(".xDelete").css('margin-top', '21px')
+      $(".xDelete").css('margin-right', '2px')
+      $('#deletePost').css('top', '25%')
+      $('#deletePost').css('left', '4.5%')
+      $(".about .col-12").css('padding-right', '0px')
+      $("#signinButton a").css('margin-top', '3px')
+      $('hr').css('margin-top', '0.7rem')
+      $('hr').css('margin-bottom', '0.7rem')
+      $('.postImage img').css('width', '60%')
       if(!$('textarea[name="postTxt"]').length){$(".bannerPhone").css('margin-bottom', '30px')}
       for(let e of $(".post")){
         if(e.childNodes[0].childNodes[1].innerText.length > 10){
@@ -192,9 +201,9 @@ $("#profilePic").change(()=>{
 
 
 if(window.location.pathname == '/signup.php'){
-  $('input[name="createdTime"]').val(new Date().getMinutes())
+  $('input[name="createdTime"]').val((new Date().getMinutes().toString().length == 1) ? "0"+new Date().getMinutes() : new Date().getMinutes())
   setInterval(()=>{
-    $('input[name="createdTime"]').val(new Date().getMinutes())
+    $('input[name="createdTime"]').val((new Date().getMinutes().toString().length == 1) ? "0"+new Date().getMinutes() : new Date().getMinutes())
   }, 30000) // 30 s
 }
 
@@ -368,6 +377,18 @@ $('#closeCommentModal').click(()=>{
   commentaire.css("display", "none")
   $("#commentModal textarea").val("")
 })
+
+$('.xDelete').click((e)=>{
+  $('#deletePost').css('display', 'block')
+  $('body').css('scroll', 'none')
+  $('#idDeletePost').val(e.currentTarget.parentElement.parentElement.parentElement.lastChild.childNodes[1].childNodes[0].value)
+})
+
+$('#closeDeletePost').click(()=>{
+  $('#deletePost').css('display', 'none')
+  $('body').css('scroll', 'auto')
+})
+
 
 function submitComm(){
   $("#commentID").val(id)
