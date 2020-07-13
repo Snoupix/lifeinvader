@@ -689,3 +689,16 @@ input[name="postSub"]{
 #deletePostForm input{
   padding: 1.5% 5%;
 }
+
+#emoji{
+  background: none;
+  padding: 0.5em 0.5em;
+  border: none;
+  transition: 0.25s;
+  color: #F7E5E5;
+  outline: none;
+  cursor: pointer;
+  position: absolute;
+  bottom: -15px;
+  left: 170px;
+}
