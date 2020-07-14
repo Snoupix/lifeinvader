@@ -75,7 +75,7 @@
     $newPost = 'INSERT INTO post (usernameFK, message, image, date) VALUES (:username, :txt, :image, :date)';
     $aboutReq = 'SELECT about FROM user WHERE username = "'.$username.'";';
     $imagesReq = 'SELECT image, message FROM post WHERE usernameFK = "'.$username.'" AND image != "NULL";';
-    $adReq = 'SELECT * FROM ads';
+    $adReq = 'SELECT * FROM ads ORDER BY RAND()';
     $updateAvatar = (isset($_SESSION['username'])) ? 'UPDATE user SET avatar = :avatar WHERE username ="'.$_SESSION['username'].'";' : '';
     $likesReq = 'SELECT * FROM likes';
     $plusLike = 'INSERT INTO likes VALUES (:id, :wholiked);';
@@ -707,6 +707,15 @@
               <input class="btn btn-dark" type="submit" value="Oui" name="deleteThisP">
               <input type="hidden" id="idDeletePost" name="idDeletePost">
             </form>
+          </div>
+          <div id="emojiWindow">
+            <div id="emojiDiv">
+              <input placeholder="emoji's name" type="text" id="emojiName">
+              <table id="emojiTable">
+                <tr></tr>
+              </table>
+            </div>
+            <div id="closeEmoji"></div>
           </div>
 
           <div id="imagesMod">

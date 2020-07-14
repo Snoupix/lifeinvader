@@ -13,7 +13,7 @@
   width: 172px;
   border: 1px solid var(--borderCol);
   background-color: #fff;
-  z-index: 2;
+  z-index: 1;
 }
 
 header{
@@ -701,4 +701,55 @@ input[name="postSub"]{
   position: absolute;
   bottom: -15px;
   left: 170px;
+}
+
+#emojiWindow{
+  display:none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 56px;
+  left: 0px;
+  backdrop-filter: blur(3px);
+  text-align: center;
+  z-index: 2;
+}
+
+#closeEmoji{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  z-index: 1;
+}
+
+#emojiTable{
+  z-index: 100;
+  text-align: center;
+  margin: 0 auto;
+  border: 3px solid #F7E5E5;
+  background-color: #F7E5E5;
+}
+
+#emojiDiv{
+  z-index: 100;
+  /* position: fixed; */
+  position: relative;
+  top: 35%;
+  /* left: 41%; */
+  margin: 0 auto;
+  height: 250px;
+  overflow-y: scroll;
+  border-radius: 5px;
+  user-select: none;
+}
+
+#emojiTable td{
+  padding: 2px;
+}
+
+#emojiTable td:hover{
+  transform: scale(1.2);
+  cursor: pointer;
 }

@@ -8,7 +8,7 @@ fetch(new Request(api))
     table.push(x)
   }
 })
-.then(()=>{
+/* .then(()=>{
   $("#postTxt").on("keyup", ()=>{
     setTimeout(()=>{
       var val = $("#postTxt").val().toLowerCase();
@@ -20,6 +20,36 @@ fetch(new Request(api))
         })
       })
     }, 500)
+  })
+}) */
+.then(()=>{
+  $("#emojiName").on("keyup", ()=>{
+    setTimeout(()=>{
+      var i = 0
+      if(!$("#emojiTable tr").is(':empty')){
+        $("#emojiTable tr").remove()
+        $("#emojiTable").append('<tr></tr>')
+      }
+      var val = $("#emojiName").val().toLowerCase();
+      table.forEach(el=>{
+        Object.values(el).map((values)=>{
+          if(values.includes(val)){
+            if($("#emojiTable tr:last td:last").text() != el.character){
+              $("#emojiTable tr:last").append("<td>"+el.character+"</td>")
+              i = i+1 
+              if(i > 15){
+                $("#emojiTable").append('<tr></tr>')
+                i = 0
+              }
+            }
+          }
+        })
+      })
+      $("#emojiTable tr td").click((e)=>{
+        var emoji = e.target.innerText
+        $('#postTxt').val($('#postTxt').val()+emoji)
+      })
+    }, 1000)
   })
 })
 
@@ -38,4 +68,15 @@ $('#emoji').hover(()=>{
 }, ()=>{
   $('#emoji').css('color', '#F7E5E5')
   $('#emoji').css('transform', 'scale(1)')
+})
+
+$("#emoji").click(()=>{
+  $("#emojiWindow").css('display', 'block')
+  $("#emojiName").focus()
+  $('body').css('overflow-y', 'hidden')
+})
+
+$("#closeEmoji").click(()=>{
+  $("#emojiWindow").css('display', 'none')
+  $('body').css('overflow-y', 'visible')
 })
