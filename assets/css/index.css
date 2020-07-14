@@ -690,7 +690,7 @@ input[name="postSub"]{
   padding: 1.5% 5%;
 }
 
-#emoji{
+.emojiMain{
   background: none;
   padding: 0.5em 0.5em;
   border: none;
@@ -701,6 +701,7 @@ input[name="postSub"]{
   position: absolute;
   bottom: -15px;
   left: 170px;
+  outline: none!important;
 }
 
 #emojiWindow{
@@ -712,7 +713,7 @@ input[name="postSub"]{
   left: 0px;
   backdrop-filter: blur(3px);
   text-align: center;
-  z-index: 2;
+  z-index: 12;
 }
 
 #closeEmoji{

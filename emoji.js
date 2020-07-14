@@ -47,8 +47,28 @@ fetch(new Request(api))
       })
       $("#emojiTable tr td").click((e)=>{
         var emoji = e.target.innerText
-        $('#postTxt').val($('#postTxt').val()+emoji)
+        if(tst === "emoji"){
+          $("#commentForm textarea").val($('#commentForm textarea').val()+emoji)
+        }else{
+          $('#postTxt').val($('#postTxt').val()+emoji)
+        }
       })
+      /* var clicked = false, clickY // scroll on drag if needed
+      $("table").on({
+        'mousemove': e=>{
+          clicked && updateScrollPos(e)
+        },
+        'mousedown': e=>{
+          clicked = true
+          clickY = e.pageY
+        },
+        'mouseup': ()=>{
+          clicked = false
+        }
+      })
+      updateScrollPos = e => {
+        $("#emojiDiv").scrollTop($('#emojiDiv').scrollTop()+(clickY - e.pageY))
+      } */
     }, 1000)
   })
 })
@@ -62,18 +82,21 @@ function getRandomColor() {
   return color;
 }
 
-$('#emoji').hover(()=>{
-  $('#emoji').css('color', getRandomColor())
-  $('#emoji').css('transform', 'scale(1.5)')
+$('.emoji').hover(()=>{
+  $('.emoji').css('color', getRandomColor())
+  $('.emoji').css('transform', 'scale(1.5)')
 }, ()=>{
-  $('#emoji').css('color', '#F7E5E5')
-  $('#emoji').css('transform', 'scale(1)')
+  $('.emoji').css('color', '#F7E5E5')
+  $('.emoji').css('transform', 'scale(1)')
 })
 
-$("#emoji").click(()=>{
+var tst
+
+$(".emoji").click((e)=>{
   $("#emojiWindow").css('display', 'block')
   $("#emojiName").focus()
   $('body').css('overflow-y', 'hidden')
+  tst = e.currentTarget.attributes[2].value
 })
 
 $("#closeEmoji").click(()=>{

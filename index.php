@@ -433,7 +433,7 @@
                         <input type="hidden" name="date">
                         <textarea name="postTxt" id="postTxt" cols="40" maxlength="420" placeholder="Postez un message de 420 caractères max."></textarea>
                         <label for="postImageButton">Choisir une image</label>
-                        <button type="button" id="emoji"><i class="far fa-laugh-beam"></i></button>
+                        <button type="button" class="emoji emojiMain"><i class="far fa-laugh-beam"></i></button>
                         <input type="file" id="postImageButton" name="postImage" accept="image/png, image/jpeg, image/jpg">
                         <input class="raise" name="postSub" type="submit" value="Envoyer">
                       </form>
@@ -694,6 +694,7 @@
             <form id="commentForm" method="post">
               <span id="closeCommentModal"><i class="fa fa-times" aria-hidden="true"></i></span>
               <textarea rows="3" cols="50" type="text" name="commentaire" placeholder="Commentaire (420 caractères max.)" maxlength="420"></textarea><br/><br/>
+              <button style="position:relative;margin-right:10px;" type="button" class="emoji"><i class="far fa-laugh-beam"></i></button>
               <input type="hidden" name="commentID" id="commentID">
               <input type="hidden" name="dateComm" id="dateComm">
               <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" />
