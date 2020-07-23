@@ -2,10 +2,10 @@
 
 to do list :
 
-- Delete post on index
-- Limiter à 30-35 posts pour le dashboard ? Pour éviter un long chargement
-- modal to show likes with a link to their profiles and this same modal shows stalkers
+- stalkersDiv height responsive
 - Banner on the header
+- Listener on keyup for textarea input then if there is a line break, replace it by a <br/> ? Or after upload, put it on P tag idk
+{- Limiter à 30-35 posts pour le dashboard ? Pour éviter un long chargement}
 
 
 

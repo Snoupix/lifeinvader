@@ -86,6 +86,7 @@
     $deletePost1 = 'DELETE FROM likes WHERE id = :id';
     $deletePost2 = 'DELETE FROM comments WHERE idPost = :idPost';
     $deletePost3 = 'DELETE FROM post WHERE id = :id';
+    $stalkersName = 'SELECT usernameFK FROM stalking WHERE stalked = "'.$username.'";';
 
 
     if(isset($_SESSION['username'])){
@@ -127,6 +128,8 @@
       $allUsers = $conn->query($allUsers);
       $allUsers = $allUsers->fetchAll(PDO::FETCH_ASSOC);
 
+      $stalkersName = $conn->query($stalkersName);
+      $stalkersName = $stalkersName->fetchAll(PDO::FETCH_ASSOC);
     
     }
 
@@ -315,7 +318,7 @@
   <meta property="og:url"           content="http://lifeinvader.atlantiss-rp.fr/" />
   <meta property="og:type"          content="website" />
   <meta property="og:title"         content="Lifeinvader Atlantiss" />
-  <meta property="og:description"   content="Le réseau social du serveur GTA RP Atlantiss. Discord : https://discord.gg/w5HBjWw" />
+  <meta property="og:description"   content="Le réseau social du serveur GTA RP Atlantiss. Discord : https://discord.gg/atlantiss" />
   <meta property="og:image"         content="./assets/img/favicon.ico" />
 
   <title>Lifeinvader</title>
@@ -533,14 +536,14 @@
                     if($yetLiked){
                       echo '<form method="POST">';
                         echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
-                        echo '<button class="liked" name="unLike" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                        echo '<button class="liked" name="unLike" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span class="likes"> Likes '.$likeCount.'</span>';
                         echo '<input class="commenter raise" type="button" value="commenter" />';
                         echo (!empty($comment)) ? '<span class="displayComms" style="padding-top:1%;cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                       echo '</form>';
                     }else{
                       echo '<form class="formLike" method="POST">';
                         echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
-                        echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                        echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span class="likes"> Likes '.$likeCount.'</span>';
                         echo '<input class="commenter raise" type="button" value="commenter" />';
                         echo (!empty($comment)) ? '<span class="displayComms" style="padding-top:1%;cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                       echo '</form>';
@@ -591,14 +594,14 @@
                     if($yetLiked){
                       echo '<form method="POST">';
                         echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
-                        echo '<button class="liked" name="unLike" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                        echo '<button class="liked" name="unLike" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span class="likes"> Likes '.$likeCount.'</span>';
                         echo '<input class="commenter raise" type="button" value="commenter" />';
                         echo (!empty($comment)) ? '<span class="displayComms" style="padding-top:1%;cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                       echo '</form>';
                     }else{
                       echo '<form class="formLike" method="POST">';
                         echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
-                        echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                        echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span class="likes"> Likes '.$likeCount.'</span>';
                         echo '<input class="commenter raise" type="button" value="commenter" />';
                         echo (!empty($comment)) ? '<span class="displayComms" style="padding-top:1%;cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                       echo '</form>';
@@ -649,14 +652,14 @@
                     if($yetLiked){
                       echo '<form method="POST">';
                         echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
-                        echo '<button class="liked" name="unLike" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                        echo '<button class="liked" name="unLike" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span class="likes"> Likes '.$likeCount.'</span>';
                         echo '<input class="commenter raise" type="button" value="commenter" />';
                         echo (!empty($comment)) ? '<span class="displayComms" style="padding-top:1%;cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                       echo '</form>';
                     }else{
                       echo '<form class="formLike" method="POST">';
                         echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
-                        echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                        echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span class="likes"> Likes '.$likeCount.'</span>';
                         echo '<input class="commenter raise" type="button" value="commenter" />';
                         echo (!empty($comment)) ? '<span class="displayComms" style="padding-top:1%;cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                       echo '</form>';
@@ -693,7 +696,7 @@
           <div id="commentModal">
             <form id="commentForm" method="post">
               <span id="closeCommentModal"><i class="fa fa-times" aria-hidden="true"></i></span>
-              <textarea rows="3" cols="50" type="text" name="commentaire" placeholder="Commentaire (420 caractères max.)" maxlength="420"></textarea><br/><br/>
+              <textarea rows="3" cols="50" type="text" name="commentaire" placeholder="Commentaire (420 caractères max.)" maxlength="420" required></textarea><br/><br/>
               <button style="position:relative;margin-right:10px;" type="button" class="emoji"><i class="far fa-laugh-beam"></i></button>
               <input type="hidden" name="commentID" id="commentID">
               <input type="hidden" name="dateComm" id="dateComm">
@@ -717,6 +720,59 @@
               </table>
             </div>
             <div id="closeEmoji"></div>
+          </div>
+          <div id="stalkersMod">
+            <div id="outerStalk"></div>
+            <h3>STALKERS</h3>
+            <hr/>
+            <div id="stalkersDiv">
+              <?php
+                function check($number){if($number % 2 == 0){return true;}else{return false;}} 
+                if(count($stalkersName) == 0){
+                  echo '<div class="stalkerName">';
+                    echo '<p>Aucun compte ne stalk ce compte!</p>';
+                  echo '</div>';
+                }
+                for($i=0;$i<count($stalkersName);$i++){
+                  foreach($allUsers as $stalkingMan){
+                    if($stalkingMan['username'] == $stalkersName[$i]['usernameFK']){
+                      $stalkerSrc = $stalkingMan['avatar'];
+                    }
+                  }
+                  if(check($i)){
+                    echo '<div class="stalkerName">';
+                      echo '<a href="index.php?username='.$stalkersName[$i]['usernameFK'].'"><img src="'.$stalkerSrc.'" alt="'.$stalkersName[$i]['usernameFK'].'"/></a>';
+                      echo '<a href="index.php?username='.$stalkersName[$i]['usernameFK'].'">'.$stalkersName[$i]['usernameFK'].'</a>';
+                    echo '</div>';
+                  }else{
+                    echo '<div class="stalkerName stalkerName2">';
+                      echo '<a href="index.php?username='.$stalkersName[$i]['usernameFK'].'"><img src="'.$stalkerSrc.'" alt="'.$stalkersName[$i]['usernameFK'].'"/></a>';
+                      echo '<a href="index.php?username='.$stalkersName[$i]['usernameFK'].'">'.$stalkersName[$i]['usernameFK'].'</a>';
+                    echo '</div>';
+                  }
+                }
+              ?>
+            </div>
+          </div>
+          <div id="likesMod">
+            <div id="outerLike"></div>
+            <h3>LIKES</h3>
+            <hr/>
+            <div id="likeDiv">
+              <?php
+                for($i=0;$i<count($allLikes);$i++){
+                  foreach($allUsers as $userLiked){
+                    if($allLikes[$i]['userWhoLike'] == $userLiked['username']){
+                      $likeSrc = $userLiked['avatar'];
+                    }
+                  }
+                  echo '<div class="likeName '.$allLikes[$i]['id'].'">';
+                    echo '<a href="index.php?username='.$allLikes[$i]['userWhoLike'].'"><img src="'.$likeSrc.'" alt="'.$allLikes[$i]['userWhoLike'].'"/></a>';
+                    echo '<a href="index.php?username='.$allLikes[$i]['userWhoLike'].'">'.$allLikes[$i]['userWhoLike'].'</a>';
+                  echo '</div>';
+                }
+              ?>
+            </div>
           </div>
 
           <div id="imagesMod">

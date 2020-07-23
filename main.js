@@ -389,6 +389,45 @@ $('#closeDeletePost').click(()=>{
   $('body').css('scroll', 'auto')
 })
 
+$('.stalkers').click(()=>{
+  $('#stalkersMod').css('display', 'block')
+})
+
+$('#outerStalk').click(()=>{
+  $('#stalkersMod').css('display', 'none')
+})
+
+$('.likes').click(e=>{
+  if(window.location.pathname == "/index.php"){
+    var postID = e.currentTarget.parentElement.childNodes[0].value
+  }else{
+    var postID = e.currentTarget.parentElement[1].value
+  }
+  for(let el of $('.likeName')){
+    for(let list of el.classList){
+      if(list != postID){
+        el.style.display = "none"
+      }else{
+        el.style.display = "block"
+      }
+    }
+  }
+  $(".noLike").remove()
+  var i = 0
+  for(let el of $('.likeName')){
+    if(el.style.display == "block"){
+      i = i+1
+    }
+  }
+  if(i == 0){
+    $("#likeDiv").append('<p class="noLike">Personne n\'a like ce post</p>')
+  }
+  $('#likesMod').css('display', 'block')
+})
+
+$('#outerLike').click(()=>{
+  $('#likesMod').css('display', 'none')
+})
 
 function submitComm(){
   $("#commentID").val(id)

@@ -376,14 +376,14 @@
                 echo '<hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;" />';
                   if($yetLiked){
                     echo '<form method="POST">';
-                      echo '<button class="liked" name="unLike" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                      echo '<button class="liked" name="unLike" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span class="likes"> Likes '.$likeCount.'</span>';
                       echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
                       echo '<input class="commenter raise" type="button" value="commenter" />';
                       echo (!empty($comment)) ? '<span class="displayComms" style="cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                     echo '</form>';
                   }else{
                     echo '<form class="formLike" method="POST">';
-                    echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                    echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span class="likes"> Likes '.$likeCount.'</span>';
                     echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
                     echo '<input class="commenter raise" type="button" value="commenter" />';
                       echo (!empty($comment)) ? '<span class="displayComms" style="cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
@@ -436,14 +436,14 @@
                   echo '<hr style="margin-top: 0.7rem;margin-bottom: 0.5rem;" />';
                   if($yetLiked){
                     echo '<form method="POST">';
-                      echo '<button class="liked" name="unLike" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                      echo '<button class="liked" name="unLike" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span class="likes"> Likes '.$likeCount.'</span>';
                       echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
                       echo '<input class="commenter raise" type="button" value="commenter" />';
                       echo (!empty($comment)) ? '<span class="displayComms" style="cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                     echo '</form>';
                   }else{
                     echo '<form class="formLike" method="POST">';
-                      echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                      echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span class="likes"> Likes '.$likeCount.'</span>';
                       echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
                       echo '<input class="commenter raise" type="button" value="commenter" />';
                       echo (!empty($comment)) ? '<span class="displayComms" style="cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
@@ -496,14 +496,14 @@
                   echo '<hr/>';
                   if($yetLiked){
                     echo '<form method="POST">';
-                      echo '<button class="liked" name="unLike" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                      echo '<button class="liked" name="unLike" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span class="likes"> Likes '.$likeCount.'</span>';
                       echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
                       echo '<input class="commenter raise" type="button" value="commenter" />';
                       echo (!empty($comment)) ? '<span class="displayComms" style="cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
                     echo '</form>';
                   }else{
                     echo '<form class="formLike" method="POST">';
-                      echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span> Likes '.$likeCount.'</span>';
+                      echo '<button name="likePost" type="submit" style="border:none;background:none;outline:none;"><i class="fas fa-heart"></i></button><span class="likes"> Likes '.$likeCount.'</span>';
                       echo '<input name="idLiked" type="hidden" value="'.$key['id'].'" />';
                       echo '<input class="commenter raise" type="button" value="commenter" />';
                       echo (!empty($comment)) ? '<span class="displayComms" style="cursor:pointer;float:right;"><i class="fas fa-chevron-down"></i> Commentaires <i class="fas fa-chevron-down"></i></i></span>' : "";
@@ -550,14 +550,34 @@
           </form>
         </div>
         <div id="emojiWindow">
-            <div id="emojiDiv">
-              <input placeholder="emoji's name" type="text" id="emojiName">
-              <table id="emojiTable">
-                <tr></tr>
-              </table>
-            </div>
-            <div id="closeEmoji"></div>
+          <div id="emojiDiv">
+            <input placeholder="emoji's name" type="text" id="emojiName">
+            <table id="emojiTable">
+              <tr></tr>
+            </table>
           </div>
+          <div id="closeEmoji"></div>
+        </div>
+        <div id="likesMod">
+          <div id="outerLike"></div>
+          <h3>LIKES</h3>
+          <hr/>
+          <div id="likeDiv">
+            <?php
+              for($i=0;$i<count($allLikes);$i++){
+                foreach($allUsers as $userLiked){
+                  if($allLikes[$i]['userWhoLike'] == $userLiked['username']){
+                    $likeSrc = $userLiked['avatar'];
+                  }
+                }
+                echo '<div class="likeName '.$allLikes[$i]['id'].'">';
+                  echo '<a href="index.php?username='.$allLikes[$i]['userWhoLike'].'"><img src="'.$likeSrc.'" alt="'.$allLikes[$i]['userWhoLike'].'"/></a>';
+                  echo '<a href="index.php?username='.$allLikes[$i]['userWhoLike'].'">'.$allLikes[$i]['userWhoLike'].'</a>';
+                echo '</div>';
+              }
+            ?>
+          </div>
+        </div>
       </div>
       <div class="col-3 ads">
         <h3>Sponsorisé</h3>
