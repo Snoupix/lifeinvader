@@ -436,3 +436,8 @@ function submitComm(){
     $("#commentForm").submit()
   }
 }
+
+$('#bgImage').on('change', ()=>{
+  /* $('#formBgImage').submit() */
+  $('#bannerSub').click()
+})

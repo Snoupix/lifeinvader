@@ -87,6 +87,8 @@
     $deletePost2 = 'DELETE FROM comments WHERE idPost = :idPost';
     $deletePost3 = 'DELETE FROM post WHERE id = :id';
     $stalkersName = 'SELECT usernameFK FROM stalking WHERE stalked = "'.$username.'";';
+    $setBgImage = 'UPDATE user SET bgimage = :bgImage WHERE username = :username';
+    $deleteBanner = 'UPDATE user SET bgimage = null WHERE username = :username';
 
 
     if(isset($_SESSION['username'])){
@@ -302,6 +304,29 @@
       header("Refresh:0");
     }
 
+    if(isset($_POST['bannerSub']) && $tmpFiles[0]){
+      $targetDirBG = "./assets/usersBanner/".$username."/";
+      $bannerPathName = $targetDirBG.$username.$imgType;
+      $setBgImage = $conn->prepare($setBgImage);
+      $setBgImage->bindParam(':bgImage', $bannerPathName);
+      $setBgImage->bindParam(':username', $username);
+      if(!is_dir($targetDirBG)){
+        mkdir($targetDirBG, 0700);
+      }
+      if(!move_uploaded_file($tmpFiles[0]["tmp_name"], $targetDirBG.$username.$imgType)){
+        die("Cannot move the uploaded file");
+      }
+      $setBgImage->execute();
+      header("Refresh:0");
+    }
+
+    if(isset($_POST['deleteBanner'])){
+      $deleteBanner = $conn->prepare($deleteBanner);
+      $deleteBanner->bindParam(':username', $username);
+      $deleteBanner->execute();
+      header("Refresh:0");
+    }
+
     
 
   }catch(PDOException $e){
@@ -351,7 +376,18 @@
           </div>
         <?php endif; ?>
       <div class="col">
-        <header>
+        <?php
+          foreach($allUsers as $user){
+            if($user['username'] == $username){
+              $backgroundImage = $user['bgimage'];
+            }
+          }
+          if($backgroundImage){
+            echo '<header style="background-image: url('.$backgroundImage.');">';
+          }else{
+            echo '<header>';
+          }
+        ?>
           <div class="container">
             <div class="row">
               <div class="borderPic col-3">
@@ -388,10 +424,22 @@
                         </form>
                       <?php endif; ?>
                     <?php endif; ?>
-                    <?php 
-                      if(empty($_GET['username'])){
+                    <?php
+                      if(isset($_POST['edit'])){
+                        echo '<form id="formBgImage" action="index.php" method="POST" enctype="multipart/form-data">';
+                          echo '<label class="btn-sm btn-dark" for="bgImage">Changer la bannière</label>';
+                          echo '<input id="bgImage" name="bgImage" accept="image/png, image/jpeg, image/jpg" type="file">';
+                          echo '<input style="display:none;visibility:hidden;" type="submit" name="bannerSub" id="bannerSub">';
+                        echo '</form>';
+                        if($backgroundImage){
+                          echo '<form action="index.php" method="POST">';
+                            echo '<input class="btn-sm btn-dark float-right" type="submit" name="deleteBanner" id="deleteBanner" value="Supprimer Bannière" style="position: absolute;right: 0px;bottom: 22%;">';
+                          echo '</form>';
+                        }
+                      }
+                      if(empty($_GET['username']) && !isset($_POST['edit'])){
                         echo '<form method="POST" action="index.php">';
-                        echo '<button name="edit" type="submit" class="btn-sm btn-dark float-right" style="margin-top:7%;">EDIT</button>';
+                          echo '<button name="edit" type="submit" class="btn-sm btn-dark float-right" style="margin-top:7%;">EDIT</button>';
                         echo '</form>';
                       }
                     ?>
@@ -521,7 +569,7 @@
                   echo '<div class="postBanner">';
                     echo '<img src="'.$icon['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
                     echo '<a href="#">'.$username.'</a>';
-                    echo '<span>Posté '.$key['date'].' <span class="xDelete"><i class="far fa-times-circle"></i></span></span>';
+                    echo (empty($_GET['username'])) ? '<span>Posté '.$key['date'].' <span class="xDelete"><i class="far fa-times-circle"></i></span></span>': "";
                   echo '</div>';
                     echo '<hr/>';
                   echo '<div class="postImage">';
@@ -552,17 +600,17 @@
                       echo '<div class="comms id'.$key['id'].'" style="display:none;">';
                       echo '<hr style="margin-top: 0.7rem;margin-bottom: 0.5rem;" />';
                       for($i = 0;$i<count($comment);$i++){
-                          echo '<div class="comment">';
-                            echo '<div class="comm-banner">';
-                              echo '<img src="'.$commAuth[$i]["avatar"].'" alt="'.$commAuth[$i]["username"].' profilePic">';
-                              echo '<a href="index.php?username='.$comment[$i]['author'].'">'.$comment[$i]['author'].'</a>';
-                              echo '<span>'.$comment[$i]['date'].'</span>';
-                            echo '</div>';
-                            echo '<div class="comm-content">';
-                              echo '<p>'.$comment[$i]['message'].'</p>';
-                            echo '</div>';
+                        echo '<div class="comment">';
+                          echo '<div class="comm-banner">';
+                            echo '<img src="'.$commAuth[$i]["avatar"].'" alt="'.$commAuth[$i]["username"].' profilePic">';
+                            echo '<a href="index.php?username='.$comment[$i]['author'].'">'.$comment[$i]['author'].'</a>';
+                            echo '<span>'.$comment[$i]['date'].'</span>';
                           echo '</div>';
-                          echo '<hr/>';
+                          echo '<div class="comm-content">';
+                            echo '<p>'.$comment[$i]['message'].'</p>';
+                          echo '</div>';
+                        echo '</div>';
+                        echo '<hr/>';
                       }
                       echo '</div>';
                     }
@@ -583,7 +631,7 @@
                   echo '<div class="postBanner">';
                     echo '<img src="'.$icon['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
                     echo '<a href="#">'.$username.'</a>';
-                    echo '<span>Posté '.$key['date'].' <span class="xDelete"><i class="far fa-times-circle"></i></span></span>';
+                    echo (empty($_GET['username'])) ? '<span>Posté '.$key['date'].' <span class="xDelete"><i class="far fa-times-circle"></i></span></span>': "";
                   echo '</div>';
                     echo '<hr/>';
                   echo '<div class="postContent">';
@@ -641,7 +689,7 @@
                   echo '<div class="postBanner">';
                     echo '<img src="'.$icon['avatar'].'" alt="Profile Picture" draggable="false" width="65px"/>';
                     echo '<a href="#">'.$username.'</a>';
-                    echo '<span>Posté '.$key['date'].' <span class="xDelete"><i class="far fa-times-circle"></i></span></span>';
+                    echo (empty($_GET['username'])) ? '<span>Posté '.$key['date'].' <span class="xDelete"><i class="far fa-times-circle"></i></span></span>': "";
                   echo '</div>';
                     echo '<hr/>';
                   echo '<div class="postImage">';

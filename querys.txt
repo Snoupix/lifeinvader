@@ -1,10 +1,11 @@
-[WORKING ON :] Delete button post
+[WORKING ON :] First thing in the list
 
 to do list :
 
-- stalkersDiv height responsive
 - Banner on the header
 - Listener on keyup for textarea input then if there is a line break, replace it by a <br/> ? Or after upload, put it on P tag idk
+- Notifications ?
+- Ability to @ someone then it send notification
 {- Limiter à 30-35 posts pour le dashboard ? Pour éviter un long chargement}
 
 

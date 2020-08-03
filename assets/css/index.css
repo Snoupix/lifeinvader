@@ -20,6 +20,8 @@ header{
   min-height: 220px;
   border: 1px solid var(--borderCol);
   background-color: #fff;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .name h1{
@@ -344,7 +346,8 @@ input[name="postSub"]{
   }
 }
 
-#postImageButton{
+#postImageButton,
+#bgImage{
   width: 0.1px;
 	height: 0.1px;
 	opacity: 0;
@@ -937,4 +940,14 @@ input[name="postSub"]{
   #stalkersDiv{
     max-height: 272px;
   }
+}
+
+label[for="bgImage"]{
+  position: absolute;
+  left: 0px;
+  bottom: 15%;
+}
+
+label[for="bgImage"]:hover{
+  cursor: pointer;
 }
