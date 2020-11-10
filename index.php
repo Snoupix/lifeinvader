@@ -343,7 +343,7 @@
   <meta property="og:url"           content="http://lifeinvader.atlantiss-rp.fr/" />
   <meta property="og:type"          content="website" />
   <meta property="og:title"         content="Lifeinvader Atlantiss" />
-  <meta property="og:description"   content="Le réseau social du serveur GTA RP Atlantiss. Discord : https://discord.gg/atlantiss" />
+  <meta property="og:description"   content="Le réseau social du serveur GTA RP Atlantiss. Discord : https://discord.gg/kVShUha" />
   <meta property="og:image"         content="./assets/img/favicon.ico" />
 
   <title>Lifeinvader</title>
@@ -383,7 +383,7 @@
             }
           }
           if($backgroundImage){
-            echo '<header style="background-image: url('.$backgroundImage.');">';
+            echo '<header style="background-image: url(\''.$backgroundImage.'\');">';
           }else{
             echo '<header>';
           }

@@ -13,13 +13,18 @@
     $records->execute();
     $results = $records->fetch(PDO::FETCH_ASSOC);
 
-    if (count($results) > 0 && password_verify($_POST['password'], $results['password'])) {
-      $_SESSION['username'] = $_POST['username'];
-      $messageC = "Connected!";
-      header("Refresh:2; url=dashboard.php");
-    } else {
-      $message = 'Incorrect Password';
+    if($results == false){
+      $message = 'Compte invalide';
+    }else{
+      if(count($results) > 0 && password_verify($_POST['password'], $results['password'])){
+        $_SESSION['username'] = $_POST['username'];
+        $messageC = "Connected!";
+        header("Refresh:2; url=dashboard.php");
+      }else{
+        $message = 'Incorrect Password';
+      }
     }
+
   }
 
 ?>

@@ -14,7 +14,7 @@
     // SQL QUERYS
 
     $adReq = 'SELECT * FROM ads ORDER BY RAND()';
-    $allPosts = 'SELECT * FROM post';
+    $allPosts = 'SELECT * FROM post ORDER BY ID DESC LIMIT 100';
     $allUsers = 'SELECT * FROM user';
     $stalkReq = 'SELECT stalked FROM stalking WHERE usernameFK = "'.$username.'"';
     $likesReq = 'SELECT * FROM likes';
@@ -93,7 +93,7 @@
   <meta property="og:url"            content="http://lifeinvader.atlantiss-rp.fr/" />
   <meta property="og:type"           content="website" />
   <meta property="og:title"          content="Lifeinvader Atlantiss" />
-  <meta property="og:description"    content="Le réseau social du serveur GTA RP Atlantiss. Discord : https://discord.gg/atlantiss" />
+  <meta property="og:description"    content="Le réseau social du serveur GTA RP Atlantiss. Discord : https://discord.gg/kVShUha" />
   <meta property="og:image"          content="./assets/img/favicon.ico" />
 
   <title>Lifeinvader</title>
@@ -113,8 +113,8 @@
     <div class="row">
       <div class="col-9 posts nomargin">
         <?php
-          $reversedArray = array_reverse($allPosts, true);
-          foreach($reversedArray as $key){
+          #$reversedArray = array_reverse($allPosts, true);
+          foreach($allPosts as $key){
             $comment = [];
             $i2 = 0;
             $commAuth = [];
@@ -321,9 +321,9 @@
             array_push($stalkingArray, $stalk['stalked']);
           }
 
-          $reversedArray = array_reverse($allPosts, true);
+          #$reversedArray = array_reverse($allPosts, true);
 
-          foreach($reversedArray as $key){
+          foreach($allPosts as $key){
             $comment = [];
             $i2 = 0;
             $commAuth = [];
