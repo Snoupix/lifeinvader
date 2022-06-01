@@ -41,7 +41,7 @@ CREATE TABLE `ads` (
 
 INSERT INTO `ads` (`name`, `image`, `link`, `promo`) VALUES
 ('Premium Deluxe Motorsport', './assets/adImages/Premium Deluxe Motorsport.jpeg', 'index.php?username=Premium+Deluxe+Motorsport', '10% discount on your first purchase.'),
-('Distillerie Jonhson', './assets/adImages/Distillerie.jpg', 'index.php?username=Distillerie+Jonhson', 'Distributeurs d\'alcools depuis longtemps.');
+('Distillerie Jonhson', './assets/adImages/Distillerie.jpg', 'index.php?username=Distillerie+Jonhson', "Distributeurs d\'alcools depuis longtemps.");
 
 -- --------------------------------------------------------
 
@@ -65,7 +65,7 @@ INSERT INTO `comments` (`idPost`, `author`, `message`, `date`) VALUES
 (11, 'admin', 'Nice one !', 'Sam 27 Juin 23:39'),
 (9, 'Zola', 'So much', 'Dim 28 Juin 00:39'),
 (5, 'Andy', 'Coming!', 'Dim 28 Juin 00:54'),
-(13, 'Bob-Lee', 'Je suis bien d\'accord !', 'Mar 30 Juin 6:30'),
+(13, 'Bob-Lee', "Je suis bien d\'accord !", 'Mar 30 Juin 6:30'),
 (14, 'Premium Deluxe Motorsport', 'Not anymore !', 'Sam 04 Juillet 1:45'),
 (15, 'Bob-Lee', 'Ouieuuh 23 euuh', 'Sam 04 Juillet 2:29');
 
@@ -114,7 +114,7 @@ CREATE TABLE `post` (
 --
 
 INSERT INTO `post` (`id`, `usernameFK`, `message`, `image`, `date`) VALUES
-(1, 'Bob-Lee', 'Some fool on the street is sweatin my Chakra. He about to learn the Chakra Attack. I move in and out like some kind of Navy Seal. But I ain’t stealing your ship. I ain’t a Somali pirate. I am Dr. Ray De Angelo Harris, and I am a tug boat captain, about to push your big dumb heavy ass into port so you can get firmly grounded. You dig this nautical trip? We tying knots in here. That’s deep right there.', './assets/postImages/Bob-Lee/20200524012811_1.jpg', 'Lun 8 Juin 07:06'),
+(1, 'Bob-Lee', "Some fool on the street is sweatin my Chakra. He about to learn the Chakra Attack. I move in and out like some kind of Navy Seal. But I ain’t stealing your ship. I ain’t a Somali pirate. I am Dr. Ray De Angelo Harris, and I am a tug boat captain, about to push your big dumb heavy ass into port so you can get firmly grounded. You dig this nautical trip? We tying knots in here. That’s deep right there.", './assets/postImages/Bob-Lee/20200524012811_1.jpg', 'Lun 8 Juin 07:06'),
 (2, 'Bob-Lee', 'I don\'t know what to say', 'NULL', 'Lun 8 Juin 07:24'),
 (3, 'Andy', 'Promotion sur toutes les supersportives', 'NULL', 'Lun 8 Juin 17:35'),
 (4, 'Bob-Lee', 'Hello', 'NULL', 'Mer 10 Juin 05:06'),

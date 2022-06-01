@@ -900,7 +900,7 @@
         </div>
       </div>
       <hr/>
-      <footer><p style="padding-bottom:15px;">© Butterfly Corp · Atlantiss 2020</p></footer>
+      <footer><p style="padding-bottom:15px;">© Snoupix · Atlantiss 2020</p></footer>
     </div>
 
     <?php else: ?>

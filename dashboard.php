@@ -301,7 +301,7 @@
     </div>
   </div>
   <hr/>
-  <footer><p style="padding-bottom:15px;">© Butterfly Corp · Atlantiss 2020</p></footer>
+  <footer><p style="padding-bottom:15px;">© Snoupix · Atlantiss 2020</p></footer>
 
   <?php else: ?> <!-- If connected -->
   <form id="filterForm" method="POST" action="dashboard.php">
@@ -604,7 +604,7 @@
     </div>
   </div>
   <hr/>
-  <footer><p style="padding-bottom:15px;">© Butterfly Corp · Atlantiss 2020</p></footer>
+  <footer><p style="padding-bottom:15px;">© Snoupix · Atlantiss 2020</p></footer>
 
   <?php endif; ?>
 

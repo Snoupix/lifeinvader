@@ -6,7 +6,7 @@ to do list :
 - Listener on keyup for textarea input then if there is a line break, replace it by a <br/> ? Or after upload, put it on P tag idk
 - Notifications ?
 - Ability to @ someone then it send notification
-{- Limiter à 30-35 posts pour le dashboard ? Pour éviter un long chargement}
+{Try to create dynamic post load on dashboard or alternative}
 
 
 
